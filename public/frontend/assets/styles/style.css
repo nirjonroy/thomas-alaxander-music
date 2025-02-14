@@ -1,0 +1,139 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
+
+
+/* google fonts  */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    /* font-family: "Poppins", sans-serif; */
+    font-family: "Ubuntu", sans-serif;
+}
+
+header{
+    padding-top: 125px;
+}
+.mybtn {
+    color: #fff;
+    background-color: #f5763f;
+    border-color: #f89d44;
+}
+
+.hero-container {
+    background: #D0CBAB;
+}
+
+.bottomhero-container {
+    background: #fff;
+}
+
+.box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05)#edf1f4);
+    border: 15px 15px 20px rgba(0, 0, 0, 0.05), -15px -15px #fff;
+}
+
+
+
+.find-a-wingstone {
+    background: url('/images/location.avif');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.section-flavour{
+    background: #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
+
+#order-now{
+    /* background: url("/images/bg.jpg"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    object-fit: cover;
+}
+
+
+
+/* css for menu image scaling  */
+
+.menu-details {
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-details img,
+.menu-details h4 {
+    transition: transform 0.3s ease-in-out;
+}
+
+.menu-details:hover img,
+.menu-details:hover h4 {
+    transform: scale(.9);
+}
+
+.menu-heading {
+    color: #333; 
+    font-size: 1.5rem;
+    font-weight: bold; 
+    margin-top: 20px; 
+}
+
+.mybtn {
+    background-color: #FF7B04; 
+    color: #333; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+
+.mybtn:hover {
+    background-color: #E56E00; 
+}
+
+
+/* show and hide div on radio check  */
+
+#show-it {
+    display: none;
+    transition: opacity 0.9s ease; 
+    opacity: 0; 
+}
+
+.show {
+    display: block;
+    opacity: 1; 
+}
+
+
+/* temporary  */
+
+.selected {
+    background-color: lightblue;
+}
+.ex-click {
+    cursor: pointer;
+}

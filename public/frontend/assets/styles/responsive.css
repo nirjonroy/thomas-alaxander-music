@@ -1,0 +1,115 @@
+.login-btn-cls {
+    width: 70%;
+}
+
+@media all and (max-width: 515px) {
+    .login-btn-cls {
+        width: 100%;
+    }
+}
+
+@media all and (max-width: 995px) {
+    #order-now-text {
+        display: none !important;
+    }
+
+    .signupfirstdiv {
+        display: none !important;
+    }
+}
+
+@media all and (max-width: 994px) {
+    #login-image {
+        display: none;
+    }
+
+    #order-now {
+        background:#fff;
+        background-size: cover;
+        background-repeat: no-repeat;
+        object-fit: cover;
+    }
+
+    #order-now-image {
+        display: none;
+    }
+
+    /* button#order-now-button {
+        width: 300px !important;
+        font-size: 30px;
+        text-align: center;
+        background: #121111;
+
+    } */
+}
+
+@media all and (max-width:317px) {
+    button#order-now-button {
+        width: 200px !important;
+        font-size: 20px;
+        text-align: center;
+
+    }
+}
+
+@media all and (max-width:215px) {
+    button#order-now-button {
+        width: 100px !important;
+        font-size: 20px;
+        text-align: center;
+
+    }
+}
+
+@media all and (max-width:750px) {
+    .categeory-image {
+        width: 700px !important;
+    }
+
+    .menu-a-text {
+        text-align: center;
+    }
+}
+
+@media all and (max-width:544px) {
+    .categeory-image {
+        width: 100% !important;
+    }
+}
+
+@media all and (max-width:544px) {
+    .image-responsive-carosoul {
+        width: 100% !important;
+    }
+}
+
+@media all and (max-width:769px) {
+    .image-responsive-carosoul {
+        width: 100% !important;
+    }
+}
+
+@media all and (max-width:544px) {
+    .image-responsive-carosoul {
+        width: 100% !important;
+    }
+}
+
+@media all and (max-width:310px){
+    .food-menu-items{
+        width: 100% !;
+    }
+
+    #d-block{
+        display: block !important;
+    }
+}
+@media all and (max-width:688px){
+    #full{
+        width: 100% !important;
+    }
+
+    #half{
+       width: 100% !important;
+    }
+}
