@@ -125,11 +125,12 @@ class ProductController extends Controller
         return view('admin.create_product',compact('categories','brands','specificationKeys', 'sizes', 'colors'));
     }
 
-    public function store(Request $request)    {
-       if(!auth()->user()->can('product.store')){
+    public function store(Request $request)
+    {
+        if (!auth()->user()->can('product.store')) {
             abort(403, 'Unauthorized action.');
         }
-         //dd($request->all());
+    
         $rules = [
             'short_name' => '',
             'name' => 'required',
@@ -138,7 +139,7 @@ class ProductController extends Controller
             'image' => '',
             'type' => '',
             'product_id' => '',
-            'category' => 'required',
+            'category' => '',
             'short_description' => '',
             'long_description' => '',
             'price' => 'required|numeric',
@@ -146,73 +147,61 @@ class ProductController extends Controller
             'weight' => '',
             'video_link' => '',
             'quantity' => '',
+            'song' => 'required|mimes:mp3,wav,ogg|max:20480', // Accept MP3, WAV, OGG up to 20MB
         ];
+    
         $customMessages = [
-            // 'short_name.required' => trans('admin_validation.Short name is required'),
-            // 'short_name.unique' => trans('admin_validation.Short name is required'),
             'name.required' => trans('admin_validation.Name is required'),
-            'name.unique' => trans('admin_validation.Name is required'),
             'slug.required' => trans('admin_validation.Slug is required'),
-            'slug.unique' => trans('admin_validation.Slug already exist'),
-            'category.required' => trans('admin_validation.Category is required'),
-            'thumb_image.required' => trans('admin_validation.thumbnail is required'),
-            // 'short_description.required' => trans('admin_validation.Short description is required'),
-            'long_description.required' => trans('admin_validation.Long description is required'),
+            'slug.unique' => trans('admin_validation.Slug already exists'),
             'price.required' => trans('admin_validation.Price is required'),
             'status.required' => trans('admin_validation.Status is required'),
             'quantity.required' => trans('admin_validation.Quantity is required'),
-            // 'weight.required' => trans('admin_validation.Weight is required'),
+            'song.required' => trans('admin_validation.Song file is required'),
+            'song.mimes' => trans('admin_validation.Invalid file format (Allowed: MP3, WAV, OGG)'),
+            'song.max' => trans('admin_validation.Song file must be less than 20MB'),
         ];
-        $this->validate($request, $rules,$customMessages);
-
+    
+        $this->validate($request, $rules, $customMessages);
+    
         $product = new Product();
-        if($request->thumb_image){
+    
+        // Handle thumbnail image upload
+        if ($request->hasFile('thumb_image')) {
             $image = Image::make($request->file('thumb_image'));
-            $extention = $request->thumb_image->getClientOriginalExtension();
-            $image_name = Str::slug($request->name).date('-Y-m-d-h-i-s-').rand(999,9999).'.'.$extention;
-
-
-            $destation_path1 = 'uploads/custom-images/'.$image_name;
-            $image->resize(700,700);
-            $image->save(public_path().'/'.$destation_path1);
-
+            $extension = $request->thumb_image->getClientOriginalExtension();
+            $image_name = Str::slug($request->name) . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extension;
+    
+            $destination_path1 = 'uploads/custom-images/' . $image_name;
+            $image->resize(700, 700);
+            $image->save(public_path() . '/' . $destination_path1);
+    
             // For Main Image
-            $destation_path = 'uploads/custom-images2/'.$image_name;
-            $image->resize(200,200);
-            $image->save(public_path().'/'.$destation_path);
-            $product->thumb_image=$image_name;
+            $destination_path2 = 'uploads/custom-images2/' . $image_name;
+            $image->resize(200, 200);
+            $image->save(public_path() . '/' . $destination_path2);
+    
+            $product->thumb_image = $image_name;
         }
-$discount_price = '';
-        if($request->offer_price != null) {
-           $discount_price =  $request->price - $request->offer_price;
-        } else {
-
+    
+        $discount_price = '';
+        if ($request->offer_price != null) {
+            $discount_price = $request->price - $request->offer_price;
         }
-
-        // $product->short_name = $request->short_name;
-
+    
         $product->name = $request->name;
         $product->slug = $request->slug;
         $product->category_id = $request->category;
-        $product->sub_category_id = $request->sub_category ? $request->sub_category : 0;
-        $product->child_category_id = $request->child_category ? $request->child_category : 0;
-        $product->brand_id = $request->brand ? $request->brand : 0;
-        $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
         $product->discount_price = $discount_price;
-        $product->qty = $request->quantity ? $request->quantity : 0;
         $product->short_description = $request->short_description;
         $product->long_description = $request->long_description;
         $product->status = $request->status;
         $product->type = $request->type;
-      	$product->prod_color = 'sincolor';
-        // $product->weight = $request->weight;
+        $product->prod_color = 'sincolor';
         $product->video_link = $request->video_link;
-        $product->measure = $request->measure;
-        $product->tags = $request->tags;
-        $product->is_undefine = 1;
-        $product->is_specification = $request->is_specification ? 1 : 0;
+    
         $product->seo_title = $request->seo_title ? $request->seo_title : $request->name;
         $product->seo_description = $request->seo_description ? $request->seo_description : $request->name;
         $product->is_top = $request->top_product ? 1 : 0;
@@ -220,168 +209,41 @@ $discount_price = '';
         $product->is_best = $request->best_product ? 1 : 0;
         $product->is_featured = $request->is_featured ? 1 : 0;
         $product->approve_by_admin = 1;
+    
+        // Handle song file upload
+        if ($request->hasFile('song')) {
+            $song = $request->file('song');
+    
+            // Validate the song file
+            if (!$song->isValid()) {
+                return back()->withErrors(['song' => 'Invalid song file!']);
+            }
+    
+            // Generate unique filename
+            $song_name = Str::slug($request->name) . '-' . time() . '.' . $song->getClientOriginalExtension();
+            $song_path = public_path('uploads/songs/');
+    
+            // Ensure directory exists
+            if (!file_exists($song_path)) {
+                mkdir($song_path, 0777, true);
+            }
+    
+            // Move file to the uploads directory
+            $song->move($song_path, $song_name);
+    
+            // Store file path in database
+            $product->music = 'uploads/songs/' . $song_name;
+        }
+    
         $product->save();
-
-       if ($request->hasFile('images')) {
-    $imageData = [];
-    foreach ($request->file('images') as $key => $image) {
-
-        $extention = $image->getClientOriginalExtension();
-        $image_name = Str::slug($request->name).date('-Y-m-d-h-i-s-').rand(999,9999).'.'.$extention;
-        $image = Image::make($image);
-
-        $destation_path_another = 'uploads/custom-images/'.$image_name;
-        $image->resize(700,700);
-        $image->save(public_path().'/'.$destation_path_another);
-
-        $imageData[] = ['image' => $destation_path_another, 'product_id' => $product->id];
-
-    }
-
-    if (!empty($imageData)) {
-        // Associate images with the product using the gallery relationship
-        $product->gallery()->createMany($imageData);
-    }
-}
-
-        if($request->is_specification){
-            $exist_specifications=[];
-            if($request->keys){
-                foreach($request->keys as $index => $key){
-                    if($key){
-                        if($request->specifications[$index]){
-                            if(!in_array($key, $exist_specifications)){
-                                $productSpecification= new ProductSpecification();
-                                $productSpecification->product_id = $product->id;
-                                $productSpecification->product_specification_key_id = $key;
-                                $productSpecification->specification = $request->specifications[$index];
-                                $productSpecification->save();
-                            }
-                            $exist_specifications[] = $key;
-                        }
-                    }
-                }
-            }
-        }
-
-        if ($request->type == 'variable') {
-
-            $variable_data=[];
-            // $variable_data[] = [
-            //     'size_id'=>$request->size_id,
-            //     'sell_price'=>$request->sell_price,
-            // ];
-
-            foreach ($request->size_id as $key => $size) {
-
-               $variable_data[]=[
-                    'size_id' => $size,
-                    'sell_price' => $request->sell_price[$key],
-               ];
-            }
-
-            if (!empty($variable_data)) {
-                $product->variations()->createMany($variable_data);
-            }
-
-        } else {
-            $variable_data=[];
-
-            $variable_data[] = [
-                'size_id'=>"1",
-                'sell_price'=>$request->sell_price,
-
-            ];
-
-        }
-
-
-    if ($request->prod_color == 'varcolor') {
-    $colors = $request->color_id;
-
-    $images = $request->var_images;
-
-
-    // Validate and process each color variation with its images
-    $colorVariationsData = [];
-
-    foreach ($colors as $key => $colorId) {
-        $color = Color::find($colorId);
-
-        if ($color) {
-            // Store the images for this color variation
-            if (isset($images[$key])) {
-
-                    $ext = $images[$key]->getClientOriginalExtension();
-
-                    // Generate a unique image name using a combination of color name, color ID, and a timestamp
-                    $imageName = Str::slug($color->name) . '_color_' . $colorId . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
-                    $destinationPath = 'uploads/custom-images/' . $imageName;
-
-                    // Resize and save the image
-                    $image = Image::make($images[$key]);
-                    $image->resize(700, 700);
-                    $image->save(public_path() . '/' . $destinationPath);
-
-                    $colorVariationsData[] = [
-                        'color_id' => $colorId,
-                        'var_images' => $destinationPath,
-                    ];
-            }
-            else {
-                dd('notttt');
-            }
-
-        }
-    }
-    //  dd($colorVariationsData);
-
-
-    if (!empty($colorVariationsData)) {
-        // Create a new color variation and associate it with the product
-        $product->colorVariations()->createMany($colorVariationsData);
-    }
-
-    // dd($colorVariationsData);
-
-
-} else {
-    // dd('no reached');
-}
-
-//  dd('last');
-
-// Add flavours separately
-$flavours = $request->input('flavours', []);
-foreach ($flavours as $flavourName) {
-    $product->flavours()->create(['name' => $flavourName]);
-}
-
-// Array of input names and their corresponding relationship methods
-$categories = [
-    'vaggies' => 'vaggies',
-    'sauces' => 'sauces',
-    'sides' => 'sides',
-    'toppings' => 'toppings',
-    'dips' => 'dips',
-    'protins' => 'protins',
-    'cheeses' => 'cheeses',
-];
-
-// Loop through each category and process the input
-foreach ($categories as $inputName => $relationMethod) {
-    $items = $request->input($inputName, []);
-    foreach ($items as $itemName) {
-        $product->{$relationMethod}()->create(['name' => $itemName]);
-    }
-}
-
-
-
+    
         $notification = trans('admin_validation.Created Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+    
         return redirect()->route('admin.product.index')->with($notification);
     }
+    
+
 
     public function show($id)
     {

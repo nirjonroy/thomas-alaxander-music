@@ -1,16 +1,16 @@
 @extends('admin.master_layout')
 @section('title')
-<title>{{__('admin.Products')}}</title>
+<title>Add Music </title>
 @endsection
 @section('admin-content')
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>{{__('admin.Create Product')}}</h1>
+            <h1>Add Music</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{__('admin.Dashboard')}}</a></div>
-              <div class="breadcrumb-item">{{__('admin.Create Product')}}</div>
+              <div class="breadcrumb-item">Add Music</div>
             </div>
           </div>
 
@@ -36,6 +36,11 @@
                                     <input type="file" class="form-control-file"  name="thumb_image" onchange="previewThumnailImage(event)">
                                 </div>
 
+                                <div class="form-group col-4">
+                                    <label>Upload Music<span class="text-danger">*</span></label>
+                                    <input type="file" name="song" class="form-control-file">
+                                </div>
+
                                 {{-- <div class="form-group col-4">
                                     <label>upload images <span class="text-danger">*</span></label>
                                     <!--<input type="file" name="images[]" multiple>-->
@@ -59,11 +64,11 @@
                                 <label>{{__('admin.Slug')}} <span class="text-danger">*</span></label>
                                 <input type="text" id="slug" class="form-control"  name="slug" value="{{ old('slug') }}">
                                 </div>
-                                {{-- <div class="form-group col-6">
+                               <div class="form-group col-6">
                                     <label>Video Url <span class="text-danger"></span></label>
-                                    <input type="hidden" id="slug" class="form-control"  name="slug" value="{{ old('slug') }}">
+                                    {{-- <input type="hidden" id="slug" class="form-control"  name="slug" value="{{ old('slug') }}"> --}}
                                     <input type="text" id="slug" class="form-control"  name="video_link" value="{{ old('video_link') }}">
-                                </div> --}}
+                                </div> 
                                 <div class="form-group col-4">
                                     <label>{{__('admin.Category')}} <span class="text-danger">*</span></label>
                                     <select name="category" class="form-control select2" id="category">
@@ -181,15 +186,15 @@
 
 
 
-                                <!--<div class="form-group col-12">-->
-                                <!--    <label>{{__('admin.SEO Title')}}</label>-->
-                                <!--   <input type="text" class="form-control" name="seo_title" value="{{ old('seo_title') }}">-->
-                                <!--</div>-->
+                                <div class="form-group col-12">
+    <label>{{__('admin.SEO Title')}}</label>
+    <input type="text" class="form-control" name="seo_title" value="{{ old('seo_title') }}">
+</div>
 
-                                <!--<div class="form-group col-12">-->
-                                <!--    <label>{{__('admin.SEO Description')}}</label>-->
-                                <!--    <textarea name="seo_description" id="" cols="30" rows="10" class="form-control text-area-5">{{ old('seo_description') }}</textarea>-->
-                                <!--</div>-->
+<div class="form-group col-12">
+    <label>{{__('admin.SEO Description')}}</label>
+    <textarea name="seo_description" id="" cols="30" rows="10" class="form-control text-area-5">{{ old('seo_description') }}</textarea>
+</div>
 
 
 
@@ -247,7 +252,7 @@
 
 
 
-                                <div class="col-lg-3 mb-3">
+                                <div class="col-lg-3 mb-3 d-none">
                                     <label  class="form-label">Product Combo and price </label>
                                     <select name="type" id="prod_type"  class="form-control">
                                         <option value="single"> No Combo </option>
@@ -381,7 +386,7 @@
 
                                 </div>
 
-                                <div class="row">
+                                <div class="row d-none">
                                     <div class="col-md-4">
                                         <div>
                                             <label for="flavours">Flavours:</label>

@@ -21,7 +21,7 @@
                       </div>
                       <div class="card-wrap">
                         <div class="card-header">
-                          <h4>{{__('admin.Today Order')}}</h4>
+                          <h4>Today  Music Sell</h4>
                         </div>
                         <div class="card-body">
                           {{ $today_total_orders }}
@@ -36,7 +36,7 @@
                       </div>
                       <div class="card-wrap">
                         <div class="card-header">
-                          <h4>{{__('admin.Today Pending Order')}}</h4>
+                          <h4>Today Pending Music</h4>
                         </div>
                         <div class="card-body">
                           {{ $today_total_pending_orders }}
@@ -52,7 +52,7 @@
                       </div>
                       <div class="card-wrap">
                         <div class="card-header">
-                          <h4>{{__('admin.Total Order')}}</h4>
+                          <h4>Total Music Order</h4>
                         </div>
                         <div class="card-body">
                           {{ $todayTotalOrder }}
@@ -114,7 +114,7 @@
 
       
 
-      <div class="section-body">
+      {{-- <div class="section-body">
         <div class="row mt-4">
             <div class="col">
               <div class="card">
@@ -231,7 +231,7 @@
             </div>
       </div>
     </section>
-  </div>
+  </div> --}}
 
    <!-- Modal -->
    @foreach ($todayOrders as $index => $order)

@@ -267,8 +267,10 @@ class UserController extends Controller
     //     'status' => false,
     //     'msg' => 'Invalid credentials',
     // ], 422);
-
-    return redirect()->back();
+    $notification= 'Invilid Email or password';
+    $notification=array('messege'=>$notification,'alert-type'=>'error');
+    return redirect()->route('admin.login')->with($notification);
+    // return redirect()->back();
 }
 
 public function changeStatus($id){
