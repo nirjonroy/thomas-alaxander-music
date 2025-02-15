@@ -262,28 +262,16 @@ class ProductController extends Controller
       if(!auth()->user()->can('product.edit')){
             abort(403, 'Unauthorized action.');
         }
-        $product = Product::with('category','brand','gallery','variants','variantItems', 'variations',  'flavours',
-        'toppings',
-        'dips',
-        'protins',
-        'cheeses',
-        'vaggies',
-        'sauces',
-        'sides',
-        'freeSides'
+        $product = Product::with('category','brand','gallery'
         )->find($id);
-        $sizes=Size::all();
-      	$colors = Color::all();
-        // $types=Type::all();
+       
         $categories = Category::all();
         $subCategories = SubCategory::where('category_id',$product->category_id)->get();
         $childCategories = ChildCategory::where('sub_category_id', $product->sub_category_id)->get();
         $brands = Brand::all();
-        $specificationKeys = ProductSpecificationKey::all();
-        $productSpecifications = ProductSpecification::where('product_id',$product->id)->get();
+       
 
-
-        return view('admin.edit_product',compact('colors','sizes','categories','brands','specificationKeys','product','subCategories','childCategories','productSpecifications'));
+        return view('admin.edit_product',compact('categories','brands','product','subCategories','childCategories'));
 
     }
 
@@ -306,24 +294,18 @@ class ProductController extends Controller
             'status' => 'required',
             'weight' => '',
             'video_link' => '',
+            'song' => 'mimes:mp3,wav,ogg|max:20480', // Accept MP3, WAV, OGG up to 20MB
         ];
         $customMessages = [
-            // 'short_name.required' => trans('admin_validation.Short name is required'),
-            // 'short_name.unique' => trans('admin_validation.Short name is required'),
             'name.required' => trans('admin_validation.Name is required'),
-            'name.unique' => trans('admin_validation.Name is required'),
             'slug.required' => trans('admin_validation.Slug is required'),
             'slug.unique' => trans('admin_validation.Slug already exist'),
             'category.required' => trans('admin_validation.Category is required'),
-            'thumb_image.required' => trans('admin_validation.thumbnail is required'),
-            'banner_image.required' => trans('admin_validation.Banner is required'),
-            // 'short_description.required' => trans('admin_validation.Short description is required'),
             'long_description.required' => trans('admin_validation.Long description is required'),
-            'brand.required' => trans('admin_validation.Brand is required'),
             'price.required' => trans('admin_validation.Price is required'),
-            'quantity.required' => trans('admin_validation.Quantity is required'),
             'status.required' => trans('admin_validation.Status is required'),
-            // 'weight.required' => trans('admin_validation.Weight is required'),
+            'song.mimes' => trans('admin_validation.Invalid file format (Allowed: MP3, WAV, OGG)'),
+            'song.max' => trans('admin_validation.Song file must be less than 20MB'),
         ];
         $this->validate($request, $rules,$customMessages);
 
@@ -342,7 +324,32 @@ class ProductController extends Controller
             $image->save(public_path().'/'.$destation_path2);
 
             $product->thumb_image=$image_name;
-            $product->save();
+            // Handle song file upload
+        if ($request->hasFile('song')) {
+            $song = $request->file('song');
+
+            // Validate the song file
+            if (!$song->isValid()) {
+                return back()->withErrors(['song' => 'Invalid song file!']);
+            }
+
+            // Generate unique filename
+            $song_name = Str::slug($request->name) . '-' . time() . '.' . $song->getClientOriginalExtension();
+            $song_path = public_path('uploads/songs/');
+
+            // Ensure directory exists
+            if (!file_exists($song_path)) {
+                mkdir($song_path, 0777, true);
+            }
+
+            // Move file to the uploads directory
+            $song->move($song_path, $song_name);
+
+            // Store file path in database
+            $product->music = 'uploads/songs/' . $song_name;
+        }
+
+        $product->save();
             if($old_thumbnail){
                 if(File::exists(public_path().'/uploads/custom-images/'.$old_thumbnail))unlink(public_path().'/uploads/custom-images/'.$old_thumbnail);
                 if(File::exists(public_path().'/uploads/main-image/'.$old_thumbnail))unlink(public_path().'/uploads/main-image/'.$old_thumbnail);
@@ -382,298 +389,6 @@ class ProductController extends Controller
             $product->approve_by_admin = $request->approve_by_admin;
         }
         $product->save();
-
-          if ($request->hasFile('images')) {
-    $imageData = [];
-    foreach ($request->file('images') as $key => $image) {
-
-        $extention = $image->getClientOriginalExtension();
-        $image_name = Str::slug($request->name).date('-Y-m-d-h-i-s-').rand(999,9999).'.'.$extention;
-        $image = Image::make($image);
-
-        $destation_path_another = 'uploads/custom-images/'.$image_name;
-        $image->resize(700,700);
-        $image->save(public_path().'/'.$destation_path_another);
-        $imageData[] = ['image' => $destation_path_another, 'product_id' => $product->id];
-
-    }
-
-    if (!empty($imageData)) {
-        // Associate images with the product using the gallery relationship
-        $product->gallery()->createMany($imageData);
-    }
-}
-
-        $exist_specifications=[];
-        if($request->keys){
-            foreach($request->keys as $index => $key){
-                if($key){
-                    if($request->specifications[$index]){
-                        if(!in_array($key, $exist_specifications)){
-                            $existSroductSpecification = ProductSpecification::where(['product_id' => $product->id,'product_specification_key_id' => $key])->first();
-                            if($existSroductSpecification){
-                                $existSroductSpecification->specification = $request->specifications[$index];
-                                $existSroductSpecification->save();
-                            }else{
-                                $productSpecification = new ProductSpecification();
-                                $productSpecification->product_id = $product->id;
-                                $productSpecification->product_specification_key_id = $key;
-                                $productSpecification->specification = $request->specifications[$index];
-                                $productSpecification->save();
-                            }
-                        }
-                        $exist_specifications[] = $key;
-                    }
-                }
-            }
-        }
-
-
-        if (isset($request->size_id)) {
-
-            $variable_data=[];
-            foreach ($request->size_id as $key => $size) {
-
-                 $delete_variations = ProductVariant::where('product_id', $product->id)->whereNotIn('id',  $request->variation_id)->get();
-                  if($delete_variations->count()) {
-                     foreach ($delete_variations as $key => $dvariation) {
-                         $dvariation->delete();
-                     }
-                  }
-
-                if (isset($request->variation_id[$key])) {
-                    $variable=ProductVariant::find($request->variation_id[$key]);
-                    $variable->size_id=$size;
-                    $variable->sell_price= $request->sell_price[$key];
-                    $variable->save();
-                }else{
-                    $variable_data[]=[
-                        'size_id'=>$size,
-                        'sell_price' => $request->sell_price[$key],
-                    ];
-                }
-            }
-
-            if (!empty($variable_data)) {
-                $product->variations()->createMany($variable_data);
-            }
-
-        }
-
-
-
-      	if (isset($request->color_id)) {
-
-
-
-		//dd($request->color_variation_id);
-            $variable_color_data=[];
-            foreach ($request->color_id as $key => $color) {
-              //dd($request->var_images);
-
-             $delete_variations = productColorVariation::where('product_id', $product->id)->whereNotIn('id',  $request->color_variation_id)->get();
-
-                  if($delete_variations->count()) {
-                     foreach ($delete_variations as $key => $dvariation) {
-                         $dvariation->delete();
-                     }
-                  }
-
-              $variable=productColorVariation::find($color);
-
-                if (isset($request->color_variation_id[$key])) {
-                  if(isset($request->var_images[$key])){
-
-                    $variable=productColorVariation::find($request->color_variation_id[$key]);
-                    $variable->color_id=$color;
-
-
-                    $ext = $request->var_images[$key]->getClientOriginalExtension();
-
-                    // Generate a unique image name using a combination of color name, color ID, and a timestamp
-                    $imageName = Str::slug('try') . '_color_'  . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
-                    $destinationPath = 'uploads/custom-images/' . $imageName;
-
-                    // Resize and save the image
-                    $image = Image::make($request->var_images[$key]);
-
-
-                    $image->resize(700, 700);
-
-                    $image->save(public_path() . '/' . $destinationPath);
-                    $variable->var_images = $destinationPath;
-
-                    $variable->save();
-
-                  }
-                  else{
-                    $variable=productColorVariation::find($request->color_variation_id[$key]);
-                    $variable->color_id=$color;
-
-                    $variable->save();
-                  }
-                }else{
-                    $variable_color_data[]=[
-                        'color_id'=>$color,
-
-                    ];
-                }
-            }
-
-            if (!empty($variable_color_data)) {
-              //dd($variable_color_data);
-                $product->colorVariations()->createMany($variable_color_data);
-            }
-
-
-
-
-
-        }
-
-
-
-    //   if ($product->type == 'variable') {
-
-    //       if(isset($request->size_id)) {
-    //          $variable_data = [];
-
-    //           foreach ($request->size_id as $key => $size) {
-
-    //         //     $delete_variations = ProductVariant::where('product_id', $product->id)->whereNotIn('id',  $request->variation_id)->get();
-
-    //         //   if($delete_variations->count()) {
-    //         //       foreach ($delete_variations as $key => $dvariation) {
-    //         //         $dvariation->delete();
-    //         //         }
-    //         //   }
-
-    //           $variable_data[]=[
-    //                 'size_id' => $size,
-    //                 'sell_price' => $request->sell_price[$key],
-    //           ];
-
-    //         }
-
-    //         if (!empty($variable_data)) {
-    //             $product->variations()->createMany($variable_data);
-    //         }
-    //       }
-
-    //     } else {
-    //         $variable_data=[];
-
-    //         $variable_data[] = [
-    //             'size_id'=>"1",
-    //             'sell_price'=>$request->sell_price
-    //         ];
-
-    //     }
-
-    // Sync Flavours
-    $product->flavours()->delete();
-    if ($request->has('flavours')) {
-        foreach ($request->input('flavours') as $flavourName) {
-            $product->flavours()->create(['name' => $flavourName]);
-        }
-    }
-    
-// Sync Free Sides
-$product->freeSides()->delete(); // Deletes all existing freeSides associated with the product
-
-if ($request->has('freeSides')) {
-    foreach ($request->input('freeSides') as $freeSidesName) {
-        // Recreates each freeSide entry based on the input
-        $product->freeSides()->create(['name' => $freeSidesName]);
-    }
-}
-
-
-    // Sync Toppings
-    $product->toppings()->delete();
-    if ($request->has('toppings')) {
-        foreach ($request->input('toppings') as $toppingName) {
-            $product->toppings()->create(['name' => $toppingName]);
-        }
-    }
-
-    // Sync Dips
-    $product->dips()->delete();
-    if ($request->has('dips')) {
-        foreach ($request->input('dips') as $dipName) {
-            $product->dips()->create(['name' => $dipName]);
-        }
-    }
-
-    // Sync Protins
-// Sync Protins (with price)
-$product->protins()->delete();  // Delete existing protins before syncing new ones
-
-if ($request->has('protins') && $request->has('protins_price')) {
-    foreach ($request->input('protins') as $index => $protinName) {
-        $protinPrice = $request->input('protins_price')[$index] ?? null;
-        
-        // Create the protin with the associated price
-        $product->protins()->create([
-            'name' => $protinName, 
-            'protin_price' => $protinPrice  // Make sure to map the price here
-        ]);
-    }
-}
-
-$product->productVariations()->delete();
-
-    if ($request->has('products') && $request->has('products_price')) {
-        foreach ($request->input('products') as $index => $productName) {
-            $productsPrice = $request->input('products_price')[$index] ?? null;
-
-            // Create new product variations
-            $product->productVariations()->create([
-                'name' => $productName, 
-                'products_price' => $productsPrice  // Map the correct price field
-            ]);
-        }
-    }
-
-
-
-    // Sync Cheeses
-    $product->cheeses()->delete();
-    if ($request->has('cheeses')) {
-        foreach ($request->input('cheeses') as $cheeseName) {
-            $product->cheeses()->create(['name' => $cheeseName]);
-        }
-    }
-
-    // Sync Vaggies
-    $product->vaggies()->delete();
-    if ($request->has('vaggies')) {
-        foreach ($request->input('vaggies') as $vaggieName) {
-            $product->vaggies()->create(['name' => $vaggieName]);
-        }
-    }
-
-    // Sync Sauces
-    $product->sauces()->delete();
-    if ($request->has('sauces')) {
-        foreach ($request->input('sauces') as $sauceName) {
-            $product->sauces()->create(['name' => $sauceName]);
-        }
-    }
-
-    // Sync Sides (with price)
-    $product->sides()->delete();
-    if ($request->has('sides') && $request->has('sides_price')) {
-        foreach ($request->input('sides') as $index => $sideName) {
-            $sidePrice = $request->input('sides_price')[$index] ?? null;
-            $product->sides()->create(['name' => $sideName, 'sides_price' => $sidePrice]);
-        }
-    }
-
-    // Sync Sizes
-
-
-
 
         $notification = trans('admin_validation.Update Successfully');
         $notification=array('messege'=>$notification,'alert-type'=>'success');
