@@ -78,7 +78,7 @@
                           <div class="col-md-8">
                               <div class="d-flex">
 
-                        @foreach(getOrderStatus() as $key=>$value)
+                        {{-- @foreach(getOrderStatus() as $key=>$value)
                         <label class="ps-2 p-10">
                             <input type="radio" class="order_sts"  name="order_status" value="{{$key}}"/>
                             @if(Auth::user()->hasRole('worker'))
@@ -96,7 +96,7 @@
                             @endif
 
                           </label>
-                        @endforeach
+                        @endforeach --}}
 
                        </div>
                           </div>
