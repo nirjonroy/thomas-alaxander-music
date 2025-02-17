@@ -110,6 +110,16 @@
 @include('frontend.partials.js')
 
 <script src="{{asset('frontend/assets/js/index.js')}}"></script>
+<script src="{{asset('frontend/assets/js/jquery.min.js')}}"></script>
+<script src="{{asset('frontend/assets/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/swiper/js/swiper.min.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/player/jplayer.playlist.min.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/player/jquery.jplayer.min.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/player/audio-player.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/player/volume.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/nice_select/jquery.nice-select.min.js')}}"></script>
+<script src="{{asset('frontend/assets/js/plugins/scroll/jquery.mCustomScrollbar.js')}}"></script>
+<script src="{{asset('frontend/assets/js/custom.js')}}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

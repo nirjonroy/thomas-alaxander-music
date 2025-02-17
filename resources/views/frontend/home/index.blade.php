@@ -5,130 +5,213 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 @endpush
 @section('content')
-
-<main>
-    <!--Hero Section-->
+<div class="ms_content_wrapper padder_top8">
+    <!---Header--->
    
+    <!---index page--->
+    <div class="ms_index_wrapper common_pages_space">
+        <div class="ms_index_inner">
+            <div class="ms_index_secwrap">
+                <div class="ms_songslist_main">
+                    <div class="ms_songslist_wrap">
+                        <ul class="ms_songslist_nav nav nav-pills" role="tablist">
+                            <li>
+                                <a class="active" data-bs-toggle="pill" href="#top-picks" role="tab" aria-controls="top-picks" aria-selected="true">Today Top Picks</a>
+                            </li>
+                            <li>
+                                <a class="" data-bs-toggle="pill" href="#trending-songs" role="tab" aria-controls="trending-songs" aria-selected="false">Trending Songs</a>
+                            </li>
+                            <li>
+                                <a class="" data-bs-toggle="pill" href="#new-release" role="tab" aria-controls="new-release" aria-selected="false">New Release</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="top-picks" role="tabpanel" aria-labelledby="top-picks">
+                                <div class="ms_songslist_box">
+                                    <ul class="ms_songlist ms_index_songlist">
+                                        <li>
+                                            <div class="ms_songslist_inner">
+                                                <div class="ms_songslist_left">
+                                                    <div class="songslist_number">
+                                                        <h4 class="songslist_sn">01</h4>
+                                                        <span class="songslist_play"><img src="{{asset('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
+                                                    </div>
+                                                    <div class="songslist_details">
+                                                        <div class="songslist_thumb">
+                                                            <img src="{{asset('frontend/assets/images/songlist/01.jpg')}}" alt="thumb" class="img-fluid" />
+                                                        </div>
+                                                        <div class="songslist_name">
 
-    <section class="pt-24 lg:pt-32">
-      <div class="owl-carousel owl-theme">
-      @foreach ($sliders as $slider)
-      <div
-      class="max-w-7xl flex flex-col  py-4 mx-auto "
-    >
-      <div class="w-full  flex items-center justify-center">
-        <img
-          src="{{asset($slider->image)}}"
-          alt="Banner 1"
-          class="rounded-lg h-[200px] lg:h-[450px] lg:object-fill object-unset w-full object-cover"
-        />
-      </div>
-    </div>
-      @endforeach
-        
+                                                            <h3 class="song_name"><a href="javascript:void(0);">Walking Promises</a></h3>
+                                                            <p class="song_artist">Harry Jackson, Virginia Harris</p>
+                                                        </div>
+                                                    </div>
 
-        
-      </div>
-    </section>
+                                                </div>
+                                                <div class="ms_songslist_right">
+                                                    <span class="ms_songslist_like">
+                                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
+                                                    </span>
+                                                    <span class="ms_songslist_time">04:23</span>
+                                                    <div class="ms_songslist_more">
+                                                        <span class="songslist_moreicon"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
+                                                        <ul class="ms_common_dropdown ms_songslist_dropdown">
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_fav"></span>Favourites
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_downld"></span>Download Now
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_playlist"></span>Add to Playlist
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_share"></span>Share
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                       
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="trending-songs" role="tabpanel" aria-labelledby="trending-songs">
+                                <div class="ms_songslist_box">
+                                    <ul class="ms_songlist ms_index_songlist">
+                                        <li>
+                                            <div class="ms_songslist_inner">
+                                                <div class="ms_songslist_left">
+                                                    <div class="songslist_number">
+                                                        <h4 class="songslist_sn">01</h4>
+                                                        <span class="songslist_play"><img src="assets/images/svg/play_songlist.svg" alt="Play" class="img-fluid"/></span>
+                                                    </div>
+                                                    <div class="songslist_details">
+                                                        <div class="songslist_thumb">
+                                                            <img src="assets/images/songlist/02.jpg" alt="thumb" class="img-fluid" />
+                                                        </div>
+                                                        <div class="songslist_name">
+                                                            <h3 class="song_name"><a href="javascript:void(0);">Desired Games</a></h3>
+                                                            <p class="song_artist">Anna Ellison, Claire Hudson</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms_songslist_right">
+                                                    <span class="ms_songslist_like">
+                                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
+                                                    </span>
+                                                    <span class="ms_songslist_time">04:23</span>
+                                                    <div class="ms_songslist_more">
+                                                        <span class="songslist_moreicon" data-other="1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
+                                                        <ul class="ms_common_dropdown ms_songslist_dropdown">
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_fav"></span>Favourites
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_downld"></span>Download Now
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_playlist"></span>Add to Playlist
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_share"></span>Share
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="new-release" role="tabpanel" aria-labelledby="new-release">
+                                <div class="ms_songslist_box">
+                                    <ul class="ms_songlist ms_index_songlist">
+                                        <li>
+                                            <div class="ms_songslist_inner">
+                                                <div class="ms_songslist_left">
+                                                    <div class="songslist_number">
+                                                        <h4 class="songslist_sn">01</h4>
+                                                        <span class="songslist_play"><img src="assets/images/svg/play_songlist.svg" alt="Play" class="img-fluid"/></span>
+                                                    </div>
+                                                    <div class="songslist_details">
+                                                        <div class="songslist_thumb">
+                                                            <img src="assets/images/songlist/01.jpg" alt="thumb" class="img-fluid" />
+                                                        </div>
+                                                        <div class="songslist_name">
 
-    <!--End Hero Section-->
-    <!-- Our Popular Menu -->
-    <section>
-      <div class="bg-white lg:py-10 pb-10">
-        <div class="max-w-7xl mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2
-              class="text-3xl lg:text-4xl font-bold text-center text-white bg-gradient-to-r from-orange-500 to-red-500 py-4 mb-8 rounded-md"
-            >
-              Our Popular Menu
-            </h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                                            <h3 class="song_name"><a href="javascript:void(0);">Walking Promises</a></h3>
+                                                            <p class="song_artist">Harry Jackson, Virginia Harris</p>
+                                                        </div>
+                                                    </div>
 
-            @forelse($feateuredCategories as $key => $item)
-            <a
-              href="{{ route('front.subcategory', [
-                                     'type'=>'subcategory',
-                                     'slug'=> $item->category->slug
-                                     ] ) }}"
-              class="transform transition-transform duration-300 ease-in-out hover:scale-105"
-            >
-              <div class="bg-white shadow-lg rounded-lg p-6">
-                <img
-                  src="{{ asset('uploads/custom-images2/'.$item->category->image) }}"
-                  alt="{{ $item->category->name }}"
-                  class="w-full h-48 object-cover mb-4 rounded-lg"
-                />
-                <h3 class="text-xl font-bold text-black mb-2">
-                    {{ $item->category->name }}
-                </h3>
-                <p class="text-gray-600">
-                  Start your meal with our delicious {{ $item->category->name }}.
-                </p>
-              </div>
-            </a>
-            @empty
-            <strong>No Categories are Available!</strong>
-            @endforelse
-
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Popular Foods Section -->
-    <section class="popular-foods py-8 py-4 bg-white">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2
-          class="text-3xl lg:text-4xl font-bold text-center text-white bg-gradient-to-r from-orange-500 to-red-500 py-3 mb-8 rounded-md"
-        >
-          Our Popular Items
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @foreach ($products as $product)
-          <a
-          href="{{route('front.product.show', $product->id)}}"
-          class="duration-300 ease-in-out hover:scale-105"
-        >
-          <div class="bg-white shadow-lg h-88 rounded-lg p-6">
-            <img
-              src="{{asset('uploads/custom-images/'.$product->thumb_image)}}"
-              alt="{{$product->name}}"
-              class="w-full h-48 object-cover mb-4 rounded-lg"
-            />
-            <h3 class="text-xl font-bold text-black mb-2">
-                {{$product->name}}
-            </h3>
-            <p class="text-gray-600">
-              {!! Str::limit($product->long_description, 100)!!}
-            </p>
-            <div class="flex mt-4">
-              <h6
-                class="font-manrope font-semibold text-2xl leading-9 text-black pr-5 sm:border-r border-gray-200 mr-5"
-              >
-               $ {{$product->price}}
-              </h6>
-              <button  class="bg-gradient-to-r from-orange-500 to-red-500 px-3 py-2 text-white font-bold rounded-full"
-              >
-                Order Now
-              </button>
+                                                </div>
+                                                <div class="ms_songslist_right">
+                                                    <span class="ms_songslist_like">
+                                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
+                                                    </span>
+                                                    <span class="ms_songslist_time">04:23</span>
+                                                    <div class="ms_songslist_more">
+                                                        <span class="songslist_moreicon"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
+                                                        <ul class="ms_common_dropdown ms_songslist_dropdown">
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_fav"></span>Favourites
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_downld"></span>Download Now
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_playlist"></span>Add to Playlist
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <span class="common_drop_icon drop_share"></span>Share
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </a>
-          @endforeach
-
-
-
-
-
 
         </div>
-      </div>
-    </section>
-    
-  </main>
+    </div>
+
+
+</div>
+<!---Main Content end--->
 @endsection
 
 @push('js')

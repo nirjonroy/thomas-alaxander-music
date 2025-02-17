@@ -9,17 +9,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Music">
     <meta name="keywords" content="">
-    <meta name="author" content="kamleshyadav">
+    <meta name="author" content="Thomas Alexander">
     <meta name="MobileOptimized" content="320">
     <!--Start Style -->
-    <link rel="stylesheet" type="text/css" href="assets/css/fonts.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/js/plugins/swiper/css/swiper.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/js/plugins/nice_select/nice-select.css">
-    <link rel="stylesheet" type="text/css" href="assets/js/plugins/player/volume.css">
-    <link rel="stylesheet" type="text/css" href="assets/js/plugins/scroll/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/fonts.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/swiper/css/swiper.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/nice_select/nice-select.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/player/volume.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/scroll/jquery.mCustomScrollbar.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/style.css') }}">
     <!-- Favicon Link -->
     <link rel="shortcut icon" type="image/png" href="{{$settings->favicon}}">
 </head>

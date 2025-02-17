@@ -4,7 +4,7 @@
           <div class="ms_top_search">
               <input type="text" class="form-control" placeholder="Search for Song, Artists, Playlists and More...">
               <span class="search_icon">
-                  <img src="assets/images/svg/search.svg" alt="search">
+                  <img src="{{('frontend/assets/images/svg/search.svg')}}" alt="search">
               </span>
           </div>
           <div class="ms_noti_wrap">

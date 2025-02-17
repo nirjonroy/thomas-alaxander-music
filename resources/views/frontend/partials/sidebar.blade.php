@@ -5,10 +5,10 @@
     <div class="ms_sidemenu_inner">
         <div class="ms_logo_inner">
             <div class="ms_logo">
-                <a href="index.html"><img src="assets/images/logo.png" alt="logo" class="img-fluid"/></a>
+                <a href="index.html"><img src="{{ asset(siteInfo()->logo) }}" alt="logo" class="img-fluid"/></a>
             </div>
             <div class="ms_logo_mini">
-                <a href="index.html"><img src="assets/images/mini_logo.png" alt="mini_logo" class="img-fluid"/></a>
+                <a href="index.html"><img src="{{ asset(siteInfo()->logo) }}" alt="mini_logo" class="img-fluid"/></a>
             </div>
         </div>
         <div class="ms_nav_wrapper">
