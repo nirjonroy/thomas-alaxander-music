@@ -11,7 +11,16 @@
         </div>
     </div>
     <!----Main Wrapper Start---->
-    <div class="ms_main_wrapper ms_mainindex_wrapper">
+    @php
+    $slide = DB::table('sliders')->first();
+@endphp
+
+<div class="ms_main_wrapper ms_mainindex_wrapper" 
+     style="background: url('{{ asset($slide->image) }}') no-repeat; 
+            background-position: right top; 
+            height: 100vh; 
+            background-size: contain;">
+
     @include('frontend.partials.sidebar')
     <div class="ms_content_wrapper padder_top8">
     @include('frontend.partials.header')

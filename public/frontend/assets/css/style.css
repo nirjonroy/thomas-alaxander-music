@@ -3444,7 +3444,7 @@ p.singer_name {
 
 @media(min-width:1200px) {
     .ms_main_wrapper.ms_mainindex_wrapper {
-        background: url(../images/alexender.jpeg) no-repeat;
+        /* background: url(../images/alexender.jpeg) no-repeat; */
         background-position: right top;
         height: 100vh;
         background-size: contain;
