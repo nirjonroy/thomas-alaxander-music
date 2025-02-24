@@ -201,6 +201,9 @@ class ProductController extends Controller
         $product->type = $request->type;
         $product->prod_color = 'sincolor';
         $product->video_link = $request->video_link;
+        $product->duration = $request->duration;
+        $product->artist_name = $request->artist_name;
+        $product->download_type = $request->download_type;
     
         $product->seo_title = $request->seo_title ? $request->seo_title : $request->name;
         $product->seo_description = $request->seo_description ? $request->seo_description : $request->name;
@@ -375,6 +378,9 @@ class ProductController extends Controller
         $product->type = 'single';
         $product->is_weekend_only = $request->is_weekend_only;
         $product->status = $request->status;
+        $product->duration = $request->duration;
+        $product->artist_name = $request->artist_name;
+        $product->download_type = $request->download_type;
         // $product->weight = $request->weight;
         $product->video_link = $request->video_link;
         $product->measure = $request->measure;

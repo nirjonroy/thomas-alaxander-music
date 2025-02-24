@@ -12,24 +12,34 @@
           </div>
       </div>
       <div class="ms_top_right">
-          <div class="ms_pro_inner">
-              <div class="ms_pro_img"> <img src="assets/images/proflile.jpg" alt="Profile"></div>
+        @guest  
+        <div class="ms_pro_inner">
+              
               <div class="ms_pro_namewrap">
-                  <span class="pro_name">Hello, Nirjon</span> <i class="fa fa-caret-down"></i>
+                  <a href="{{url('login-user')}}" class="btn btn-danger btn-lg" style="font-size: 18px"> Login</a>
               </div>
-              <ul class="ms_common_dropdown ms_profile_dropdown">
-                  <li>
-                      <a href="javascript:void(0);">
-                          <span class="common_drop_icon drop_pro"></span>Profile
-                      </a>
-                  </li>
-                  <li>
-                      <a href="javascript:void(0);">
-                          <span class="common_drop_icon drop_logt"></span>Logout
-                      </a>
-                  </li>
-              </ul>
+              
           </div>
+          @else
+          <div class="ms_pro_inner">
+            {{-- <div class="ms_pro_img"> <img src="assets/images/proflile.jpg" alt="Profile"></div> --}}
+            <div class="ms_pro_namewrap">
+                <span class="pro_name">Hello, {{Auth::user()->name}}</span> <i class="fa fa-caret-down"></i>
+            </div>
+            <ul class="ms_common_dropdown ms_profile_dropdown">
+                <li>
+                    <a href="{{url('profile-user')}}">
+                        <span class="common_drop_icon drop_pro"></span>Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('logout')}}">
+                        <span class="common_drop_icon drop_logt"></span>Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+          @endguest
           <div class="ms_cmenu_toggle ms_menu_toggle">
               <span></span>
               <span></span>

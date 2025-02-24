@@ -22,8 +22,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::where('status', 1)->get();
-        $slider = Slider::where('status', 1)->first();
+        
         // dd($slider);
         $offer = AboutUs::find('2');
         $feateuredCategories = featuredCategories();
@@ -74,7 +73,7 @@ class HomeController extends Controller
         // dd($most_sell);
 
         return view('frontend.home.index', compact(
-                'sliders', 'feateuredCategories', 'products',
+                 'feateuredCategories', 'products',
                 'firstColumns',
                 'secondColumns',
                 'thirdColumns',
@@ -90,7 +89,7 @@ class HomeController extends Controller
                  'is_reco_prod',
                 'popularProducts',
                 'offer',
-                'slider',
+                
         ));
     }
 

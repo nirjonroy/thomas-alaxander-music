@@ -41,6 +41,7 @@
                                     <input type="file" name="song" class="form-control-file">
                                 </div>
 
+
                                 {{-- <div class="form-group col-4">
                                     <label>upload images <span class="text-danger">*</span></label>
                                     <!--<input type="file" name="images[]" multiple>-->
@@ -58,6 +59,27 @@
                                 <div class="form-group col-6">
                                     <label>{{__('admin.Name')}} <span class="text-danger">*</span></label>
                                     <input type="text" id="name" class="form-control"  name="name" value="{{ old('name') }}">
+                                </div>
+
+                                <div class="form-group col-6">
+                                    <label>Duration of Music <span class="text-danger">*</span></label>
+                                    <input type="text" id="" class="form-control"  name="duration" value="{{ old('duration') }}">
+                                </div>
+
+                                <div class="form-group col-6">
+                                    <label>Artist Name <span class="text-danger">*</span></label>
+                                    <input type="text" id="" class="form-control"  name="artist_name" value="{{ old('artist_name') }}">
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>Music Type <span class="text-danger">*</span></label>
+                                    <select name="download_type" class="form-control select2" id="">
+                                        <option value="">Select Download Type</option>
+                                        
+                                            <option value="free">Free</option>
+                                            <option value="paid">Paid</option>
+                                        
+                                    </select>
                                 </div>
 
                                 <div class="form-group col-6" style="">

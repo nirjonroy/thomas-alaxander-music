@@ -44,7 +44,13 @@
                                         </div>
 
                                         <div class="form-group col-4">
-                                            <label>Upload Music<span class="text-danger">*</span></label>
+        
+
+                                            <audio controls autoplay>
+                                                <source src="{{ asset( $product->music) }}" type="audio/mpeg">
+                                                Your browser does not support the audio tag.
+                                            </audio>
+                                                                           <label>Upload Music<span class="text-danger">*</span></label>
                                             <input type="file" name="song" class="form-control-file">
                                         </div>
                                         <div class="form-group col-6">
@@ -79,6 +85,26 @@
                                             <input type="text" id="name" class="form-control" name="name"
                                                 value="{{ $product->name }}">
                                         </div>
+
+                                        <div class="form-group col-6">
+                                            <label>Duration of Music <span class="text-danger">*</span></label>
+                                            <input type="text" id="" class="form-control"  name="duration" value="{{ $product->duration }}">
+                                        </div>
+        
+                                        <div class="form-group col-6">
+                                            <label>Artist Name <span class="text-danger">*</span></label>
+                                            <input type="text" id="" class="form-control"  name="artist_name" value="{{ $product->duration }}">
+                                        </div>
+        
+                                        <div class="form-group col-4">
+                                            <label>Music Type <span class="text-danger">*</span></label>
+                                            <select name="download_type" class="form-control select2">
+                                                <option value="">Select Download Type</option>
+                                                <option value="free" {{ $product->download_type == 'free' ? 'selected' : '' }}>Free</option>
+                                                <option value="paid" {{ $product->download_type == 'paid' ? 'selected' : '' }}>Paid</option>
+                                            </select>
+                                        </div>
+                                        
 
                                         <div class="form-group col-6">
                                             <label>{{__('admin.Slug')}} <span class="text-danger">*</span></label>

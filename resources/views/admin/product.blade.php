@@ -20,7 +20,7 @@
             <h1>{{__('admin.Products')}}</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{__('admin.Dashboard')}}</a></div>
-              <div class="breadcrumb-item">{{__('admin.Products')}}</div>
+              <div class="breadcrumb-item">Musics</div>
             </div>
           </div>
 
