@@ -15,8 +15,8 @@
     <form action="{{ url('login') }}" method="POST" class="needs-validation" novalidate>
         @csrf
         <div class="mb-3">
-            <label for="email" class="form-label">Email or Phone Number</label>
-            <input type="email" name="email" class="form-control" id="email" placeholder="Email or Phone Number" required>
+            <label for="email" class="form-label">Email </label>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Email " required>
             @error('email')
             <span class="error-message">{{ $message }}</span>
             @enderror
@@ -28,9 +28,9 @@
             <span class="error-message">{{ $message }}</span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-primary ">Login Now</button>
+        <button type="submit" class="btn btn-success btn-lg" style="width: 100%; height: 50px; font-size: 14px; font-weight:bold; margin: 5px;">Login Now</button>
         <div class="w-full text-center mt-4">
-            <a class="text-base font-bold mb-4 text-orange-400 hover:underline" data-bs-toggle="modal" href="#forget-pass">Are you new here? Please Register First !!!</a>
+            <a class=""  href="{{url('register-user')}}" style="color: red; background: black;">Are you new here? Please Register First !!!</a>
         </div>
     </form>
 
