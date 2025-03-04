@@ -770,7 +770,7 @@ Auth::routes();
 Route::group(['as' => 'front.'], function(){
     Route::controller(FrontHomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
-        Route::get('about', 'about')->name('home.about');
+        Route::get('about-thomas-alexander', 'about')->name('home.about');
         Route::get('/category/{type}/{slug}', 'subCategoriesByCategory')->name('subcategory');
         Route::get('/shop/{slug?}', 'shop')->name('shop');
         Route::get('/flash-selling-product', 'flashSellProducts')->name('flash-sell');

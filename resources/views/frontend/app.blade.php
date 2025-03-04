@@ -18,7 +18,9 @@
 <div class="ms_main_wrapper ms_mainindex_wrapper" 
      style="background: url('{{ asset($slide->image) }}') no-repeat; 
             background-position: right top; 
-            height: 100vh; 
+            /* opacity: 0.5; */
+        
+            height: 500vh; 
             background-size: contain;">
 
     @include('frontend.partials.sidebar')

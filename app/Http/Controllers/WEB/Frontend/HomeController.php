@@ -94,7 +94,9 @@ class HomeController extends Controller
     }
 
     public function about(){
-        return view('frontend.home.about');
+        $about = DB::table('about_us')->first();
+        // dd($about);
+        return view('frontend.home.about', compact('about'));
     }
 
     public function subCategoriesByCategory(Request $request)
