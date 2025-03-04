@@ -290,7 +290,7 @@ i
             <span>{{__('admin.Pages')}}</span></a>
             <ul class="dropdown-menu">
 
-                <!--<li class="{{ Route::is('admin.about-us.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.about-us.index') }}">Home Page Setting</a></li>-->
+                <!--<li class="{{ Route::is('admin.about-us.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.about-us.index') }}">About Artist </a></li>-->
 
                 <!--<li class="{{ Route::is('admin.contact-us.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.contact-us.index') }}">{{__('admin.Contact Us')}}</a></li>-->
 
@@ -425,7 +425,7 @@ i
                 @if(auth()->user()->can('admin.about-us.index'))
           <!--<li class="{{ Route::is('admin.about-us.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.about-us.index') }}">Home Page Setting</a></li>-->
           <li class="{{ Route::is('admin.about-us') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.about-us.index') }}">
-           <span style="color:black">Home Page Setting</span></a>
+           <span style="color:black">About Artist</span></a>
           </li>
           <!--<li class="{{ Route::is('admin.shipping.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.shipping.index') }}">{{__('admin.Shipping Rule')}}</a></li>-->
                 <!--<li class="{{ Route::is('admin.payment-method') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.payment-method') }}">{{__('admin.Payment Method')}}</a></li>-->

@@ -7,10 +7,10 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Home Page Setting</h1>
+            <h1>About Artist</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{__('admin.Dashboard')}}</a></div>
-              <div class="breadcrumb-item">Home Page Setting</div>
+              <div class="breadcrumb-item">About Artist Setting</div>
             </div>
           </div>
 
@@ -98,7 +98,7 @@
                                     <!--</div>-->
 
                                     <div class="col-12">
-                                        <h5 class="header_title">Home Page Settings</h5>
+                                        <h5 class="header_title">Artist</h5>
                                         <hr>
                                     </div>
 
@@ -151,7 +151,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12">
+
+
+                {{-- <div class="col-12">
                   <div class="card">
                     <div class="card-body">
                             <form action="{{ route('admin.about-us.update',$item->id) }}" method="POST" enctype="multipart/form-data">
@@ -206,7 +208,7 @@
                             </form>
                     </div>
                   </div>
-                </div>
+                </div> --}}
           </div>
         </section>
       </div>
