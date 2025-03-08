@@ -5,17 +5,17 @@
     <div class="ms_sidemenu_inner">
         <div class="ms_logo_inner">
             <div class="ms_logo">
-                <a href="index.html"><img src="{{ asset(siteInfo()->logo) }}" alt="logo" class="img-fluid"/></a>
+                <a href="{{route('front.home')}}"><img src="{{ asset(siteInfo()->logo) }}" alt="logo" class="img-fluid"/></a>
             </div>
             <div class="ms_logo_mini">
-                <a href="index.html"><img src="{{ asset(siteInfo()->logo) }}" alt="mini_logo" class="img-fluid"/></a>
+                <a href="{{route('front.home')}}"><img src="{{ asset(siteInfo()->logo) }}" alt="mini_logo" class="img-fluid"/></a>
             </div>
         </div>
         <div class="ms_nav_wrapper">
             <h4 class="nav_heading">Browse Music</h4>
             <ul>
                 <li>
-                    <a href="index.html" class="active" title="Discover">
+                    <a href="{{route('front.home')}}" class="active" title="Discover">
                         <span class="nav_icon">
                             <span class="icon icon_discover"></span>
                         </span>
@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="artist.html" title="Artists">
+                    <a href="{{route('front.home.about')}}" title="Artists">
                         <span class="nav_icon">
                             <span class="icon icon_artists"></span>
                         </span>

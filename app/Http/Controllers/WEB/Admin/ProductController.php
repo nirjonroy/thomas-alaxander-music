@@ -441,21 +441,36 @@ class ProductController extends Controller
     }
 
     public function changeStatus($id){
-      if(!auth()->user()->can('product.changeStatus')){
-            abort(403, 'Unauthorized action.');
-        }
+      
         $product = Product::find($id);
-        if($product->status == 1){
-            $product->status = 0;
+        if($product->tranding_songs == 1){
+            $product->tranding_songs = 0;
             $product->save();
             $message = trans('admin_validation.InActive Successfully');
         }else{
-            $product->status = 1;
+            $product->tranding_songs = 1;
             $product->save();
             $message = trans('admin_validation.Active Successfully');
         }
         return response()->json($message);
     }
+    
+    public function changeTodayStatus($id){
+      
+        $product = Product::find($id);
+        if($product->today_special == 1){
+            $product->today_special = 0;
+            $product->save();
+            $message = trans('admin_validation.InActive Successfully');
+        }else{
+            $product->today_special = 1;
+            $product->save();
+            $message = trans('admin_validation.Active Successfully');
+        }
+        return response()->json($message);
+    }
+
+    
 
     public function productApproved($id){
 

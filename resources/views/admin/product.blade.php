@@ -76,7 +76,8 @@
                                     <th width="10%">{{__('admin.Price')}}</th>
                                     <th width="15%">{{__('admin.Photo')}}</th>
                                     <th width="15%">{{__('admin.Type')}}</th>
-                                    <th width="10%">{{__('Active (Home)')}}</th>
+                                    <th width="10%">{{__('Active (Tranding Songs)')}}</th>
+                                    <th width="10%">{{__('Active (Today Special Songs)')}}</th>
 
                                   </tr>
                             </thead>
@@ -139,13 +140,27 @@
 
                                         </td>
                                         <td>
-                                            @if($product->is_recommended == 1)
+                                            @if($product->tranding_songs == 1)
                                             <a href="javascript:;" onclick="changeProductStatus({{ $product->id }})">
                                                 <input id="status_toggle" type="checkbox" checked data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.InActive')}}" data-onstyle="success" data-offstyle="danger">
                                             </a>
 
                                             @else
                                             <a href="javascript:;" onclick="changeProductStatus({{ $product->id }})">
+                                                <input id="status_toggle" type="checkbox" data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.InActive')}}" data-onstyle="success" data-offstyle="danger">
+                                            </a>
+
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if($product->today_special == 1)
+                                            <a href="javascript:;" onclick="changetodayStatus({{ $product->id }})">
+                                                <input id="status_toggle" type="checkbox" checked data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.InActive')}}" data-onstyle="success" data-offstyle="danger">
+                                            </a>
+
+                                            @else
+                                            <a href="javascript:;" onclick="changetodayStatus({{ $product->id }})">
                                                 <input id="status_toggle" type="checkbox" data-toggle="toggle" data-on="{{__('admin.Active')}}" data-off="{{__('admin.InActive')}}" data-onstyle="success" data-offstyle="danger">
                                             </a>
 
@@ -203,6 +218,29 @@
             }
         })
     }
+
+    function changetodayStatus(id){
+        var isDemo = "{{ env('APP_MODE') }}"
+        if(isDemo == 'DEMO'){
+            toastr.error('This Is Demo Version. You Can Not Change Anything');
+            return;
+        }
+
+        $.ajax({
+            type:"put",
+            data: { _token : '{{ csrf_token() }}' },
+            url:"{{url('/admin/today-status/')}}"+"/"+id,
+            success:function(response){
+                toastr.success(response)
+            },
+            error:function(err){
+                console.log(err);
+
+            }
+        })
+    }
+
+    
 
     $(".check_all").on('change',function(){
       $(".checkbox").prop('checked',$(this).is(":checked"));
