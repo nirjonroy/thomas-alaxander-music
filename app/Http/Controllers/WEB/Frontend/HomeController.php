@@ -40,6 +40,17 @@ class HomeController extends Controller
                                         ->latest()
                                         ->take(24)
                                         ->get();
+        
+        $top_picks = Product::with(['category', 'subCategory', 'childCategory'])
+                                        ->where('today_special', 1)
+                                        ->latest()
+                                        ->take(24)
+                                        ->get();
+        $tranding_songs = Product::with(['category', 'subCategory', 'childCategory'])
+                                        ->where('tranding_songs', 1)
+                                        ->latest()
+                                        ->take(24)
+                                        ->get();
         $comp_pro = Product::latest()->get();
 
         // $products = Product::with('category', 'subCategory', 'childCategory', 'brand')
@@ -89,6 +100,8 @@ class HomeController extends Controller
                  'is_reco_prod',
                 'popularProducts',
                 'offer',
+                'tranding_songs',
+                'top_picks',
                 
         ));
     }

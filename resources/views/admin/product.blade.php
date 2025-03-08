@@ -77,7 +77,7 @@
                                     <th width="15%">{{__('admin.Photo')}}</th>
                                     <th width="15%">{{__('admin.Type')}}</th>
                                     <th width="10%">{{__('Active (Tranding Songs)')}}</th>
-                                    <th width="10%">{{__('Active (Today Special Songs)')}}</th>
+                                    <th width="10%">{{__('Active (Top Songs)')}}</th>
 
                                   </tr>
                             </thead>
