@@ -5,7 +5,7 @@
     <div class="ms_sidemenu_inner">
         <div class="ms_logo_inner">
             <div class="ms_logo">
-                <a href="{{route('front.home')}}"><img src="{{ asset(siteInfo()->logo) }}" alt="logo" class="img-fluid"/></a>
+                <a href="{{route('front.home')}}"><img src="{{ asset(siteInfo()->logo) }}" alt="logo" class="img-fluid bg-white "/></a>
             </div>
             <div class="ms_logo_mini">
                 <a href="{{route('front.home')}}"><img src="{{ asset(siteInfo()->logo) }}" alt="mini_logo" class="img-fluid"/></a>
@@ -34,7 +34,8 @@
                         </span>
                     </a>
                 </li>
-                <li>
+              
+                {{-- <li>
                     <a href="album.html" title="Albums">
                         <span class="nav_icon">
                             <span class="icon icon_albums"></span>
@@ -102,7 +103,7 @@
                     history
                 </span>
                 </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

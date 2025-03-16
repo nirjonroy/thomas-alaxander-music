@@ -17,7 +17,7 @@
                         <div class="ms_about_img">
                             <img src="{{ asset($about->video_background) }}" alt="About Thomas Alexander" width="200px" height="60px" style="background:white">
                             </div>
-                            <div class="ms_about_content" style="margin-top:10px">
+                            <div class="ms_about_content" style="margin-top:10px; background: black; padding: 5px;">
 
                                 <h1 style="font-size:14pt">{{$about->description_three}}</h1>
 

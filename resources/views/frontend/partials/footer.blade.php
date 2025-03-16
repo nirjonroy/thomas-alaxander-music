@@ -1,4 +1,4 @@
-<div class="ms_player_wrapper">
+{{-- <div class="ms_player_wrapper">
   <div class="ms_player_close">
       <i class="fa fa-angle-down" aria-hidden="true"></i>
   </div>
@@ -99,7 +99,7 @@
       </div>
   </div>
   <!--main div-->
-</div>
+</div> --}}
 
 </div>
 
