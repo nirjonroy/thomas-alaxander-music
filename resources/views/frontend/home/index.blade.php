@@ -200,11 +200,14 @@
                                                 </div>
                                                 <div class="songslist_details">
                                                     <div class="songslist_thumb">
-                                                        <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
+                                                        <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                            <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
+                                                        </a>
+                                                        
                                                     </div>
                                                     <div class="songslist_name">
 
-                                                        <h3 class="song_name"><a href="javascript:void(0);">{{$product->name}}</a></h3>
+                                                        <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
                                                         <p class="song_artist">{{$product->artist_name}}</p>
                                                     </div>
                                                 </div>
@@ -233,7 +236,7 @@
                                                     <span class="songslist_moreicon"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
                                                     <ul class="ms_common_dropdown ms_songslist_dropdown">
                                                         <li>
-                                                            <a href="javascript:void(0);">
+                                                            <a href="{{ route('front.product.show', [ $product->id ] ) }}">
                                                                 <span class="common_drop_icon drop_fav"></span>Favourites
                                                             </a>
                                                         </li>

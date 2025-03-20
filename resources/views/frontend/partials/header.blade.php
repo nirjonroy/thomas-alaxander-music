@@ -2,10 +2,16 @@
   <div class="ms_header_inner">
       <div class="ms_top_left">
           <div class="ms_top_search">
-              <input type="text" class="form-control" placeholder="Search for Song, Artists, Playlists and More...">
-              <span class="search_icon">
-                  <img src="{{('frontend/assets/images/svg/search.svg')}}" alt="search">
-              </span>
+            <form action="{{ route('front.product.search') }}">
+                <input type="text" class="form-control" placeholder="Search for Song, Artists, Playlists and More..." name="query">
+              
+                <button type="submit">
+                    <span class="search_icon">
+                    <img src="{{('frontend/assets/images/svg/search.svg')}}" alt="search">
+                </span>    
+                </button>
+            </form>
+              
           </div>
           <div class="ms_noti_wrap">
               <span class="noti_icon bg_cmn_iconwrap"><i class="bg_cmn_icon"></i></span>
