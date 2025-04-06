@@ -91,6 +91,8 @@ class ProductController extends Controller
                               ->limit(5) // Limit to 5 results
                               ->get();
 
+                            //   dd($reviews);
+
 
 
 
@@ -236,13 +238,16 @@ class ProductController extends Controller
     return view('frontend.product.compare-product', compact('product1', 'product2', 'specifications1', 'specifications2'));
 }
 
-public function reviews(Request $request){
-     $request->validate([
-        'product_id' => 'required|exists:products,id',
-        'rating' => 'required|integer|min:1|max:5',
-        'review' => 'required|string|max:500',
-    ]);
-
+    public function reviews(Request $request){
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            
+            'review' => 'required|string|max:500',
+        ]);
+        if (!auth()->check()) {
+    return redirect()->route('front.user-log');
+}
+else{
     ProductReview::create([
         'product_id' => $request->product_id,
         'user_id' => auth()->user()->id,
@@ -251,7 +256,9 @@ public function reviews(Request $request){
         'status' => 'pending',
     ]);
 
-    return back()->with('success', 'Review submitted successfully. It will be visible after approval.');
+    return back()->with('success', 'Review submitted successfully. It will be visible after approval.');   
 }
+ 
+    }
 
 }

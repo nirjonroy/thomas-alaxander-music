@@ -5,7 +5,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 @endpush
 @section('content')
-<div class="ms_content_wrapper padder_top8">
+<div class="ms_content_wrapper padder_top8" >
     <!---Header--->
    
     <!---index page--->
