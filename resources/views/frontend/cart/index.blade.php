@@ -120,17 +120,17 @@ $totalAmount = 0 ;
                                 <div class="col">
                                     <h5 class="small text-muted mb-4 pb-2 song_name small">{{ $item['name'] }}</h5>
     
-                                    <div class="row align-items-center d-none">
+                                    <div class="row align-items-center">
                                         <!-- Quantity -->
                                         <div class="col-auto">
                                             <label class="form-label mb-0 text-muted fs-6">Quantity:</label>
                                         </div>
                                         <div class="col-auto d-flex align-items-center">
-                                            <button class="btn btn-sm btn-warning text-white fw-bold px-3 dec" data-id="{{ $key }}">-</button>
+                                            <button class="btn btn-sm btn-warning text-white fw-bold px-3 dec" data-id="{{ $key }}" style="width: 20px; height: 20px;">-</button>
                                             <input type="number" min="1" value="{{ $item['quantity'] }}"
                                                    class="form-control form-control-sm text-center mx-2 quantity-value"
-                                                   style="width: 60px;" data-id="{{ $key }}">
-                                            <button class="btn btn-sm btn-warning text-white fw-bold px-3 inc" data-id="{{ $key }}">+</button>
+                                                   style="width: 100px;" data-id="{{ $key }}">
+                                            <button class="btn btn-sm btn-warning text-white fw-bold px-3 inc" data-id="{{ $key }}" style="width: 20px; height: 20px;">+</button>
                                         </div>
                                     </div>
                                 </div>
@@ -157,16 +157,16 @@ $totalAmount = 0 ;
                         <!-- Summary -->
                         <div class="card p-4 border-0 border-bottom mb-4">
                             <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted fs-6">Subtotal</span>
+                                <span class="small text-muted mb-4 pb-2 song_name small">Subtotal</span>
                                 <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount, 2) }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted fs-6">Tax (6%)</span>
+                                <span class="small text-muted mb-4 pb-2 song_name small">Tax (6%)</span>
                                 <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($tax, 2) }}</span>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between">
-                                <span class="text-muted fs-5">Total</span>
+                                <span class="small text-muted mb-4 pb-2 song_name small">Total</span>
                                 <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount + $tax, 2) }}</span>
                             </div>
                         </div>

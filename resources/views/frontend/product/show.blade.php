@@ -38,11 +38,14 @@
       ${{ number_format($product->price, 2) }}
       <input type="hidden" name="price" id="price_val" value="{{ $product->price }}">
     @endif
-
+    @guest
+    <a href="#" class="add_cart mt-4 add-to-cart" data-id="{{ $product->id }}" data-url="{{ route('front.cart.store') }}" onclick="alert('Please login first')">Order Now</a>
+    @else
       <a href="#" class=" add_cart mt-4 add-to-cart" data-id="{{ $product->id }}"
       data-url="{{ route('front.cart.store') }}">
       Order Now
       </a>
+      @endguest
     @endif
           <span>{{$product->artist_name}}</span>
           <p style="background: white !important">
