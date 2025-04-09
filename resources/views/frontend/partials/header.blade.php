@@ -34,8 +34,8 @@
             </div>
             <ul class="ms_common_dropdown ms_profile_dropdown">
                 <li>
-                    <a href="{{url('profile-user')}}">
-                        <span class="common_drop_icon drop_pro"></span>Profile
+                    <a href="{{ route('front.order.index') }}">
+                        <span class="common_drop_icon drop_pro"></span>all orders
                     </a>
                 </li>
                 <li>

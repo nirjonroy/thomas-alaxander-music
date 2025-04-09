@@ -9,7 +9,7 @@
         <div class="container pt-5">
             <h2 class="text-center mb-4 fw-bold">Order Details</h2>
         
-            <p class="mb-4 ms-3 ms-xl-0"><strong>Order Number:</strong> {{ $order->order_id }}</p>
+            <p class="mb-4 ms-3 ms-xl-0"><strong>Order Number:</strong> # {{ $order->order_id }}</p>
         
             <div class="table-responsive shadow-sm rounded">
                 <table class="table table-bordered table-hover align-middle">
@@ -34,14 +34,9 @@
                                 </td>
                                 <td class="fw-semibold">
                                     {{ $item->product->name }}<br>
-                                    {{ $item->variation }}<br>
-                                    {{ $item->flavour }}<br>
-                                    {{ $item->toping }}<br>
-                                    {{ $item->dip }}<br>
-                                    {{ $item->protin }}<br>
-                                    {{ $item->cheese }}<br>
-                                    {{ $item->vaggi }}<br>
-                                    {{ $item->sauce }}
+                                    <audio controls>
+                                        <source src="{{ asset($item->product->music) }}" type="audio/mpeg">
+                                        </audio>
                                 </td>
                                 <td>{{ $item->qty }}</td>
                                 <td>${{ number_format($item->unit_price, 2) }}</td>

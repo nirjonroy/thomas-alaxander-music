@@ -18,10 +18,15 @@
         <div class="ms_about_content" style="margin-top:10px; background: rgb(243, 241, 241); padding: 5px;">
 
           <h1 style="font-size:14pt">{{$product->name}}</h1>
+          @if($product->download_type == 'free')
           <audio controls>
           <source src="{{ asset($product->music) }}" type="audio/mpeg">
           </audio>
-
+          @else
+          <audio controls>
+            <source src="...." type="audio/mpeg">
+            </audio>
+          @endif
           @if($product->download_type == 'free')
         {{-- <a href="{{ asset($product->download_link) }}" class="btn btn-danger btn-lg" style="
             width: 10%;
