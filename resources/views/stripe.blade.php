@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mlk Soul Food</title>
+    <title>The Alexander Music</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
@@ -9,7 +9,7 @@
 
 <div class="container">
 
-    <h1>Mlk Soul Food</h1>
+    <h1>The Alexander Music</h1>
     <p>To confirm Order Make payment</p>
 
     <div class="row">

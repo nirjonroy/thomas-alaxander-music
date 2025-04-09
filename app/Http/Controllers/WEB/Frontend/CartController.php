@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
 use App\Models\Shipping;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -17,63 +18,71 @@ class CartController extends Controller
         return view('frontend.cart.index', compact('cart'));
     }
 
-    public function store(Request $request)
-    {
-        
-        $item = Product::findOrFail($request->productId);
-        $productType = $item->product_type;
     
-        $cart = session()->get('cart', []);
-        $productId = $item->id;
-        $variationId = $request->product_variation['id'] ?? null;
-        $variationName = $request->product_variation['name'] ?? null;
-        $totalPrice = $request->finalPrice;
-        $quantity = $request->quantity ?? 1;
-        $flavour = $request->flavour;
-        $freeSides = $request->selectedFreeSides ?? []; // Free sides array
-        $topping = $request->topping;
-        $dip = $request->dip;
-        $proteinName = $request->protein['name'] ?? null;
-        $proteinPrice = $request->protein['price'] ?? 0;
-        $sides = $request->selectedSides ?? [];
-        $image = $item->thumb_image;
-    
-        // Log freeSides for debugging
-        
-    
-        // Ensure all freeSides are mapped as names
-        $mappedFreeSides = array_map(function($side) {
-            return is_array($side) && isset($side['name']) ? $side['name'] : $side;
-        }, $freeSides);
-    
-        $uniqueOptions = [
-            "product_id" => $productId,
-            "variation_id" => $variationId,
-            "variation_name" => $variationName,
-            "flavour" => $flavour,
-            "freeSides" => $mappedFreeSides, // Use mapped freeSides
-            "topping" => $topping,
-            "dip" => $dip,
-            "protein_name" => $proteinName,
-            "protein_price" => $proteinPrice,
-            "sides" => array_map(function($side) { return $side['name']; }, $sides),
-        ];
-    
-        $uniqueKey = md5(json_encode($uniqueOptions));
-    
-        if ($productType === 'variable') {
-            $cart = $this->updateCartForVariableProduct($cart, $uniqueKey, $request, $item, $totalPrice, $variationId, $flavour, $mappedFreeSides, $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image);
-        } else {
-            $cart = $this->updateCartForSingleProduct($cart, $uniqueKey, $request, $item, $totalPrice, $flavour, $mappedFreeSides, $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image);
-        }
-    
-        session()->put('cart', $cart);
-    
+
+public function store(Request $request)
+{
+    // ✅ Check if user is logged in
+    if (!Auth::check()) {
         return response()->json([
-            'status' => true,
-            'msg' => 'Product added to cart successfully!',
-        ]);
+            'status' => false,
+            'redirect' => url('login-user'),
+            'msg' => 'You must be logged in to add items to the cart.',
+        ], 401, ['Content-Type' => 'application/json']);
     }
+    
+
+    $item = Product::findOrFail($request->productId);
+    $productType = $item->product_type;
+
+    $cart = session()->get('cart', []);
+    $productId = $item->id;
+    $variationId = $request->product_variation['id'] ?? null;
+    $variationName = $request->product_variation['name'] ?? null;
+    $totalPrice = $request->finalPrice;
+    $quantity = $request->quantity ?? 1;
+    $flavour = $request->flavour;
+    $freeSides = $request->selectedFreeSides ?? []; // Free sides array
+    $topping = $request->topping;
+    $dip = $request->dip;
+    $proteinName = $request->protein['name'] ?? null;
+    $proteinPrice = $request->protein['price'] ?? 0;
+    $sides = $request->selectedSides ?? [];
+    $image = $item->thumb_image;
+
+    $mappedFreeSides = array_map(function($side) {
+        return is_array($side) && isset($side['name']) ? $side['name'] : $side;
+    }, $freeSides);
+
+    $uniqueOptions = [
+        "product_id" => $productId,
+        "variation_id" => $variationId,
+        "variation_name" => $variationName,
+        "flavour" => $flavour,
+        "freeSides" => $mappedFreeSides,
+        "topping" => $topping,
+        "dip" => $dip,
+        "protein_name" => $proteinName,
+        "protein_price" => $proteinPrice,
+        "sides" => array_map(function($side) { return $side['name']; }, $sides),
+    ];
+
+    $uniqueKey = md5(json_encode($uniqueOptions));
+
+    if ($productType === 'variable') {
+        $cart = $this->updateCartForVariableProduct($cart, $uniqueKey, $request, $item, $totalPrice, $variationId, $flavour, $mappedFreeSides, $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image);
+    } else {
+        $cart = $this->updateCartForSingleProduct($cart, $uniqueKey, $request, $item, $totalPrice, $flavour, $mappedFreeSides, $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image);
+    }
+
+    session()->put('cart', $cart);
+
+    return response()->json([
+        'status' => true,
+        'msg' => 'Product added to cart successfully!',
+    ]);
+}
+
     
     private function updateCartForSingleProduct(
         $cart, $uniqueKey, $request, $item, $totalPrice, $flavour, $freeSides, $topping, $dip,

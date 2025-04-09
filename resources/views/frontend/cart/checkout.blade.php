@@ -72,220 +72,68 @@
   </tbody>
 </table>
 </div>
+<div class="ms_content_wrapper padder_top8">
+  <style>
+    .form-control {
+        background-color: aliceblue !important;
+    }
+</style>
 
-<section class="pt-32 lg:pt-48">
-    <div
-      class="max-w-3xl mx-auto bg-white border-t border-b border-gray-200  py-10 text-gray-800"
-    >
-      <div class="w-full max-w-7xl mx-auto">
-        <div class="">
+  <div class="ms_index_wrapper common_pages_space">
+    <section class="py-5" style="background-color: transparent; min-height: 100vh;">
 
-          <div class="px-3 ">
-            <form action="{{ route('front.checkout.store') }}" method="POST" id="checkoutForm">
-                @csrf
-            <div
-              class="w-full mx-auto text-gray-800 font-light mb-6 pb-6"
-            >
-            <div
-            class="w-full mx-auto rounded-lg bg-white border border-gray-200 p-3 text-gray-800 font-light mb-6"
-          >
-            <div class="mb-4">
-              <label for="name" class="text-gray-600 font-semibold"
-                >Your Name</label
-              >
-              <input
-                id="name"
-                name="shipping_name"
-                type="text"
-                value="{{ $user ? $user->name : '' }}"
-                placeholder="Enter your name"
-                class="w-full px-3 py-2 mt-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-              />
-              <input type="hidden" name="ip_address" id="ip_address" value="">
-            </div>
-            <div class="mb-4">
-              <label for="phone" class="text-gray-600 font-semibold"
-                >Your Phone Number</label
-              >
-              <input
-                id="phone"
-                name="order_phone"
-                type="text"
-                value="{{ $user ? $user->phone : '' }}"
-                placeholder="Enter your phone number"
-                class="w-full px-3 py-2 mt-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-              />
-            </div>
-            <div class="mb-4">
-              <label for="address" class="text-gray-600 font-semibold"
-                >Your Address</label
-              >
-              <textarea
-                id="address"
-                name="shipping_address"
-                value="{{ $user ? $user->address : '' }}"
-                rows="4"
-                placeholder="Enter your address"
-                class="w-full px-3 py-2 mt-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-              ></textarea>
-            </div>
-            <input type="hidden" name="sub_total" value="{{ number_format($sub_total, 2) }}">
-
-@php    
-// Example subtotal; replace with your actual value.
- $tax = number_format($sub_total * 6 / 100, 2);
- $sub_total = number_format($sub_total + $tax, 2);
-@endphp
-{{-- <h1>dfsjljk</h1> --}}
-<input type="hidden" name="tax" value="{{$tax}}">
-            <input selected type="hidden" value="21" class="charge_radio delivery_charge_id" id="ship" data-shippingid="" name="shipping_method" data-shipping="">
-                        <input type="hidden" name="total_amount" id="total_amount" value="{{ number_format($sub_total, 2) }}">
-          </div>
-            </div>
-
-            <div>
-                <button type="submit"
-              class="inline-block py-3 text-center px-6 bg-gradient-to-r from-orange-500 to-red-500 w-full shadow-lg hover:bg-[#F37016] text-md text-white font-bold rounded-md transition duration-200"
-
-              >Confirm Order</button
-            >
-            </div>
-        </form>
-          </div>
-          <div class="px-3 md:w-2/12">
-
-
-{{-- <div class="w-full mx-auto rounded-lg bg-white border border-gray-200 text-gray-800 font-light mb-6" >
-              <div class="w-full p-3 border-b border-gray-200">
-                <div class="mb-5">
-                  <label
-                    for="type1"
-                    class="flex items-center cursor-pointer"
-                  >
-                    <input
-                      type="radio"
-                      class="h-5 w-5 text-[#FF007F]"
-                      name="type"
-                      id="type1"
-                      checked
-                    />
-                    <img
-                      src="https://leadershipmemphis.org/wp-content/uploads/2020/08/780370.png"
-                      class="h-6 ml-3"
-                    />
-                  </label>
-                </div>
-                <div>
-                  <div class="mb-3">
-                    <label
-                      class="text-gray-600 font-semibold text-sm mb-2 ml-1"
-                      >Name on card</label
-                    >
-                    <div>
-                      <input
-                        class="w-full px-3 py-2 mb-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-                        placeholder="John Smith"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label
-                      class="text-gray-600 font-semibold text-sm mb-2 ml-1"
-                      >Card number</label
-                    >
-                    <div>
-                      <input
-                        class="w-full px-3 py-2 mb-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-                        placeholder="0000 0000 0000 0000"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="mb-3 -mx-2 flex items-end">
-                    <div class="px-2 w-1/4">
-                      <label
-                        class="text-gray-600 font-semibold text-sm mb-2 ml-1"
-                        >Expiration date</label
-                      >
-                      <div>
-                        <select
-                          class="form-select w-full px-3 py-2 mb-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer"
-                        >
-                          <option value="01">01 - January</option>
-                          <option value="02">02 - February</option>
-                          <option value="03">03 - March</option>
-                          <option value="04">04 - April</option>
-                          <option value="05">05 - May</option>
-                          <option value="06">06 - June</option>
-                          <option value="07">07 - July</option>
-                          <option value="08">08 - August</option>
-                          <option value="09">09 - September</option>
-                          <option value="10">10 - October</option>
-                          <option value="11">11 - November</option>
-                          <option value="12">12 - December</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="px-2 w-1/4">
-                      <select
-                        class="form-select w-full px-3 py-2 mb-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer"
-                      >
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                      </select>
-                    </div>
-                    <div class="px-2 w-1/4">
-                      <label
-                        class="text-gray-600 font-semibold text-sm mb-2 ml-1"
-                        >Security code</label
-                      >
-                      <div>
-                        <input
-                          class="w-full px-3 py-2 mb-1 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-                          placeholder="000"
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="col-md-12 col-lg-12">
+          <form action="{{ route('front.checkout.store') }}" method="POST" id="checkoutForm">
+            @csrf
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+              <h5 class="text-center mb-4 fw-bold text-uppercase small">Shipping Information</h5>
+    
+              <div class="mb-3">
+                <label for="name" class="form-label">Your Name</label>
+                <input id="name" name="shipping_name" type="text"
+                  value="{{ $user ? $user->name : '' }}" class="form-control" placeholder="Enter your name">
+                <input type="hidden" name="ip_address" id="ip_address" value="">
               </div>
-              <div class="w-full p-3">
-                <label for="type2" class="flex items-center cursor-pointer">
-                  <input
-                    type="radio"
-                    class="form-radio h-5 w-5 text-indigo-500"
-                    name="type"
-                    id="type2"
-                  />
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
-                    width="80"
-                    class="ml-3"
-                  />
-                </label>
+    
+              <div class="mb-3">
+                <label for="phone" class="form-label">Your Phone Number</label>
+                <input id="phone" name="order_phone" type="text"
+                  value="{{ $user ? $user->phone : '' }}" class="form-control" placeholder="Enter your phone number">
               </div>
-            </div> --}}
-
-          </div>
+    
+              <div class="mb-3">
+                <label for="address" class="form-label">Your Address</label>
+                <textarea id="address" name="shipping_address" class="form-control"
+                  rows="3" placeholder="Enter your address">{{ $user ? $user->address : '' }}</textarea>
+              </div>
+    
+              @php
+                $tax = number_format($sub_total * 6 / 100, 2);
+                $sub_total = number_format($sub_total + $tax, 2);
+              @endphp
+    
+              <input type="hidden" name="sub_total" value="{{ number_format($sub_total - $tax, 2) }}">
+              <input type="hidden" name="tax" value="{{ $tax }}">
+              <input type="hidden" name="shipping_method" value="21" class="delivery_charge_id" id="ship">
+              <input type="hidden" name="total_amount" id="total_amount" value="{{ number_format($sub_total, 2) }}">
+    
+              <div class="d-grid">
+                <button type="submit" class="btn btn-gradient text-white fw-bold"
+                  style="background: linear-gradient(to right, #f97316, #ef4444); border-radius: 12px; height: 40px; font-size: 20px;">
+                  Confirm Order
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
-
-
+    </section>
     
-  </section>
 
 
+  </div>
+</div>
 
 
 @endsection
