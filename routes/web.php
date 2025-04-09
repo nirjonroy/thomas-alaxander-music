@@ -433,6 +433,7 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::put('blog-category-status/{id}', [BlogCategoryController::class,'changeStatus'])->name('blog.category.status');
 
     Route::resource('blog', BlogController::class);
+    
     Route::put('blog-status/{id}', [BlogController::class,'changeStatus'])->name('blog.status');
 
     Route::resource('popular-blog', PopularBlogController::class);

@@ -66,7 +66,7 @@ class BlogController extends Controller
             $blog->image = $image_name;
         }
 
-        $blog->admin_id = $admin->id;
+        $blog->admin_id = 1;
         $blog->title = $request->title;
         $blog->slug = $request->slug;
         $blog->description = $request->description;
