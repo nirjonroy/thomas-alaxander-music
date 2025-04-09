@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/food.css') }}"> --}}
 @endpush
 @section('content')
+<d class="ms_content_wrapper padder_top8">
+
+    <div class="ms_index_wrapper common_pages_space">
 <div class="categoryHeader">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -72,7 +75,7 @@
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                             <div class="product-item">
                                 <div class="product_thumb">
-                                    <a class="primary_img" href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a>
+                                    {{-- <a class="primary_img" href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a> --}}
                                     <a class="secondary_img" href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a>
                                     <!--<div class="action_links">-->
                                     <!--    <ul>-->
@@ -85,7 +88,7 @@
                                 <div class="product_content ">
                                     <h4 class="ps-1" style="height: 40px;">
                                          
-                                        <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="font-16">{{ \Illuminate\Support\Str::limit($product->name, 30)}}</a>
+                                        <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->name, 30)}}</a>
                                     </h4>
                                    
                                     <div class="price_box ps-1" style="padding-bottom: 0px;">
@@ -93,8 +96,8 @@
                                         <span class="current_price">৳{{ $product->price }}</span>
 
                                         @else
-                                        <span class="current_price">৳{{ $product->offer_price }}</span>
-                                        <span class="old_price">৳{{ $product->price }}</span>
+                                        <span class="current_price">${{ $product->offer_price }}</span>
+                                        <span class="old_price" style="color: red; font-size: 10px;"><del>${{ $product->price }}</del></span>
 
                                         @endif
 
@@ -114,7 +117,7 @@
                                       </a>
                       	@else
                       	
-                      	<a href="{{ route('front.check.single', ['product_id' => $product->id]) }}"
+                      	<a href="{{ route('front.product.show', [ $product->id ] ) }}"
                                            style="color: white; font-size: 15px;padding-top: 4%;background: red;border: solid;width: 100%;"
                                            class="btn btn-sm btn-warning semi buy-now"
                                            data-url="{{ route('front.cart.store') }}">
@@ -139,6 +142,9 @@
         <!-- Products -->
         </div>
     </div>
+
+</div>
+</div>
 
 </div>
 </div>
