@@ -35,17 +35,17 @@
                     </a>
                 </li>
               
-                {{-- <li>
-                    <a href="album.html" title="Albums">
+                 <li>
+                    <a href="{{ route('front.product.all.product', [ $product->id ] ) }}" title="Albums">
                         <span class="nav_icon">
                             <span class="icon icon_albums"></span>
                         </span>
                         <span class="nav_text">
-                            albums
+                            All Songs
                         </span>
                     </a>
                 </li>
-                <li>
+               {{-- <li>
                     <a href="stations.html" title="Stations">
                     <span class="nav_icon">
                         <span class="icon icon_station"></span>

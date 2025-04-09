@@ -797,6 +797,7 @@ Route::group(['as' => 'front.'], function(){
             Route::post('/compare-products', 'compare')->name('compare.products');
 
             Route::get('/single-product/{slug}','single_product')->name('single_product');
+            Route::get('/all-songs','all_product')->name('all.product');
 
         });
     });
