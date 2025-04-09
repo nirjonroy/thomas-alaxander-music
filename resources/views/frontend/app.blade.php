@@ -7,7 +7,7 @@
         <!----loader Start---->
     <div class="ms_loader">
         <div class="wrap">
-            <img src="{{('frontend/assets/images/loader.gif')}}" alt="loader">
+            <img src="{{asset('frontend/assets/images/loader.gif')}}" alt="loader">
         </div>
     </div>
     <!----Main Wrapper Start---->

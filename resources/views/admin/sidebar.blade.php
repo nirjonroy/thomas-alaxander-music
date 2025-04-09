@@ -133,7 +133,7 @@ $setting = App\Models\Setting::first();
 
              {{-- <li class="{{ Route::is('admin.specification-key.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.specification-key.index') }}">{{__('admin.Specification Key')}}</a></li> --}}
 
-              {{-- <li class="{{ Route::is('admin.product-review') || Route::is('admin.show-product-review') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.product-review') }}">{{__('admin.Product Reviews')}}</a></li> --}}
+              <li class="{{ Route::is('admin.product-review') || Route::is('admin.show-product-review') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.product-review') }}">Reviews</a></li> 
 
               {{-- <li class="{{ Route::is('admin.product-report') || Route::is('admin.show-product-report') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.product-report') }}">{{__('admin.Product Report')}}</a></li> --}}
               {{-- <li class="{{ Route::is('admin.landing.index') || Route::is('admin.landing.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.landing.index') }}">Landing Page</a></li> --}}

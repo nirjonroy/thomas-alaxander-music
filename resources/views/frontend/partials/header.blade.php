@@ -7,7 +7,7 @@
               
                 <button type="submit">
                     <span class="search_icon">
-                    <img src="{{('frontend/assets/images/svg/search.svg')}}" alt="search">
+                    <img src="{{asset('frontend/assets/images/svg/search.svg')}}" alt="search">
                 </span>    
                 </button>
             </form>
