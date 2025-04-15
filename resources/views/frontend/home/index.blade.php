@@ -30,77 +30,52 @@
                                 <div class="ms_songslist_box">
                                     <ul class="ms_songlist ms_index_songlist">
                                         @foreach ($top_picks as $product)
-                                      <li>
-                                        <div class="ms_songslist_inner">
-                                            <div class="ms_songslist_left">
-                                                <div class="songslist_number">
-                                                    <h4 class="songslist_sn">01</h4>
-                                                    <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
-                                                </div>
-                                                <div class="songslist_details">
-                                                    <div class="songslist_thumb">
-                                                        <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
+                                        <li>
+                                            <div class="ms_songslist_inner">
+                                                <div class="ms_songslist_left">
+                                                    <div class="songslist_number">
+                                                        <h4 class="songslist_sn">01</h4>
+                                                        <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
+                                                        <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
                                                     </div>
-                                                    <div class="songslist_name">
-
-                                                        <h3 class="song_name"><a href="javascript:void(0);">{{$product->name}}</a></h3>
-                                                        <p class="song_artist">{{$product->artist_name}}</p>
+                                                    <div class="songslist_details">
+                                                        <div class="songslist_thumb">
+                                                            <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                                <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
+                                                            </a>
+                                                            
+                                                        </div>
+                                                        <div class="songslist_name">
+    
+                                                            <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
+                                                            <p class="song_artist">{{$product->artist_name}}</p>
+                                                        </div>
                                                     </div>
+    
                                                 </div>
-
-                                            </div>
-                                            <div class="ms_songslist_right">
-                                                <span class="ms_songslist_like">
-                                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
-                                                </span>
-                                                <div>
-                                                    <span class="ms_songslist_time">{{$product->duration}}</span>
-                                                    @if($product->download_type == 'free')
-                                                    <p class="ms_songslist_time">download</p>
-                                                    @else
-                                                        @if($product->offer_price == 0)
-                                                        <p class="ms_songslist_time">$ {{$product->price}}</p>
+                                                <div class="ms_songslist_right">
+                                                    <span class="ms_songslist_like">
+                                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
+                                                    </span>
+                                                    <div>
+                                                        <span class="ms_songslist_time">{{$product->duration}}</span>
+                                                        @if($product->download_type == 'free')
+                                                        <p class="ms_songslist_time">download</p>
                                                         @else
-                                                        <p class="ms_songslist_time">$ {{$product->offer_price}}</p>
-                                                        <strike class="ms_songslist_time"> $ {{$product->price}}</strike>
+                                                            @if($product->offer_price == 0)
+                                                            <p class="ms_songslist_time">$ {{$product->price}}</p>
+                                                            @else
+                                                            <p class="ms_songslist_time">$ {{$product->offer_price}}</p>
+                                                            <strike class="ms_songslist_time"> $ {{$product->price}}</strike>
+                                                            @endif
+    
                                                         @endif
-
-                                                    @endif
-                                                </div>
-                                                
-                                                <div class="ms_songslist_more">
-                                                    <span class="songslist_moreicon"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
-                                                    <ul class="ms_common_dropdown ms_songslist_dropdown">
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_fav"></span>Favourites
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" 
-                                                               class="download-link" 
-                                                               data-product-id="{{ $product->id }}" 
-                                                               data-download-type="{{ $product->download_type }}"
-                                                               data-file-url="{{ asset($product->music) }}">
-                                                                <span class="common_drop_icon drop_downld"></span>Download Now
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_playlist"></span>Add to Playlist
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_share"></span>Share
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                    </div>
+                                                    
+                                                    
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
                                       @endforeach
                                        
                                     </ul>
@@ -110,77 +85,52 @@
                                 <div class="ms_songslist_box">
                                     <ul class="ms_songlist ms_index_songlist">
                                         @foreach ($tranding_songs as $product)
-                                      <li>
-                                        <div class="ms_songslist_inner">
-                                            <div class="ms_songslist_left">
-                                                <div class="songslist_number">
-                                                    <h4 class="songslist_sn">01</h4>
-                                                    <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
-                                                </div>
-                                                <div class="songslist_details">
-                                                    <div class="songslist_thumb">
-                                                        <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
+                                        <li>
+                                            <div class="ms_songslist_inner">
+                                                <div class="ms_songslist_left">
+                                                    <div class="songslist_number">
+                                                        <h4 class="songslist_sn">01</h4>
+                                                        <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
+                                                        <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
                                                     </div>
-                                                    <div class="songslist_name">
-
-                                                        <h3 class="song_name"><a href="javascript:void(0);">{{$product->name}}</a></h3>
-                                                        <p class="song_artist">{{$product->artist_name}}</p>
+                                                    <div class="songslist_details">
+                                                        <div class="songslist_thumb">
+                                                            <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                                <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
+                                                            </a>
+                                                            
+                                                        </div>
+                                                        <div class="songslist_name">
+    
+                                                            <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
+                                                            <p class="song_artist">{{$product->artist_name}}</p>
+                                                        </div>
                                                     </div>
+    
                                                 </div>
-
-                                            </div>
-                                            <div class="ms_songslist_right">
-                                                <span class="ms_songslist_like">
-                                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
-                                                </span>
-                                                <div>
-                                                    <span class="ms_songslist_time">{{$product->duration}}</span>
-                                                    @if($product->download_type == 'free')
-                                                    <p class="ms_songslist_time">download</p>
-                                                    @else
-                                                        @if($product->offer_price == 0)
-                                                        <p class="ms_songslist_time">$ {{$product->price}}</p>
+                                                <div class="ms_songslist_right">
+                                                    <span class="ms_songslist_like">
+                                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M11.777,-0.000 C10.940,-0.000 10.139,0.197 9.395,0.585 C9.080,0.749 8.783,0.947 8.506,1.173 C8.230,0.947 7.931,0.749 7.618,0.585 C6.874,0.197 6.073,-0.000 5.236,-0.000 C2.354,-0.000 0.009,2.394 0.009,5.337 C0.009,7.335 1.010,9.428 2.986,11.557 C4.579,13.272 6.527,14.702 7.881,15.599 L8.506,16.012 L9.132,15.599 C10.487,14.701 12.436,13.270 14.027,11.557 C16.002,9.428 17.004,7.335 17.004,5.337 C17.004,2.394 14.659,-0.000 11.777,-0.000 ZM5.236,2.296 C6.168,2.296 7.027,2.738 7.590,3.507 L8.506,4.754 L9.423,3.505 C9.986,2.737 10.844,2.296 11.777,2.296 C13.403,2.296 14.727,3.660 14.727,5.337 C14.727,6.734 13.932,8.298 12.364,9.986 C11.114,11.332 9.604,12.490 8.506,13.255 C7.409,12.490 5.899,11.332 4.649,9.986 C3.081,8.298 2.286,6.734 2.286,5.337 C2.286,3.660 3.610,2.296 5.236,2.296 Z"/></svg>
+                                                    </span>
+                                                    <div>
+                                                        <span class="ms_songslist_time">{{$product->duration}}</span>
+                                                        @if($product->download_type == 'free')
+                                                        <p class="ms_songslist_time">download</p>
                                                         @else
-                                                        <p class="ms_songslist_time">$ {{$product->offer_price}}</p>
-                                                        <strike class="ms_songslist_time"> $ {{$product->price}}</strike>
+                                                            @if($product->offer_price == 0)
+                                                            <p class="ms_songslist_time">$ {{$product->price}}</p>
+                                                            @else
+                                                            <p class="ms_songslist_time">$ {{$product->offer_price}}</p>
+                                                            <strike class="ms_songslist_time"> $ {{$product->price}}</strike>
+                                                            @endif
+    
                                                         @endif
-
-                                                    @endif
-                                                </div>
-                                                
-                                                <div class="ms_songslist_more">
-                                                    <span class="songslist_moreicon"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
-                                                    <ul class="ms_common_dropdown ms_songslist_dropdown">
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_fav"></span>Favourites
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" 
-                                                               class="download-link" 
-                                                               data-product-id="{{ $product->id }}" 
-                                                               data-download-type="{{ $product->download_type }}"
-                                                               data-file-url="{{ asset($product->music) }}">
-                                                                <span class="common_drop_icon drop_downld"></span>Download Now
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_playlist"></span>Add to Playlist
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_share"></span>Share
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                    </div>
+                                                    
+                                                    
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
                                       @endforeach
                                         
                                     </ul>
@@ -232,35 +182,7 @@
                                                     @endif
                                                 </div>
                                                 
-                                                <div class="ms_songslist_more">
-                                                    <span class="songslist_moreicon"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="20px"><path fill-rule="evenodd" fill="rgb(124, 142, 165)" d="M2.000,12.000 C0.895,12.000 -0.000,11.105 -0.000,10.000 C-0.000,8.895 0.895,8.000 2.000,8.000 C3.104,8.000 4.000,8.895 4.000,10.000 C4.000,11.105 3.104,12.000 2.000,12.000 ZM2.000,4.000 C0.895,4.000 -0.000,3.105 -0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 C3.104,-0.000 4.000,0.895 4.000,2.000 C4.000,3.105 3.104,4.000 2.000,4.000 ZM2.000,16.000 C3.104,16.000 4.000,16.895 4.000,18.000 C4.000,19.105 3.104,20.000 2.000,20.000 C0.895,20.000 -0.000,19.105 -0.000,18.000 C-0.000,16.895 0.895,16.000 2.000,16.000 Z"/></svg></span>
-                                                    <ul class="ms_common_dropdown ms_songslist_dropdown">
-                                                        <li>
-                                                            <a href="{{ route('front.product.show', [ $product->id ] ) }}">
-                                                                <span class="common_drop_icon drop_fav"></span>Favourites
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" 
-                                                               class="download-link" 
-                                                               data-product-id="{{ $product->id }}" 
-                                                               data-download-type="{{ $product->download_type }}"
-                                                               data-file-url="{{ asset($product->music) }}">
-                                                                <span class="common_drop_icon drop_downld"></span>Download Now
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_playlist"></span>Add to Playlist
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0);">
-                                                                <span class="common_drop_icon drop_share"></span>Share
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </li>
