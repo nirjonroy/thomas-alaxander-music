@@ -14,7 +14,12 @@
               
           </div>
           <div class="ms_noti_wrap">
-              <span class="noti_icon bg_cmn_iconwrap"><i class="bg_cmn_icon"></i></span>
+              <span class="noti_icon bg_cmn_iconwrap">
+                <a href="{{route('front.cart.index')}}">
+                    <i class="bg_cmn_icon"></i>
+                    <sup>{{ totalCartItems() }} {{ totalCartItems() > 1 ? '' : '' }}</sup>
+                </a>    
+            </span>
           </div>
       </div>
       <div class="ms_top_right">
