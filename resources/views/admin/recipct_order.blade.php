@@ -102,86 +102,10 @@ img {
                             {{ $orderProduct->product_name }},
                             
                             <br>
-                            @if($orderProduct->protein_name)
-                            <b>Combo : </b>
-                            {{$orderProduct->protein_name}} -
-                            ${{$orderProduct->protein_price}}
-                            @endif
-                            @if($orderProduct->flavour)
-                            <b>flavour : </b>
-                            <br>{{$orderProduct->flavour}}
-                            @endif
-                            @if($orderProduct->toping)
-                            <b>Toping : </b>
-                           <br> {{$orderProduct->toping}}
-                           @endif
-                           @if($orderProduct->dip)
-                           <b>Dips : </b>
-                           <br> {{$orderProduct->dip}}
-                           @endif
-                           
-                           @if($orderProduct->cheese)
-                           <b>Cheese : </b>
-                           <br> {{$orderProduct->cheese}}
-                           @endif
-                           @if($orderProduct->vaggi)
-                           <br>   @php
-                           // Decode the veggies (vaggi) JSON
-                           $veggies = json_decode($orderProduct->vaggi, true);
-                       @endphp
-                       
-                       @if(!empty($veggies))
-                           @php
-                               // Initialize an empty array to store formatted veggies
-                               $formattedVeggies = [];
-                       
-                               // Loop through the veggies and format each item
-                               foreach ($veggies as $veggie) {
-                                   $formattedVeggies[] = $veggie;
-                               }
-                       
-                               // Join the formatted veggies with a comma separator
-                               $formattedVeggiesString = implode(', ', $formattedVeggies);
-                           @endphp
-                       
-                           <!-- Display the formatted veggies string -->
-                           <b>Vaggis : </b>
-                           {{ $formattedVeggiesString }}
-                       @endif
-                           @endif
-                           @if($orderProduct->sauce)
-                          
-                           <br>
-                            <b>Saucer:</b>
-                           {{$orderProduct->sauce}}
-                            @endif
-
-                            @if($orderProduct->sides)
-                            <br>  @php
-                            // Decode the sides JSON, and default to an empty array if it's null
-                            $sides = !empty($orderProduct->sides) ? json_decode($orderProduct->sides, true) : [];
-                        
-                            // Initialize an empty array to store formatted sides
-                            $formattedSides = [];
-                        
-                            // Check if $sides is an array and loop through it
-                            if (is_array($sides)) {
-                                foreach ($sides as $side) {
-                                    $formattedSides[] = "{$side['name']}-\${$side['price']}";
-                                }
-                            }
-                        
-                            // Join the formatted sides with a comma separator
                             
-                            $formattedSidesString = implode(', ', $formattedSides);
-                        @endphp
-                        
-                        <!-- Display the formatted sides string -->
-                       @if(!empty($orderProduct->sides)) 
-                        <b> Sides are : </b>
-                        {{ $formattedSidesString }}
-                        @endif
-                             @endif
+                       
+                       
+                            
                         </td>
                         <td class="quantity">{{ $orderProduct->qty }}</td>
                         <td class="price">{{ $orderProduct->unit_price }}</td>
@@ -209,9 +133,9 @@ img {
     </td>
 </tr>    
 <tr>
-<td colspan="" style="text-align: right">
+{{-- <td colspan="" style="text-align: right">
         Tax : ${{ $order->tax }}
-    </td>
+    </td> --}}
 </tr>
 <tr>    
     <td colspan="" style="text-align: right">
@@ -223,8 +147,8 @@ img {
 
                 </tbody>
             </table>
-            <p class="centered">Thanks for your purchase!
-                <br>MLK Soulfood</p>
+            <p class="centered">
+                <br>Thomas Alexander Music</p>
         </div>
         <button id="btnPrint" class="hidden-print">Print</button>
         <script src="script.js"></script>
