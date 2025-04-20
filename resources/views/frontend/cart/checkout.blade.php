@@ -110,10 +110,10 @@
     
               @php
                 $tax = number_format($sub_total * 6 / 100, 2);
-                $sub_total = number_format($sub_total + $tax, 2);
+                $sub_total = number_format($sub_total, 2);
               @endphp
     
-              <input type="hidden" name="sub_total" value="{{ number_format($sub_total - $tax, 2) }}">
+              <input type="hidden" name="sub_total" value="{{ number_format($sub_total , 2) }}">
               <input type="hidden" name="tax" value="{{ $tax }}">
               <input type="hidden" name="shipping_method" value="21" class="delivery_charge_id" id="ship">
               <input type="hidden" name="total_amount" id="total_amount" value="{{ number_format($sub_total, 2) }}">
