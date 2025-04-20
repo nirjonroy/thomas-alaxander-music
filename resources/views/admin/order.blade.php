@@ -52,7 +52,7 @@
                       <!--<a class="btn btn-sm btn-success mb-1" href="{{ route('admin.addNewOrder')}}">-->
                       <!--      Add New Order-->
                       <!--</a>-->
-                      @if(auth()->user()->can('admin.assignUserStore'))
+                      {{-- @if(auth()->user()->can('admin.assignUserStore'))
                       	<a class="btn_modal btn btn-sm btn-warning mb-1" href="#" data-toggle="modal" data-target="#demoModal">
                             Assign User
                       </a>
@@ -61,7 +61,7 @@
 
                       <a class="btn_modal btn btn-sm btn-warning mb-1" href="#" data-toggle="modal" data-target="#statusModal">
                             Status Change
-                      </a>
+                      </a> --}}
 
                       @if(auth()->user()->can('admin.delete-order'))
 
@@ -130,13 +130,13 @@
 
                                     <th width="" >{{__('admin.Date')}}</th>
                                     <!--<th width="10%">Order Delivery Date</th>-->
-                                  	<th width="" >SKU</th>
+                                  	{{-- <th width="" >SKU</th> --}}
                                     <th width="" >QTY</th>
                                     <th width="" >{{__('admin.Amount')}}</th>
                                     <th width="" >{{__('admin.Order Status')}}</th>
-                                    <th width="" >Order Note</th>
+                                    {{-- <th width="" >Order Note</th> --}}
 									{{-- <th>Courier</th> --}}
-                                    <th width="" >Assign Order id</th>
+                                    {{-- <th width="" >Assign Order id</th> --}}
 
                                   </tr>
                             </thead>
@@ -178,11 +178,11 @@
 
                                         <td>{{ $order->note ? $order->note : '' }}</td>
 
-                                        <td>
+                                        {{-- <td>
                                           @if(!empty($order->assign->name))
                                           {{$order->assign->name}}
                                           @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
 
                                         <a href="{{ route('admin.order-show',$order->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>
@@ -249,15 +249,7 @@
                                             @endif
                                       	</td>
                                         <!--<td>{{ $order->ordered_delivery_date }}</td>-->
-                                        <td>
-                                        @foreach ($order->orderProducts as $orderProduct)
-                                            @if(!empty($orderProduct->product->sku))
-                                            {{ $orderProduct->product->sku }},
-                                            @else
-
-                                            @endif
-                                        @endforeach
-                                        </td>
+                                       
 
                                         <td>{{ $order->product_qty }}</td>
 
@@ -294,11 +286,11 @@
                                             @endif
 
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                           @if(!empty($order->assign->name))
                                           {{$order->assign->name}}
                                           @endif
-                                        </td>
+                                        </td> --}}
 
                                         <script type="text/javascript">
                                             // Calculate the time difference between order creation and current time
