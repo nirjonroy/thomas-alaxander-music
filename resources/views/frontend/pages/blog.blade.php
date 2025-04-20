@@ -8,8 +8,8 @@
 <div class="ms_content_wrapper padder_top8">
 
   <div class="ms_index_wrapper common_pages_space">
-<section class="py-5">
-  <div class="container pt-5 pt-lg-5">
+<section class="">
+  <div class="container-fluid pt-5 pt-lg-5">
 
     <h2 class="text-center text-white bg-warning py-3 mb-4 rounded fw-bold fs-2">
       Blogs

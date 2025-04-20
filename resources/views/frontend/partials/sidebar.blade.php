@@ -57,17 +57,29 @@
                     </a>
                 </li>
 
-               {{--  <li><a href="music.html" title="Music">
+                @php $custom_pages = DB::table('custom_pages')->where('status', 1)->get();  @endphp
+                @foreach($custom_pages as $page)
+                <li><a href="{{route('front.customPages', $page->slug)}}" title="Music">
                 <span class="nav_icon">
                     <span class="icon icon_music"></span>
                 </span>
                 <span class="nav_text">
-                    music
+                    {{$page->page_name}}
                 </span>
                 </a>
                 </li>
+                @endforeach
 
-            </ul>
+                @php $sLinks =DB::table('footer_social_links')->get(); @endphp
+
+                @foreach($sLinks as $link)
+                <li><a href="{{$link->link}}" class="me-6 [&>svg]:h-4 [&>svg]:w-4"><i class="{{$link->icon}}"></i>
+                    {{$link->name}}
+                </a>
+                    </li>
+            
+            @endforeach
+           {{--  </ul>
             <h4 class="nav_heading">Your Music</h4>
             <ul class="nav_downloads">
                 <li><a href="download.html" title="Downloads">
