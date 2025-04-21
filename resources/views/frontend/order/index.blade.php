@@ -28,6 +28,7 @@
                         <td>{{ \Carbon\Carbon::parse($order->created_at)->format('j M Y / H:i:s') }}</td>
                         <td>${{ number_format($order->total_amount, 2) }}</td>
                         <td>
+                            
                             <a href="{{ route('front.order.show', [$order->id]) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">
                                 View Details
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-2" viewBox="0 0 16 16">

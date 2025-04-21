@@ -71,14 +71,16 @@
                 @endforeach
 
                 @php $sLinks =DB::table('footer_social_links')->get(); @endphp
-
+                <div style="display: flex; margin-left: 20%;">
+                 <p>get me:  </p> <br/>
                 @foreach($sLinks as $link)
-                <li><a href="{{$link->link}}" class="me-6 [&>svg]:h-4 [&>svg]:w-4"><i class="{{$link->icon}}"></i>
-                    {{$link->name}}
-                </a>
-                    </li>
-            
+                
+                    <a href="{{$link->link}}" class="me-6 [&>svg]:h-4 [&>svg]:w-4" style="padding: 5px"><i class="{{$link->icon}}"></i>
+                    
+                    </a>
+               
             @endforeach
+        </div>
            {{--  </ul>
             <h4 class="nav_heading">Your Music</h4>
             <ul class="nav_downloads">
