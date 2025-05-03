@@ -37,20 +37,33 @@ class HomeController extends Controller
         // dd($popularCats);
         // dd($feateuredCategories);
         $products = Product::with(['category', 'subCategory', 'childCategory'])
-                                        ->latest()
-                                        ->take(24)
-                                        ->get();
+                    ->where('type', 'single')
+                    ->latest()
+                    ->take(24)
+                    ->get();
+
         
         $top_picks = Product::with(['category', 'subCategory', 'childCategory'])
                                         ->where('today_special', 1)
+                                        ->where('type', 'single')
                                         ->latest()
                                         ->take(24)
                                         ->get();
         $tranding_songs = Product::with(['category', 'subCategory', 'childCategory'])
                                         ->where('tranding_songs', 1)
+                                        ->where('type', 'single')
                                         ->latest()
                                         ->take(24)
                                         ->get();
+
+        $physical_product = Product::with(['category', 'subCategory', 'childCategory'])
+                                        
+                                        ->where('type', 'variable')
+                                        ->latest()
+                                        ->take(24)
+                                        ->get();
+
+
         $comp_pro = Product::latest()->get();
 
         // $products = Product::with('category', 'subCategory', 'childCategory', 'brand')
@@ -102,6 +115,7 @@ class HomeController extends Controller
                 'offer',
                 'tranding_songs',
                 'top_picks',
+                'physical_product'
                 
         ));
     }
