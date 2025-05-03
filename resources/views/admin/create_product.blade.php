@@ -250,7 +250,7 @@
                                 </div> --}}
 
 
-                                <div id="hidden-specification-box" class="d-none">
+                                <div id="hidden-specification-box" class="d-none" >
                                     <div class="delete-specification-row">
                                         <div class="row mt-2">
                                             <div class="col-md-5">
@@ -274,11 +274,11 @@
 
 
 
-                                <div class="col-lg-3 mb-3 d-none">
-                                    <label  class="form-label">Product Combo and price </label>
+                                <div class="col-lg-3 mb-3 ">
+                                    <label  class="form-label">Product Type </label>
                                     <select name="type" id="prod_type"  class="form-control">
-                                        <option value="single"> No Combo </option>
-                                        <option value="variable"> Add Combo </option>
+                                        <option value="single"> Virtual </option>
+                                        <option value="variable"> Physical </option>
                                     </select>
                                 </div>
 
@@ -323,7 +323,7 @@
 
                             <div class="row">
                                     <div class="col-md-12">
-                                         <div id="variable_table_two" class="" style="display: none;">
+                                         <div id="variable_table_two" class="" style="display:none">
                                     <div class="table-responsive">
                                         <table class="table table-centered table-nowrap table-bordered text-center size_table">
                                             <thead>

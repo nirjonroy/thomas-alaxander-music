@@ -121,7 +121,12 @@
                                         <td> <img class="rounded-circle" src="{{ asset('uploads/custom-images/'.$product->thumb_image) }}" alt="" width="100px" height="100px"></td>
                                         <td>
 
-                                            {{ $product->type }}
+                                            
+                                            @if ($product->type == 'variable')
+                                              Physical 
+                                            @else
+                                              Virtual 
+                                            @endif   
                                             <!--@if ($product->new_product == 1)-->
                                             <!--<span class="badge badge-primary p-1">{{__('admin.New')}}</span>-->
                                             <!--@endif-->

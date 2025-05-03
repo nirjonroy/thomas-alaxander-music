@@ -147,7 +147,7 @@ class ProductController extends Controller
             'weight' => '',
             'video_link' => '',
             'quantity' => '',
-            'song' => 'required|mimes:mp3,wav,ogg|max:20480', // Accept MP3, WAV, OGG up to 20MB
+            'song' => '', // Accept MP3, WAV, OGG up to 20MB
         ];
     
         $customMessages = [
