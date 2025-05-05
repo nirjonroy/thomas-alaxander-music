@@ -29,6 +29,7 @@ use App\Http\Controllers\WEB\Admin\ProductVariantItemController;
 use App\Http\Controllers\WEB\Admin\SettingController;
 use App\Http\Controllers\WEB\Admin\SubscriberController;
 use App\Http\Controllers\WEB\Admin\ContactMessageController;
+use App\Http\Controllers\WEB\Admin\EventController;
 use App\Http\Controllers\WEB\Admin\EmailConfigurationController;
 use App\Http\Controllers\WEB\Admin\EmailTemplateController;
 use App\Http\Controllers\WEB\Admin\AdminController;
@@ -349,6 +350,15 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
 
     Route::resource('product-category', ProductCategoryController::class);
     Route::put('product-category-status/{id}', [ProductCategoryController::class,'changeStatus'])->name('product.category.status');
+
+    Route::get('all-events', [EventController::class, 'index'])->name('event.index');
+    Route::get('create-events', [EventController::class, 'create'])->name('event.create');
+    Route::get('edit-events/{id}', [EventController::class, 'edit'])->name('event.edit');
+    Route::post('event-delete/{id}', [EventController::class, 'destroy'])->name('event.destroy');
+    Route::post('create-events-store', [EventController::class, 'store'])->name('event.store');
+    Route::post('create-events-update/{id}', [EventController::class, 'update'])->name('event.update');
+    Route::put('event-status/{id}', [EventController::class,'changeStatus'])->name('event.status');
+
 
     Route::resource('product-sub-category', ProductSubCategoryController::class);
     Route::put('product-sub-category-status/{id}', [ProductSubCategoryController::class,'changeStatus'])->name('product.sub.category.status');

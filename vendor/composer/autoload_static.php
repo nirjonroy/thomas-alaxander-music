@@ -879,6 +879,7 @@ class ComposerStaticInitf342cc27deeff6eac793a44b99fcbd81
         'App\\Models\\EmailConfiguration' => __DIR__ . '/../..' . '/app/Models/EmailConfiguration.php',
         'App\\Models\\EmailTemplate' => __DIR__ . '/../..' . '/app/Models/EmailTemplate.php',
         'App\\Models\\ErrorPage' => __DIR__ . '/../..' . '/app/Models/ErrorPage.php',
+        'App\\Models\\Event' => __DIR__ . '/../..' . '/app/Models/Event.php',
         'App\\Models\\FacebookComment' => __DIR__ . '/../..' . '/app/Models/FacebookComment.php',
         'App\\Models\\FacebookPixel' => __DIR__ . '/../..' . '/app/Models/FacebookPixel.php',
         'App\\Models\\Faq' => __DIR__ . '/../..' . '/app/Models/Faq.php',

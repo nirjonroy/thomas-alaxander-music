@@ -179,6 +179,7 @@ return array(
     'App\\Models\\EmailConfiguration' => $baseDir . '/app/Models/EmailConfiguration.php',
     'App\\Models\\EmailTemplate' => $baseDir . '/app/Models/EmailTemplate.php',
     'App\\Models\\ErrorPage' => $baseDir . '/app/Models/ErrorPage.php',
+    'App\\Models\\Event' => $baseDir . '/app/Models/Event.php',
     'App\\Models\\FacebookComment' => $baseDir . '/app/Models/FacebookComment.php',
     'App\\Models\\FacebookPixel' => $baseDir . '/app/Models/FacebookPixel.php',
     'App\\Models\\Faq' => $baseDir . '/app/Models/Faq.php',
