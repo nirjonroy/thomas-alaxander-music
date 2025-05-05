@@ -322,47 +322,47 @@
                             </div>
 
                             <div class="row">
-                                    <div class="col-md-12">
-                                         <div id="variable_table_two" class="" style="display:none">
-                                    <div class="table-responsive">
-                                        <table class="table table-centered table-nowrap table-bordered text-center size_table">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 27%;">Combo Name</th>
-                                                    <th style="width: 30%">Price</th>
+                                <div class="col-md-12">
+                                    <div id="variable_table_two" class="" style="display: none;">
+                               <div class="table-responsive">
+                                   <table class="table table-centered table-nowrap table-bordered text-center size_table">
+                                       <thead>
+                                           <tr>
+                                               <th style="width: 27%;">Combo Name</th>
+                                               <th style="width: 30%">Price</th>
 
-                                                    <th >Action</th>
-                                                </tr>
-                                            </thead>
+                                               <th >Action</th>
+                                           </tr>
+                                       </thead>
 
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <select name="size_id[]" class="form-control">
-                                                            @foreach($sizes as $size)
-                                                            <option {{$size->is_default==1 ?'selected':''}} value="{{$size->id}}">{{ $size->title }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-
-
-
-                                                    <td>
-                                                        <input class="variable_sell_price form-control" type="number" name="sell_price[]" placeholder="Price">
-                                                    </td>
+                                       <tbody>
+                                           <tr>
+                                               <td>
+                                                   <select name="size_id[]" class="form-control">
+                                                       @foreach($sizes as $size)
+                                                       <option {{$size->is_default==1 ?'selected':''}} value="{{$size->id}}">{{ $size->title }}</option>
+                                                       @endforeach
+                                                   </select>
+                                               </td>
 
 
 
-                                                    <td>
-                                                        <a class="btn action-icon btn-primary add_moore" style="cursor: pointer;color: #ffffff;">Add </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                               <td>
+                                                   <input class="variable_sell_price form-control" type="number" name="sell_price[]" placeholder="Price">
+                                               </td>
 
-                                        </table>
-                                    </div>
-                                </div>
-                                    </div>
+
+
+                                               <td>
+                                                   <a class="btn action-icon btn-primary add_moore" style="cursor: pointer;color: #ffffff;">Add </a>
+                                               </td>
+                                           </tr>
+                                       </tbody>
+
+                                   </table>
+                               </div>
+                           </div>
+                               </div>
 
                                     <div class="col-md-7">
                                         <div id="variable_table_color" class="" style="display: none;">

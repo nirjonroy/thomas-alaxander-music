@@ -3,6 +3,49 @@
 
 @section('content')
 
+<style>
+  .sizes{
+  /*display: flex;*/
+  }
+  .sizes .size {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #FE9017;
+  width: auto;
+  text-align: center;
+  cursor: pointer;
+  min-width: 45px;
+  display: inline-block;
+  }
+  .sizes .size.active{
+  background: #f66326;
+  color: white;
+  font-weight: bold;
+  }
+  .colors{
+  /*display: flex;*/
+  }
+  .colors .color {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #FE9017;
+  width: auto;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+  }
+ .colors .color.active{
+ background: #0d6efd;
+ color: white;
+ font-weight: bold;
+ padding: 6px;
+ border: 4px solid white;
+ outline: 2px solid red;
+ }
+</style>
+
   <div class="ms_content_wrapper padder_top8">
 
     <div class="ms_index_wrapper common_pages_space">
@@ -11,54 +54,121 @@
       <div class="row">
       <div class="col-md-12">
         <div class="ms_about_wrapper">
-        <div class="ms_about_img">
-          <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
-          width="200px" height="200px" style="background:white">
-        </div>
+        
         <div class="ms_about_content" style="margin-top:10px; background: rgb(243, 241, 241); padding: 5px;">
-
+          <div class="ms_about_img " style="float: right">
+            @if($product->type == 'single')
+            <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
+            width="200px" height="200px" style="background:white;  border-radius:50%; ">
+            @else
+            <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
+            width="200px" height="200px" style="background:white  ">
+            @endif
+          </div>
           <h1 style="font-size:14pt">{{$product->name}}</h1>
-          
-          @if($product->download_type == 'free')
-          <audio controls>
-          <source src="{{ asset($product->music) }}" type="audio/mpeg">
-          </audio>
+
+          @if($product->type == 'variable') <h6 id="select_size">Select Size : </h6> @else @endif
+          @if($product->type == 'variable')
+
+          @if(count($product->variations))
+
+          <div class="sizes" id="sizes" style="margin-bottom: 5px;">
+             @foreach($product->variations as $v)
+             @if(!empty($v->size->title))
+             <div class="size" data-proid="{{ $v->product_id }}" data-varprice="{{ $v->sell_price }}" data-varsize="{{ $v->size->title }}"
+                value="{{$v->id}}" data-varSizeId="{{$v->size_id}}">
+                @if($v->size->title == 'free')
+                {{ $v->size->title }}
+                <input type="hidden" id="size_value" name="variation_id">
+                <input type="hidden" id="size_variation_id" name="size_variation_id">
+                <input type="hidden" name="pro_price" id="pro_price">
+                <input type="hidden" name="variation_size_id" id="variation_size_id">
+                @else
+                {{ $v->size->title }}
+                <input type="hidden" id="size_value" name="variation_id">
+                <input type="hidden" id="size_variation_id" name="size_variation_id">
+                <input type="hidden" name="pro_price" id="pro_price">
+                <input type="hidden" name="variation_size_id" id="variation_size_id">
+                @endif
+             </div>
+             @else
+             Size Not Available
+             @endif
+             @endforeach
+          </div>
           @else
-          <audio controls>
-            <source src="...." type="audio/mpeg">
-            </audio>
+          <input type="hidden" id="size_value" name="variation_id" value="free">
+          <input type="text" name="variation_size_id" id="variation_size_id" value="1">
           @endif
+          @else
+          <input type="hidden" id="size_value" name="variation_id" value="free">
+          <input type="hidden" name="variation_size_id" id="variation_size_id" value="1">
+          @endif
+          
+          @if($product->type == 'single')
+        @if($product->download_type == 'free')
+        <audio controls>
+        <source src="{{ asset($product->music) }}" type="audio/mpeg">
+        </audio>
+      @else
+        <audio controls>
+        <source src="...." type="audio/mpeg">
+        </audio>
+      @endif
+      @endif
           @if($product->download_type == 'free')
         {{-- <a href="{{ asset($product->download_link) }}" class="btn btn-danger btn-lg" style="
-            width: 10%;
-            height: 25px;
-            font-size: 13px;
-          ">Download
+        width: 10%;
+        height: 25px;
+        font-size: 13px;
+        ">Download
         </a> --}}
       @else
-      @if($product->offer_price != '0')
-      ${{ number_format($product->offer_price, 2) }}
-      <sub><del>${{ number_format($product->price, 2) }}</del></sub>
-      <input type="hidden" name="price" id="price_val" value="{{ $product->offer_price }}">
-    @else
-      ${{ number_format($product->price, 2) }}
-      <input type="hidden" name="price" id="price_val" value="{{ $product->price }}">
-    @endif
-    @guest
-    <a href="#" class="add_cart mt-4 add-to-cart" data-id="{{ $product->id }}" data-url="{{ route('front.cart.store') }}" onclick="alert('Please login first')">Order Now</a>
-    @else
-      <a href="#" class=" add_cart mt-4 add-to-cart" data-id="{{ $product->id }}"
-      data-url="{{ route('front.cart.store') }}">
-      Order Now
-      </a>
+        <br>
+        <div style="text-align: center"></div>
+        @if($product->offer_price != '0')
+        <b>${{ number_format($product->offer_price, 2) }}</b>
+        <sub><del style="color: red">${{ number_format($product->price, 2) }}</del></sub>
+        <input type="hidden" name="price" id="price_val" value="{{ $product->offer_price }}">
+      @else
+        ${{ number_format($product->price, 2) }}
+        <input type="hidden" name="price" id="price_val" value="{{ $product->price }}">
+      @endif
+        <br>
+        <br>
+        @guest
+        <a href="#" class="add_cart mt-4 add-to-cart " style="background: green; color: black; padding: 5px; font-weight: bold;" data-id="{{ $product->id }}"
+        data-url="{{ route('front.cart.store') }}" onclick="alert('Please login first')">Order Now</a>
+      @else
+        <a href="#" class=" add_cart mt-4 add-to-cart btn btn-success btn-lg" data-id="{{ $product->id }}"
+        data-url="{{ route('front.cart.store') }}" style="width: 100px; height: auto; font-size: 14px;">
+        Order Now
+        </a>
       @endguest
-    @endif
-          <span>{{$product->artist_name}}</span>
+        <br><br>
+      @endif
+      @if($product->artist_name !== null)
+          <span><b>Artist : {{$product->artist_name}}</b></span>
+          <br> <br>
+          @endif   
+          
           <p style="background: white !important">
-          {!!$product->long_description!!}
+           {!!$product->long_description!!}
           </p>
 
+          <br>
+
           <div class="container pt-5" style="margin: 5px">
+            <div>
+              <h2 style="text-align: center">All Comments</h2>
+            
+              @foreach ($reviews as $review)
+              <img src="https://merics.org/sites/default/files/styles/ct_team_member_default/public/2022-01/avatar-placeholder_neu.png?h=ecfff384&itok=4epCYDGE" alt="" style="width: 50px; height: 50px; border-radius: 50px;">
+              <b>{{$review->user->name}}</b> <br>
+              <p style="text-align: left; margin-left: 45px;">{{$review->review}}</p> 
+              @endforeach
+            </div>
+            <br> <br>
           <h2 style="text-align: center">Make Comment</h2>
           <form action="{{route('front.product.product-reviews.store')}}" method="post">
 

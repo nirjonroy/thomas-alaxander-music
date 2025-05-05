@@ -129,15 +129,15 @@ class Product extends Model
     {
         return $this->hasMany(Side::class);
     }
-    
-    public function freeSides()
-    {
-        return $this->hasMany(freeSide::class);
-    }
 
     public function productVariations()
     {
         return $this->hasMany(productVariation::class);
+    }
+    
+    public function freeSides()
+    {
+        return $this->hasMany(freeSide::class);
     }
 
 

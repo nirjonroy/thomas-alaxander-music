@@ -27,6 +27,11 @@ class ProductVariant extends Model
         return $this->belongsTo(Size::class);
     }
 
+    public function products(){
+
+        return $this->belongsTo(Product::class);
+    }
+
 
 
 

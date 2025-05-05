@@ -127,6 +127,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         if (!auth()->user()->can('product.store')) {
             abort(403, 'Unauthorized action.');
         }
@@ -212,7 +213,31 @@ class ProductController extends Controller
         $product->is_best = $request->best_product ? 1 : 0;
         $product->is_featured = $request->is_featured ? 1 : 0;
         $product->approve_by_admin = 1;
-    
+
+        if ($request->hasFile('images')) {
+            $imageData = [];
+            foreach ($request->file('images') as $key => $image) {
+        
+                $extention = $image->getClientOriginalExtension();
+                $image_name = Str::slug($request->name).date('-Y-m-d-h-i-s-').rand(999,9999).'.'.$extention;
+                $image = Image::make($image);
+        
+                $destation_path_another = 'uploads/custom-images/'.$image_name;
+                $image->resize(700,700);
+                $image->save(public_path().'/'.$destation_path_another);
+        
+                $imageData[] = ['image' => $destation_path_another, 'product_id' => $product->id];
+        
+            }
+        
+            if (!empty($imageData)) {
+                // Associate images with the product using the gallery relationship
+                $product->gallery()->createMany($imageData);
+            }
+        }
+        
+         
+
         // Handle song file upload
         if ($request->hasFile('song')) {
             $song = $request->file('song');
@@ -239,6 +264,111 @@ class ProductController extends Controller
         }
     
         $product->save();
+
+        if($request->is_specification){
+            $exist_specifications=[];
+            if($request->keys){
+                foreach($request->keys as $index => $key){
+                    if($key){
+                        if($request->specifications[$index]){
+                            if(!in_array($key, $exist_specifications)){
+                                $productSpecification= new ProductSpecification();
+                                $productSpecification->product_id = $product->id;
+                                $productSpecification->product_specification_key_id = $key;
+                                $productSpecification->specification = $request->specifications[$index];
+                                $productSpecification->save();
+                            }
+                            $exist_specifications[] = $key;
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($request->type == 'variable') {
+
+            $variable_data=[];
+            // $variable_data[] = [
+            //     'size_id'=>$request->size_id,
+            //     'sell_price'=>$request->sell_price,
+            // ];
+
+            foreach ($request->size_id as $key => $size) {
+
+               $variable_data[]=[
+                    'size_id' => $size,
+                    'sell_price' => $request->sell_price[$key],
+               ];
+            }
+
+            if (!empty($variable_data)) {
+                $product->variations()->createMany($variable_data);
+            }
+
+        } else {
+            $variable_data=[];
+
+            $variable_data[] = [
+                'size_id'=>"1",
+                'sell_price'=>$request->sell_price,
+
+            ];
+
+        }
+
+
+    if ($request->prod_color == 'varcolor') {
+    $colors = $request->color_id;
+
+    $images = $request->var_images;
+
+
+    // Validate and process each color variation with its images
+    $colorVariationsData = [];
+
+    foreach ($colors as $key => $colorId) {
+        $color = Color::find($colorId);
+
+        if ($color) {
+            // Store the images for this color variation
+            if (isset($images[$key])) {
+
+                    $ext = $images[$key]->getClientOriginalExtension();
+
+                    // Generate a unique image name using a combination of color name, color ID, and a timestamp
+                    $imageName = Str::slug($color->name) . '_color_' . $colorId . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+                    $destinationPath = 'uploads/custom-images/' . $imageName;
+
+                    // Resize and save the image
+                    $image = Image::make($images[$key]);
+                    $image->resize(700, 700);
+                    $image->save(public_path() . '/' . $destinationPath);
+
+                    $colorVariationsData[] = [
+                        'color_id' => $colorId,
+                        'var_images' => $destinationPath,
+                    ];
+            }
+            else {
+                dd('notttt');
+            }
+
+        }
+    }
+    //  dd($colorVariationsData);
+
+
+    if (!empty($colorVariationsData)) {
+        // Create a new color variation and associate it with the product
+        $product->colorVariations()->createMany($colorVariationsData);
+    }
+
+    // dd($colorVariationsData);
+
+
+} else {
+    // dd('no reached');
+}
     
         $notification = trans('admin_validation.Created Successfully');
         $notification = ['messege' => $notification, 'alert-type' => 'success'];
