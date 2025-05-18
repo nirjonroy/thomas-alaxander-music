@@ -41,7 +41,18 @@
                             <span class="icon icon_albums"></span>
                         </span>
                         <span class="nav_text">
-                            All Songs
+                            All Products
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('front.events') }}" title="Albums">
+                        <span class="nav_icon">
+                            <span class="fab fa-calendar"></span>
+                        </span>
+                        <span class="nav_text">
+                            Event
                         </span>
                     </a>
                 </li>

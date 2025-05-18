@@ -111,7 +111,7 @@ $totalAmount = 0 ;
                                 <!-- Product Image -->
                                 <div class="col-auto">
                                     <div class="border rounded-circle overflow-hidden" style="width: 80px; height: 80px;">
-                                        <img src="{{ asset('uploads/custom-images2/'.$item['image']) }}"
+                                        <img src="{{ asset($item['image']) }}"
                                              class="img-fluid rounded-circle" alt="Item Image">
                                     </div>
                                 </div>
@@ -145,7 +145,8 @@ $totalAmount = 0 ;
                             </div>
                         </div>
                         @php
-                            $totalAmount += ($item['price'] * $item['quantity']);
+                            $totalAmount += $item['price'] * $item['quantity'];                                        
+                            print_r($totalAmount);
                         @endphp
                     @empty
                         <p class="text-center">No items added</p>

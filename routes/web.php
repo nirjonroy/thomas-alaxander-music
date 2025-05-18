@@ -791,6 +791,7 @@ Route::group(['as' => 'front.'], function(){
         Route::get('all-category', 'all_category')->name('category.all');
         Route::get('/contact-us', 'contact_us')->name('contact_us');
         Route::get('/blog', 'blog')->name('blog');
+        Route::get('/all-events', 'event')->name('events');
         Route::get('/blog-details/{slug}', 'blog_details')->name('blog_details');
 
     });

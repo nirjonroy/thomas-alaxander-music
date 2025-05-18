@@ -16,6 +16,7 @@ use App\Models\FooterLink;
 use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\Blog;
+use App\Models\Event;
 use DB;
 
 class HomeController extends Controller
@@ -276,6 +277,13 @@ public function shop(Request $request, $slug = null)
     	$blogs = Blog::latest()->get();
       	// dd($blog);
       	return view('frontend.pages.blog', compact('blogs'));
+      	//dd($contact);
+    }
+    
+    public function event(){
+    	$events = Event::latest()->get();
+      	// dd($blog);
+      	return view('frontend.pages.events', compact('events'));
       	//dd($contact);
     }
 

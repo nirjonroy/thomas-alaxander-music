@@ -3,159 +3,333 @@
 namespace App\Http\Controllers\WEB\Frontend;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Coupon;
 use App\Models\ProductVariantItem;
+use App\Models\FlashSaleProduct;
+use App\Models\FlashSale;
 use App\Models\Shipping;
-use Illuminate\Support\Facades\Auth;
-
+use App\Models\PcBuilder;
+use App\Models\ProductVariant;
+use App\Models\productColorVariation;
+use App\Models\productStock;
+use App\Models\variationStock;
+use Validator;
+use Auth;
+use DB;
 class CartController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+
+    public function pc_builder(Request $request) {
+    $carts = session()->get('cart', []);
+
+    // Extract category IDs from the cart items
+    $categoryIdsInCart = [];
+    foreach ($carts as $cartItem) {
+        $categoryIdsInCart[] = $cartItem['category_id'];
+    }
+
+    $PC_Builder = PcBuilder::with('category')->orderBy('serial', 'ASC')->latest()->get();
+
+    return view('frontend.pc_builder.index', compact('PC_Builder', 'carts', 'categoryIdsInCart'));
+}
+
+    public function view_pc_builder(Request $request, $id){
+        $products = Product::join('categories', 'categories.id', 'products.category_id')
+                        ->select('products.*', 'categories.name as cat_name')
+                        ->where('products.category_id', $id)
+                        ->get();
+         $carts = session()->get('cart', []);
+
+
+
+	   $view = view('frontend.pc_builder.product', compact('products','carts'))->render();
+
+	         return response()->json([
+	      'view' => $view,
+	      'id'  => $id
+	    ]);
+
+        // return view('frontend.pc_builder.product', compact('products', 'carts'));
+
+    }
+
     public function index()
     {
         $cart = session()->get('cart', []);
-        // dd($cart);
+    //  dd($cart);
+
         return view('frontend.cart.index', compact('cart'));
+
     }
 
-    
-
-public function store(Request $request)
-{
-    // ✅ Check if user is logged in
-    if (!Auth::check()) {
-        return response()->json([
-            'status' => false,
-            'redirect' => url('login-user'),
-            'msg' => 'You must be logged in to add items to the cart.',
-        ], 401, ['Content-Type' => 'application/json']);
-    }
-    
-
-    $item = Product::findOrFail($request->productId);
-    $productType = $item->product_type;
-
-    $cart = session()->get('cart', []);
-    $productId = $item->id;
-    $variationId = $request->product_variation['id'] ?? null;
-    $variationName = $request->product_variation['name'] ?? null;
-    $totalPrice = $request->finalPrice;
-    $quantity = $request->quantity ?? 1;
-    $flavour = $request->flavour;
-    $freeSides = $request->selectedFreeSides ?? []; // Free sides array
-    $topping = $request->topping;
-    $dip = $request->dip;
-    $proteinName = $request->protein['name'] ?? null;
-    $proteinPrice = $request->protein['price'] ?? 0;
-    $sides = $request->selectedSides ?? [];
-    $image = $item->thumb_image;
-
-    $mappedFreeSides = array_map(function($side) {
-        return is_array($side) && isset($side['name']) ? $side['name'] : $side;
-    }, $freeSides);
-
-    $uniqueOptions = [
-        "product_id" => $productId,
-        "variation_id" => $variationId,
-        "variation_name" => $variationName,
-        "flavour" => $flavour,
-        "freeSides" => $mappedFreeSides,
-        "topping" => $topping,
-        "dip" => $dip,
-        "protein_name" => $proteinName,
-        "protein_price" => $proteinPrice,
-        "sides" => array_map(function($side) { return $side['name']; }, $sides),
-    ];
-
-    $uniqueKey = md5(json_encode($uniqueOptions));
-
-    if ($productType === 'variable') {
-        $cart = $this->updateCartForVariableProduct($cart, $uniqueKey, $request, $item, $totalPrice, $variationId, $flavour, $mappedFreeSides, $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image);
-    } else {
-        $cart = $this->updateCartForSingleProduct($cart, $uniqueKey, $request, $item, $totalPrice, $flavour, $mappedFreeSides, $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image);
-    }
-
-    session()->put('cart', $cart);
-
-    return response()->json([
-        'status' => true,
-        'msg' => 'Product added to cart successfully!',
-    ]);
-}
-
-    
-    private function updateCartForSingleProduct(
-        $cart, $uniqueKey, $request, $item, $totalPrice, $flavour, $freeSides, $topping, $dip,
-        $proteinName, $proteinPrice, $sides, $variationName, $image
-    ) {
-        $quantity = $request->quantity ?? 1;
-    
-        $cart[$uniqueKey] = [
-            'product_id' => $item->id,
-            "name" => $item->name,
-            'image' => $image,
-            "quantity" => isset($cart[$uniqueKey]) ? $cart[$uniqueKey]['quantity'] + $quantity : $quantity,
-            "price" => $totalPrice,
-            "flavour" => $flavour,
-            "freeSides" => $freeSides, // Ensure freeSides is an array
-            "topping" => $topping,
-            "dip" => $dip,
-            "protein_name" => $proteinName,
-            "protein_price" => $proteinPrice,
-            "sides" => $sides,
-            "variation_name" => $variationName
-        ];
-    
-        return $cart;
-    }
-    
-    private function updateCartForVariableProduct(
-        $cart, $uniqueKey, $request, $item, $totalPrice, $variationId, $flavour, $freeSides, 
-        $topping, $dip, $proteinName, $proteinPrice, $sides, $variationName, $image
-    ) {
-        $quantity = $request->quantity ?? 1;
-    
-        $cart[$uniqueKey] = [
-            "product_id" => $item->id,
-            "name" => $item->name,
-            "image" => $image,
-            "quantity" => $quantity,
-            "price" => $totalPrice,
-            "flavour" => $flavour,
-            "freeSides" => $freeSides, // Ensure freeSides is an array
-            "topping" => $topping,
-            "dip" => $dip,
-            "protein_name" => $proteinName,
-            "protein_price" => $proteinPrice,
-            "sides" => $sides,
-            'variation_name' => $variationName,
-            'variation_id' => $variationId
-        ];
-    
-        return $cart;
-    }
-    
-    
-
-    
-
-
-
-
-
-
-    public function update(Request $request, $id)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function pcBuildstore(Request $request)
+    {
+
+        // dd('check');
+
+        $item = Product::findOrFail($request->id);
+
         $cart = session()->get('cart', []);
+
+        $stock = $item->qty - $item->sold_qty;
+        if($stock <= 0 || $stock < $request->quantity)
+        {
+            return response()->json([
+                'status' => false,
+                'msg' => 'Stock not available!'
+                ], 200);
+        }
+
+        if(isset($cart[$request->id]))
+        {
+            if($cart[$request->id]['quantity'] < $stock)
+            {
+                $cart[$request->id]['quantity'] += 1;
+                $cart[$request->id]['variation'] = $request->variation;
+            }
+            else {
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'Stock not available!'
+                    ], 200);
+            }
+
+        }
+
+        else{
+            $price = !empty($item->offer_price) ? $item->offer_price : $item->price;
+            $cart[$request->id] = [
+                'name' => $item ->name,
+                'is_free_shipping' => $item ->is_free_shipping,
+                'category_id' => $item ->category_id,
+                'image' => $item ->thumb_image,
+                'quantity' => $request->quantity,
+                'price' => $price,
+                'coupon_name' => '',
+                'offer_type' => 0,
+                'variation' => $request->variation ?? '',
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+
+
+       return Redirect::route('front.cart.pc.builders');
+    }
+
+    public function store(Request $request)
+    {
+        $item = Product::findOrFail($request->id);
+        if($item->type != 'single') {
+            $customMessages = [
+            
+            'varSize.required' => 'The variation is required.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'varColor' => '',
+            'varSize' => 'required',
+        ], $customMessages);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors(), // Get all validation errors
+                ], 200);
+            }
+        }
+
+        $cart = session()->get('cart', []);
+            $chekckVarSingle = Product::where('id',  $request->id)->first();
+                    
+                    
+                   
+
+        $selectedVariationPrice = null;
+
+        if (!empty($request->variation_price)) {
+            $price = $request->variation_price;
+
+        } else {
+            $price = !empty($item->offer_price) ? $item->offer_price : $item->price;
+        }
+
+         if($item->type == 'single') {
+
+            if (isset($cart[$request->id])) {
+                
+                
+                  
+                    
+                    $cart[$request->id]['quantity'] += 1;
+                    $cart[$request->id]['variation'] = $request->variation;
+                    $cart[$request->id]['price'] = $selectedVariationPrice ?? $cart[$request->id]['price'];
+                
+        } else {
+            
+            $thumbnail_image = 'uploads/custom-images/'.$item->thumb_image;
+            
+            $cart[$request->id] = [
+                'name' => $item->name,
+                'is_free_shipping' => $item->is_free_shipping,
+                
+                'image' => $thumbnail_image,
+                'quantity' => $request->quantity,
+                'price' => $price,
+                // 'discount_price' => $item->discount_price,
+                'discount_price'       => (int)$request->retrieve_discount,
+                'coupon_name' => '',
+                'offer_type' => 0,
+                'variation_size' => null,
+                'variation' => $request->variation,
+                'variation_color' => null,
+              	'variation_id' => $request->varSize,
+              	'size_id' => $request->size_id,
+              	'color_id' => $request->color_id,
+                'variation_size_id' => $request->variation_size_id,
+                'variation_color_id' =>$request->variation_color_id,
+                'type' => $request->pro_type,
+              	'product_id'   => $request->id,
+              	
+            ];
+            // dd($cart);
+        }
+        } else {
+            
+            $variation_id = $request->variation_id;
+            if (isset($cart[$variation_id])) {
+                
+           
+              
+                
+                $cart[$variation_id]['quantity'] += 1;
+                $cart[$variation_id]['variation'] = $request->variation;
+                $cart[$variation_id]['price'] = $selectedVariationPrice ?? $cart[$variation_id]['price'];
+          
+            
+        } else {
+
+                $thumbnail_image = 'uploads/custom-images/'.$item->thumb_image;
+
+                $cart[$variation_id] = [
+                    
+                    'name'                 => $item->name,
+                    'product_id'           => $request->id,
+                    'category_id'          => $item->category_id,
+                    'category_name'          => $item->category->name,
+                    
+                    'price'                => $price,
+                    'discount_price'       => $request->retrieve_discount,
+                    
+                    'variation_id'         => $variation_id,
+                    'variation_size'       => $request->varSize,
+                    'variation_size_id'    => $request->variation_size_id,
+                    'variation_color'      => null,
+                    'variation_color_id'   => null,
+                    
+                    'quantity'             => $request->quantity,
+                    'image'                => !empty($request->image) ? $request->image : $thumbnail_image,
+                    'type'                 => $request->pro_type,
+                   
+                    
+                    'is_free_shipping'     => $item->is_free_shipping,
+                    'coupon_name'          => '',
+                    'offer_type'           => 0,
+                    'check_variation'      => 'yes'
+                ];
+            // dd($cart);
+            /* Cart Array For Variable Product */ 
+        }
+
+    }
+
+
+             //dd($cart);
+        // Store the updated cart back in the session
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'status' => true,
+            'msg' => 'Product added to cart successfully!',
+        ], 200);
+    }
+
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+     public function update(Request $request, $id)
+    {
+        
+        $cart = session()->get('cart', []);
+
         if (isset($cart[$id])) {
+         
             $quantity = $request->input('quantity');
+            // Perform validation if needed, e.g., check stock availability
+
             $cart[$id]['quantity'] = $quantity;
             session()->put('cart', $cart);
-            $totalAmount = $this->calculateTotalAmount($cart);
+
+            $totalAmount = $this->calculateTotalAmount($cart); // Calculate total amount
             return response()->json([
                 'status' => true,
                 'msg' => 'Cart item quantity updated successfully!',
-                'totalAmount' => $totalAmount,
+                'totalAmount' => $totalAmount, // Return updated total amount
             ], 200);
         } else {
             return response()->json([
@@ -165,6 +339,7 @@ public function store(Request $request)
         }
     }
 
+    // Helper method to calculate total amount
     private function calculateTotalAmount($cart)
     {
         $totalAmount = 0;
@@ -174,34 +349,50 @@ public function store(Request $request)
         return $totalAmount;
     }
 
+
+
     public function increaseQty($id)
     {
+        $item = Product::findOrFail($id);
         $cart = session()->get('cart', []);
-        if (isset($cart[$id])) {
-            $newQty = $cart[$id]['quantity'] + 1;
-            $cart[$id]['quantity'] = $newQty;
-            session()->put('cart', $cart);
-            return response()->json([
-                'status' => true,
-                'totalItems' => $this->totalCartItems(),
-                'msg' => 'Item quantity increased!'
-            ], 200);
+        if(isset($cart[$id]))
+        {
+           $newQty = $cart[$id]['quantity'] + 1;
+           if($item->qty < $newQty)
+           {
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'Stock not available!'
+                    ], 200);
+           }
+
+           $cart[$id]['quantity'] =  $newQty;
+           session()->put('cart', $cart);
+
+           return response()->json([
+               'status' => true,
+               'totalItems' => totalCartItems(),
+               'msg' => 'Item quantity increased!'
+           ], 200);
         }
     }
 
     public function decreaseQty($id)
     {
         $cart = session()->get('cart', []);
-        if (isset($cart[$id])) {
-            if ($cart[$id]['quantity'] == 1) {
+        if(isset($cart[$id]))
+        {
+            if($cart[$id]['quantity'] == 1)
+            {
                 unset($cart[$id]);
                 session()->put('cart', $cart);
                 return response()->json([
                     'status' => true,
-                    'totalItems' => $this->totalCartItems(),
+                    'totalItems' => totalCartItems(),
                     'msg' => 'Item has been removed!'
                 ], 200);
-            } else {
+            }
+            else {
                 $cart[$id]['quantity'] -= 1;
                 session()->put('cart', $cart);
                 return response()->json([
@@ -209,40 +400,207 @@ public function store(Request $request)
                     'msg' => 'Item quantity decreased!'
                 ], 200);
             }
+
         }
     }
 
-    public function removeItem($id)
-    {
-        $cart = session()->get('cart', []);
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart', $cart);
-            return response()->json([
-                'status' => true,
-                'totalItems' => $this->totalCartItems(),
-                'msg' => 'Item removed from cart!'
-            ]);
-        }
-    }
-
-    private function totalCartItems()
-    {
-        $cart = session()->get('cart', []);
-        return count($cart);
-    }
-
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $cart = session()->get('cart', []);
-        if (isset($cart[$id])) {
+        if(isset($cart[$id]))
+        {
             unset($cart[$id]);
             session()->put('cart', $cart);
+
             return response()->json([
                 'status' => true,
-                'totalItems' => $this->totalCartItems(),
+                'totalItems' => totalCartItems(),
                 'msg' => 'Item has been removed!',
             ], 200);
         }
+    }
+
+    public function calculateCartTotal($user, $request_coupon, $request_shipping_method_id)
+    {
+        $total_price = 0;
+        $coupon_price = 0;
+        $shipping_fee = 0;
+        $productWeight = 0;
+
+        $cart = session()->get('cart', []);
+
+        if (count($cart) == 0) {
+            $notification = trans("Your shopping cart is empty");
+
+            return response()->json(["status"=>false, "msg" => $notification]);
+        }
+
+        foreach ($cart as $index => $cartProduct) {
+            $variantPrice = 0;
+
+            if (!empty($cartProduct['variation'])) {
+                    $item = ProductVariantItem::find(
+                        $cartProduct['variation']
+                    );
+
+                    if ($item) {
+                        $variantPrice = $item->price;
+                    }
+                }
+
+            $product = Product::select(
+                "id",
+                "price",
+                "offer_price",
+                "weight"
+            )->find($index);
+
+            $price = $product->offer_price
+                ? $product->offer_price
+                : $product->price;
+
+            $price = $variantPrice > 0 ? $variantPrice : $price;
+            $weight = $product->weight;
+            $weight = $weight * $cartProduct['quantity'];
+            $productWeight += $weight;
+            $isFlashSale = FlashSaleProduct::where([
+                "product_id" => $product->id,
+                "status" => 1,
+            ])->first();
+
+            $today = date("Y-m-d H:i:s");
+
+            if ($isFlashSale) {
+                $flashSale = FlashSale::first();
+                if ($flashSale->status == 1) {
+                    if ($today <= $flashSale->end_time) {
+                        $offerPrice = ($flashSale->offer / 100) * $price;
+
+                        $price = $price - $offerPrice;
+                    }
+                }
+            }
+
+            $price = $price * $cartProduct['quantity'];
+            $total_price += $price;
+        }
+
+
+        // calculate coupon coast
+
+        if ($request_coupon) {
+            $coupon = Coupon::where([
+                "code" => $request_coupon,
+                "status" => 1,
+            ])->first();
+
+
+            if ($coupon) {
+                if ($coupon->expired_date >= date("Y-m-d")) {
+                    if ($coupon->apply_qty < $coupon->max_quantity) {
+                        if ($coupon->offer_type == 1) {
+                            $couponAmount = $coupon->discount;
+
+                            $couponAmount =
+                                ($couponAmount / 100) * $total_price;
+                        } elseif ($coupon->offer_type == 2) {
+                            $couponAmount = $coupon->discount;
+                        }
+
+                        $coupon_price = $couponAmount;
+                        $qty = $coupon->apply_qty;
+                        $qty = $qty + 1;
+                        $coupon->apply_qty = $qty;
+                        $coupon->save();
+                    }
+                }
+            }
+
+        }
+
+        $shipping = Shipping::find($request_shipping_method_id);
+
+        if (!$shipping) {
+            return response()->json(
+                ["message" => trans("Shipping method not found")],
+                403
+            );
+        }
+
+        if ($shipping->shipping_fee == 0) {
+            $shipping_fee = 0;
+        } else {
+            $shipping_fee = $shipping->shipping_fee;
+        }
+
+        $total_price = $total_price - $coupon_price + $shipping_fee;
+
+        $total_price = str_replace(
+            ['\'', '"', ",", ";", "<", ">"],
+            "",
+            $total_price
+        );
+
+        $total_price = number_format($total_price, 2, ".", "");
+
+        $arr = [];
+        $arr["total_price"] = $total_price;
+        $arr["coupon_price"] = $coupon_price;
+        $arr["shipping_fee"] = $shipping_fee;
+        $arr["shipping"] = $shipping;
+        return $arr;
+}
+
+    public function applyCoupon(Request $request)
+    {
+        $data = $request->validate([
+            'code' => ['required', 'exists:coupons'],
+        ]);
+
+        $shipping_id = $request->shipping_id;
+
+        $coupon = Coupon::where(['code' => $request->code, 'status' => 1])->first();
+
+        if(!$coupon){
+            return response()->json([
+                'status' => false,
+                'msg' => 'Coupon not found!',
+            ]);
+        }
+
+        if($coupon->expired_date < date('Y-m-d')){
+            return response()->json([
+                'status' => false,
+                'msg' => 'Coupon already expired!',
+            ]);
+        }
+
+        if($coupon->apply_qty >=  $coupon->max_quantity ){
+            $notification = trans('Sorry! You can not apply this coupon');
+            return response()->json(['message' => $notification],403);
+        }
+
+        $user = Auth::user();
+
+        $total = $this->calculateCartTotal(
+            $user,
+            $coupon->code,
+            $shipping_id
+        );
+
+        session()->put('coupon', $coupon);
+        return response()->json([
+            'status' => true,
+            'msg' => 'Coupon has been applied',
+            'coupon' => $coupon,
+            'total_price' => $total['total_price']
+            // 'coupon_price' => $total['coupon_price']
+        ]);
     }
 }

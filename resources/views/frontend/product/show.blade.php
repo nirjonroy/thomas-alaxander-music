@@ -68,42 +68,42 @@
           <h1 style="font-size:14pt">{{$product->name}}</h1>
 
           @if($product->type == 'variable') <h6 id="select_size">Select Size : </h6> @else @endif
-          @if($product->type == 'variable')
+               @if($product->type == 'variable')
 
-          @if(count($product->variations))
+               @if(count($product->variations))
 
-          <div class="sizes" id="sizes" style="margin-bottom: 5px;">
-             @foreach($product->variations as $v)
-             @if(!empty($v->size->title))
-             <div class="size" data-proid="{{ $v->product_id }}" data-varprice="{{ $v->sell_price }}" data-varsize="{{ $v->size->title }}"
-                value="{{$v->id}}" data-varSizeId="{{$v->size_id}}">
-                @if($v->size->title == 'free')
-                {{ $v->size->title }}
-                <input type="hidden" id="size_value" name="variation_id">
-                <input type="hidden" id="size_variation_id" name="size_variation_id">
-                <input type="hidden" name="pro_price" id="pro_price">
-                <input type="hidden" name="variation_size_id" id="variation_size_id">
-                @else
-                {{ $v->size->title }}
-                <input type="hidden" id="size_value" name="variation_id">
-                <input type="hidden" id="size_variation_id" name="size_variation_id">
-                <input type="hidden" name="pro_price" id="pro_price">
-                <input type="hidden" name="variation_size_id" id="variation_size_id">
-                @endif
-             </div>
-             @else
-             Size Not Available
-             @endif
-             @endforeach
-          </div>
-          @else
-          <input type="hidden" id="size_value" name="variation_id" value="free">
-          <input type="text" name="variation_size_id" id="variation_size_id" value="1">
-          @endif
-          @else
-          <input type="hidden" id="size_value" name="variation_id" value="free">
-          <input type="hidden" name="variation_size_id" id="variation_size_id" value="1">
-          @endif
+               <div class="sizes" id="sizes" style="margin-bottom: 5px;">
+                  @foreach($product->variations as $v)
+                  @if(!empty($v->size->title))
+                  <div class="size" data-proid="{{ $v->product_id }}" data-varprice="{{ $v->sell_price }}" data-varsize="{{ $v->size->title }}"
+                     value="{{$v->id}}" data-varSizeId="{{$v->size_id}}">
+                     @if($v->size->title == 'free')
+                     {{ $v->size->title }}
+                     <input type="hidden" id="size_value" name="variation_id">
+                     <input type="hidden" id="size_variation_id" name="size_variation_id">
+                     <input type="hidden" name="pro_price" id="pro_price">
+                     <input type="hidden" name="variation_size_id" id="variation_size_id">
+                     @else
+                     {{ $v->size->title }}
+                     <input type="hidden" id="size_value" name="variation_id">
+                     <input type="hidden" id="size_variation_id" name="size_variation_id">
+                     <input type="hidden" name="pro_price" id="pro_price">
+                     <input type="hidden" name="variation_size_id" id="variation_size_id">
+                     @endif
+                  </div>
+                  @else
+                  Size Not Available
+                  @endif
+                  @endforeach
+               </div>
+               @else
+               <input type="hidden" id="size_value" name="variation_id" value="free">
+               <input type="text" name="variation_size_id" id="variation_size_id" value="1">
+               @endif
+               @else
+               <input type="hidden" id="size_value" name="variation_id" value="free">
+               <input type="hidden" name="variation_size_id" id="variation_size_id" value="1">
+               @endif
           
           @if($product->type == 'single')
         @if($product->download_type == 'free')
@@ -136,6 +136,16 @@
       @endif
         <br>
         <br>
+        <div class="qty-btn-box mt-3 col-4">
+                     <div class="qty-box mb-2" >
+                        <p>Queantity: </p>
+                        <input type="number" min="1" name="quantity" id="quantity" value="1" class="form-control font-20 rounded-0 shadow-none qty" style="background: #f66326; color: white; font-weight: bold; text-align: center;">
+                        
+                     </div>
+                  </div>
+
+        <br>
+        <br>          
         @guest
         <a href="#" class="add_cart mt-4 add-to-cart " style="background: green; color: black; padding: 5px; font-weight: bold;" data-id="{{ $product->id }}"
         data-url="{{ route('front.cart.store') }}" onclick="alert('Please login first')">Order Now</a>
@@ -202,213 +212,350 @@
 
 @endsection
 @push('js')
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script
-    src="
-     https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js
-     "></scri < script src = "https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" ></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="
+   https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js
+   "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+<script src="https://www.jqueryscript.net/demo/magnify-image-hover-touch/dist/jquery.izoomify.js"></script>
+<script>
+   $(document).ready(function () {
+       $('.buy-now').on('click', function (e) {
+           e.preventDefault();
 
-  <script>
-    function showToasterMessage(message, type) {
-      toastr.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: "toast-top-right",
-      timeOut: 8000 // Display time in milliseconds
-      };
+           let variation_id = $('#size_variation_id').val();
+           let variation_size = $('#size_value').val();
+           let variation_color = $('#color_value').val();
+           let variation_price = $('#pro_price').val();
+           var productId = $(this).attr('href').split('/').pop();
+           
+           var proQty = $('#quantity').val();
+           let variation_size_id = $('input[name="variation_size_id"]').val();
+        
+           let variation_color_id = $('input[name="variation_color_id"]').val();
+           var retrieve_discount = $('input[id="retrieve_discount"]').val();
+          
+           let image = $('input#pro_img').val();
+           let pro_type = $('input#type').val();
+          
+           var addToCartUrl = $(this).data('url');
+           var checkoutUrl = "{{ route('front.cart.index') }}";
+           var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-      toastr[type](message);
-    }
-  </script>
-  <script>
-    $(document).ready(function () {
-    let basePrice = parseFloat($('#price_val').val()) || 0; // Initial base price from product
+           // Include CSRF token in AJAX request headers
+           $.ajaxSetup({
+               headers: {
+                   'X-CSRF-TOKEN': csrfToken
+               }
+           });
 
-    // Function to calculate total price
-    function calculateTotalPrice() {
-      let sidesPrice = 0;
-      let proteinPrice = 0;
-      let finalPrice = basePrice; // Start with the base price
-      let quantity = parseInt($('#quantity').val()) || 1;
+           // Perform AJAX request to add the product to the cart
+           $.post(addToCartUrl,
+           {
+               id              : productId,
+               quantity        : proQty,
+               variation_id    : variation_id,
+               varSize         : variation_size,
+               varColor        : variation_color,
+               variation_price : variation_price,
+               variation_size_id : variation_size_id,
+               variation_color_id : variation_color_id,
+               retrieve_discount : retrieve_discount,
+               image          : image,
+               pro_type       : pro_type
+           },
 
-      // For premium sides (additional cost)
-      const selectedPremiumSideCheckboxes = $('.side-checkbox2:checked');
-      selectedPremiumSideCheckboxes.each(function () {
-      sidesPrice += parseFloat($(this).data('price')) || 0;
+           function (response) {
+
+               if(response.status)
+               {
+                   toastr.success(response.msg);
+                   // Redirect to checkout page after adding to cart
+                   window.location.href = "{{ route('front.checkout.index') }}";
+               } else {
+            // Check if the response contains validation errors
+            if (response.errors) {
+                for (var field in response.errors) {
+                    if (response.errors.hasOwnProperty(field)) {
+                        for (var i = 0; i < response.errors[field].length; i++) {
+                            toastr.error(response.errors[field][i]);
+                        }
+                    }
+                }
+            } else {
+                toastr.error(response.msg || 'An error occurred while processing your request.');
+            }
+        }
+
+           });
+       });
+   });
+
+</script>
+<script>
+   $(document).ready(function () {
+       $('.increase-qty').on('click', function () {
+           var qtyInput = $(this).siblings('.qty');
+           var newQuantity = parseInt(qtyInput.val()) + 1;
+           qtyInput.val(newQuantity);
+       });
+
+       $('.decrease-qty').on('click', function () {
+           var qtyInput = $(this).siblings('.qty');
+           var newQuantity = parseInt(qtyInput.val()) - 1;
+           if (newQuantity > 0) {
+               qtyInput.val(newQuantity);
+           }
+         else{
+
+         }
+       });
+   });
+
+
+</script>
+<script>
+   $(function () {
+
+      $(document).on('click', '.add-to-cart', function (e) {
+
+          let variation_id = $('#size_variation_id').val();
+          let variation_size = $('#size_value').val();
+          let variation_size_id = $('input[name="variation_size_id"]').val();
+          let variation_color = $('#color_value').val();
+          let variation_color_id = $('input[name="variation_color_id"]').val();
+          let variation_price = $('#pro_price').val();
+          var quantity = $('#quantity').val();
+          let image = $('input#pro_img').val();
+          let pro_type = $('input#type').val();
+          
+          
+          let proName=$('input[name="product_name"]').val();
+          let proId=$('input[name="product_id"]').val();
+          let catId=$('input[name="category_id"]').val();
+          
+          window.dataLayer = window.dataLayer || [];
+
+        	dataLayer.push({ecommerce:null});
+                dataLayer.push({
+                    event: "add_to_cart",
+                    ecommerce : {
+                        currency: "BDT",
+                        value: variation_price,
+                        items: [
+                            {
+                              item_id: proId,
+                              item_name: proName,
+                              item_category: catId,
+                              price: variation_price,
+                              quantity: quantity
+                            }
+                        ]
+                    }
+            });
+          
+
+          let id = $(this).data('id');
+          let url = $(this).data('url');
+
+          addToCart(url, id,variation_size, variation_color, variation_id,variation_price,quantity, variation_size_id, variation_color_id,image,pro_type,type="");
       });
+     
 
-      // For free sides, no additional cost
-      const selectedFreeSideCheckboxes = $('.side-checkbox:checked');
-      selectedFreeSideCheckboxes.each(function () {
-      // No price addition for free sides
-      });
+      function addToCart(url, id, varSize ="", varColor = "", variation_id="",variation_price="",quantity, variation_size_id, variation_color_id,image="", pro_type,type="") {
+          var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-      // Get the selected product variation price (replace base price if variation is selected)
-      const selectedProductVariation = $('.variation-radio:checked');
-      if (selectedProductVariation.length) {
-      finalPrice = parseFloat(selectedProductVariation.data('price')) || basePrice;
+          $.ajax({
+              type: "POST",
+              url: url,
+              headers: {
+                  'X-CSRF-TOKEN': csrfToken
+              },
+              data: { id,varSize,varColor,variation_id, variation_price,quantity, variation_size_id,  variation_color_id,image,pro_type},
+             success: function (res) {
+                
+                  if (res.status) {
+                      toastr.success(res.msg);
+            if (type) {
+               
+                if (res.url !== '') {
+                    document.location.href = res.url;
+                } else {
+                    alert('no');
+                    // Handle specific case
+                }
+            } else {
+                window.location.reload();
+            }
+        } else {
+            // Check if the response contains validation errors
+            if (res.errors) {
+                for (var field in res.errors) {
+                    if (res.errors.hasOwnProperty(field)) {
+                        for (var i = 0; i < res.errors[field].length; i++) {
+                            toastr.error(res.errors[field][i]);
+                        }
+                    }
+                }
+            } else {
+                toastr.error(res.msg || 'An error occurred while processing your request.');
+            }
+        }
+
+              },
+              error: function (xhr, status, error) {
+                  toastr.error('An error occurred while processing your request.');
+              }
+          });
       }
 
-      // Get the selected protein price (add to the final price)
-      const selectedProtein = $('.protein-radio:checked');
-      if (selectedProtein.length) {
-      proteinPrice = parseFloat(selectedProtein.data('price')) || 0;
-      }
+      // ... other functions ...
 
-      // Add sides and protein prices to the final price
-      finalPrice = (finalPrice + sidesPrice + proteinPrice) * quantity;
 
-      // Update the displayed price and hidden input value
-      $('#final_price').text(finalPrice.toFixed(2)); // Update the displayed price
-      $('#price_val').val(finalPrice); // Update hidden input value
-    }
+   });
 
-    // Limit free side selection to two for free sides
-    $('.side-checkbox').on('change', function () {
-      const selectedCheckboxes = $('.side-checkbox:checked');
 
-      // If more than 2 free sides are selected, uncheck the last one and show an alert
-      if (selectedCheckboxes.length > 2) {
-      $(this).prop('checked', false); // Uncheck the last checkbox if more than 2 are selected
-      alert('You can only select two free sides.');
-      }
 
-      // Recalculate the price after enforcing the two-sides limit
-      calculateTotalPrice();
-    });
+   $(document).ready(function() {
+       
+            var firstSizeElement = $('#sizes .size:first');
+            var firstColorElement = $('#colors .color:first');
+            firstSizeElement.click();
+            firstColorElement.click();
+       
+              $('.popup-link').magnificPopup({
+                  type: 'image', // Set the content type to 'image'
+                  gallery: {
+                      enabled: true // Enable gallery mode
+                  }
+              });
+          });
 
-    // Event listeners to recalculate price for premium sides, product variations, and proteins
-    $('.side-checkbox2').on('change', calculateTotalPrice); // For premium sides
-    $('.variation-radio').on('change', calculateTotalPrice); // For product variations
-    $('.protein-radio').on('change', calculateTotalPrice); // For proteins
+   $('#sizes .size').on('click', function(){
+      $('#sizes .size').removeClass('active');
+      $(this).addClass('active');
+      let value = $(this).attr('value');
+      let varSize = $(this).data('varsize');
+      let variation_size_id = $(this).data('varsizeid');
+      //  alert(variation_size_id);
+      $('#select_size').text('Select Size : '+varSize);
+      
+      var retrieve_price = $('input[id="retrieve_price"]').val();
 
-    // Quantity update
-    $('.increase-qty, .decrease-qty').on('click', function () {
-      let qtyInput = $(this).siblings('.qty');
-      let newQuantity = parseInt(qtyInput.val());
-      newQuantity = $(this).hasClass('increase-qty') ? newQuantity + 1 : newQuantity - 1;
-      if (newQuantity < 1) newQuantity = 1; // Avoid going below 1
-      qtyInput.val(newQuantity);
-      calculateTotalPrice(); // Update price with new quantity
-    });
+      // Assuming you have retrieved the selected variation price somehow
+      let variationPrice = parseFloat($(this).data('varprice'));
 
-    // Add to cart functionality
-    $(document).on('click', '.add-to-cart', function (e) {
-      e.preventDefault();
-
-      // Gather selected options
-      let productId = $(this).data('id');
-      let cartUrl = $(this).data('url');
-      let selectedSides = [];
-      let selectedFreeSides = [];
-      let quantity = parseInt($('#quantity').val()) || 1;
-
-      // Collect selected premium sides (with additional cost)
-      $('input[name="side[]"]:checked').each(function () {
-      selectedSides.push({
-        name: $(this).data('name'),
-        price: $(this).data('price')
-      });
-      });
-
-      // Collect selected free sides (without additional cost)
-      $('input[name="freeSides[]"]:checked').each(function () {
-      selectedFreeSides.push($(this).data('name'));
-      });
-
-      // Collect other attributes like protein, flavour, topping, etc.
-      let flavour = $('input[name="flavour"]:checked').val() || null;
-      let topping = $('input[name="topping"]:checked').val() || null;
-      let dip = $('input[name="dip"]:checked').val() || null;
-
-      let selectedProtein = $('.protein-radio:checked').data('name') || null;
-      let proteinPrice = $('.protein-radio:checked').data('price') || 0;
-
-      let selectedProductVariation = $('.variation-radio:checked');
-      let productVariationId = selectedProductVariation.attr('id') ? selectedProductVariation.attr('id').replace('variation', '') : null;
-      let productVariationName = selectedProductVariation.data('name') || null;
-      let productVariationPrice = selectedProductVariation.data('price') || 0;
-
-      let cheese = $('input[name="cheese"]:checked').val() || null;
-      let veggies = [];
-      $('input[name="vaggi"]:checked').each(function () {
-      veggies.push($(this).val());
-      });
-
-      let sauce = $('input[name="sauce"]:checked').val() || null;
-
-      // Get the final calculated price (with proteins, sides, and product variations)
-      let finalPrice = $('#price_val').val(); // Get the calculated final price from the hidden input
-
-      // Add to cart via AJAX
       $.ajax({
-      type: "POST",
-      url: cartUrl,
-      headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-      data: {
-        productId,
-        quantity,
-        finalPrice,
-        selectedSides,
-        selectedFreeSides, // Add free sides to data payload
-        flavour,
-        topping,
-        dip,
-        protein: {
-        name: selectedProtein,
-        price: proteinPrice
-        },
-        product_variation: {
-        id: productVariationId,
-        name: productVariationName,
-        price: productVariationPrice
-        },
-        cheese,
-        veggies,
-        sauce
-      },
-
-      success: function (res) {
-        if (res.status) {
-        toastr.success(res.msg);
-        alert('Added to cart');
-        if (res.url) {
-          window.location.href = res.url;
-        } else {
-          location.reload();
-        }
-        } else {
-        toastr.error(res.msg || 'Something went wrong');
-        }
-      },
-      error: function () {
-        toastr.error('An error occurred while adding to cart.');
-      }
+          type: 'get',
+          url: '{{ route("front.product.get-variation_price") }}',
+          data: {
+              varSize,value,
+              variationPrice,
+              variation_size_id
+          },
+          success: function(res) {
+              $('.current-price-product').text('' + res.price);
+              $('#size_value').val();
+              $('#variation_size_id').val();
+              $('#price_val').val(res.price);
+              $('#pro_price').val(res.price);
+              
+              var retrieve_discount = Number(retrieve_price) - Number(res.price);
+              $('input[id="retrieve_discount"]').val(retrieve_discount);
+              $('span#dis_amount').text(retrieve_discount);
+              console.log(res);
+          }
       });
-    });
-    });
+
+      $("#size_value").val(varSize);
+      $("#size_variation_id").val(value);
+      $("#variation_size_id").val(variation_size_id);
+   });
 
 
+   let imageClick = false;
+
+   $('#colors .color').on('click', function(){
+      $('#colors .color').removeClass('active');
+      $(this).addClass('active');
+      let value = $(this).attr('value');
+      let varColor = $(this).data('varcolor');
+      let product_id = $(this).data('proid');
+      let color_id = $(this).data('colorid');
+      let variation_color_id = $(this).data('variationcolorid');
+      let variation_size_id = $('input[name="variation_size_id"]').val();
+    //   alert(product_id);
+
+      $('#select_color').text('Select Color : '+varColor);
+
+      // Assuming you have retrieved the selected variation price somehow
+      let variationColor = parseFloat($(this).data('varcolor'));
+
+      $.ajax({
+          type: 'get',
+          url: '{{ route("front.product.get-variation_color") }}',
+          data: {
+              varColor,
+            	value,
+              variationColor,
+            	product_id,
+              color_id,
+              variation_color_id,
+              variation_size_id
+            // Pass variation price to the server
+          },
+          success: function(res) {
+              //$('.current-price-product').text('' + res.price);
+            	$('.testslide-image').html(res.var_images);
+                $('input[name="pro_img"]').val(res.pro_img);
+            	$('#color_value').val();
+              //$('#price_val1').val(res.price);
+              console.log(res);
+              imageClick = true;
+              
+            if(res.stock != '0' ){
+                $('p.stock_check').text('');
+                
+            }              
+            else{
+                
+                 $('p.stock_check').text('Stock not available');
+            }
+              
+              
+          }
+      });
+
+      $("#color_value").val(varColor);
+      $("#color_value1").val(value);
+      $("#variation_color_id").val(variation_color_id);
+   });
+
+   $(document).on('click', '.slider-container', function() {
+      if (imageClick) {
+
+      }
+   });
 
 
+   // JavaScript function to change the big image
+    function changeImage(imageUrl) {
+
+        document.getElementById('big-image').src = imageUrl;
+    }
 
 
+    function changeImage(newImageSrc) {
+        // Get the "big-image" element by its ID
+        var bigImage = document.getElementById("big-image");
+
+        // Update the source of the big image with the new image source
+        bigImage.src = newImageSrc;
+    }
+    $(document).ready(function () {
+            $('.testslide-image').izoomify();
+        });
 
 
-
-
-
-
-
-
-  </script>
-
-
-
-
-
-
-
-
-
+</script>
 @endpush
