@@ -16,7 +16,7 @@
           <div class="ms_noti_wrap">
               <span class="noti_icon bg_cmn_iconwrap">
                 <a href="{{route('front.cart.index')}}">
-                    <i class="bg_cmn_icon"></i>
+                    <i class="fa-solid fa-cart-shopping"></i>
                     <sup>{{ totalCartItems() }} {{ totalCartItems() > 1 ? '' : '' }}</sup>
                 </a>    
             </span>

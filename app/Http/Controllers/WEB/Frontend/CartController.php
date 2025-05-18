@@ -146,6 +146,15 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
+         if (!Auth::check()) {
+        return response()->json([
+            'status' => false,
+            'redirect' => url('login-user'),
+            'msg' => 'You must be logged in to add items to the cart.',
+        ], 401, ['Content-Type' => 'application/json']);
+    }
+    
+    
         $item = Product::findOrFail($request->id);
         if($item->type != 'single') {
             $customMessages = [
