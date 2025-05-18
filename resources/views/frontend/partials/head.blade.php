@@ -7,8 +7,8 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Music">
-    <meta name="keywords" content="">
+    
+    <meta name="keywords" content="thomas, alexander, music, t-shirt">
     <meta name="author" content="Thomas Alexander">
     <meta name="MobileOptimized" content="320">
     <!--Start Style -->
@@ -26,7 +26,11 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/player/volume.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/scroll/jquery.mCustomScrollbar.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/style.css') }}">
-
+@php
+    $seo = DB::table('settings')->first();
+     $SeoSettings = DB::table('seo_settings')->where('id', 1)->first();
+    @endphp
+    @yield('seos')
     <!-- Favicon Link -->
     <link rel="shortcut icon" type="image/png" href="{{$settings->favicon}}">
 </head>

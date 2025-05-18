@@ -1,6 +1,32 @@
 @extends('frontend.app')
 @section('title', 'Music List')
+@section('seos')
 
+
+    <meta charset="UTF-8">
+
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+    <meta name="title" content="{{$product->name}}">
+
+    <meta name="description" content="{{$product->long_description}}">
+    <link rel="canonical" href="">
+    <meta property="og:title" content="{{$product->name}}">
+    <meta property="og:description" content="{{$product->long_description}}">
+    <meta property="og:url" content="{{url()->current()}}">
+    <meta property="og:site_name" content="{{$product->name}}">
+
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628">
+    <meta property="article:modified_time" content="2023-03-01T12:33:34+00:00">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="">
+    <meta name="twitter:image" content="">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+@endsection
 @section('content')
 
 <style>
