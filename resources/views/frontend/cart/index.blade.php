@@ -153,7 +153,7 @@ $totalAmount = 0 ;
                     @endforelse
     
                     @if($totalAmount > 0)
-                        @php $tax = $totalAmount + 0.00; @endphp
+                        @php $tax = $totalAmount + 9.50; @endphp
     
                         <!-- Summary -->
                         <div class="card p-4 border-0 border-bottom mb-4">
@@ -161,11 +161,16 @@ $totalAmount = 0 ;
                                 <span class="small text-muted mb-4 pb-2 song_name small">Subtotal</span>
                                 <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount, 2) }}</span>
                             </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="small text-muted mb-4 pb-2 song_name small">Shipping Charge</span>
+                                <span class="small text-muted mb-4 pb-2 song_name small">$9.5</span>
+                            </div>
                             
                             <hr>
                             <div class="d-flex justify-content-between">
                                 <span class="small text-muted mb-4 pb-2 song_name small">Total</span>
-                                <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount , 2) }}</span>
+                                <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount + 9.5 , 2) }}</span>
                             </div>
                         </div>
     

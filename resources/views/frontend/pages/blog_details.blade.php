@@ -25,8 +25,8 @@
     <meta property="og:image:height" content="628">
     <meta property="article:modified_time" content="2023-03-01T12:33:34+00:00">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="">
-    <meta name="twitter:image" content="">
+    <meta name="twitter:url" content="{{url()->current()}}">
+    <meta name="twitter:image" content="{{ asset($blog->image) }}">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
@@ -60,7 +60,7 @@
     <div class="container my-4">
       <div
         class="w-100 rounded mx-auto bg-white mb-5"
-        style="background-image: url('{{ asset($blog->image) }}'); background-size: cover; background-position: center; height: 400px; max-height: 650px;"
+        style="background-image: url('{{ asset($blog->image) }}'); background-size: cover; background-position: center; height: 400px; max-height: 500px;"
       >
       </div>
     </div>
