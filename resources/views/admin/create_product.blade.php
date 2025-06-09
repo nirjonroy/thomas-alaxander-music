@@ -41,6 +41,11 @@
                                     <input type="file" name="song" class="form-control-file">
                                 </div>
 
+                                <div class="form-group col-4">
+                                    <label> Demo Song<span class="text-danger">*</span></label>
+                                    <input type="file" name="demo_song" class="form-control-file">
+                                </div>
+
 
                                 {{-- <div class="form-group col-4">
                                     <label>upload images <span class="text-danger">*</span></label>

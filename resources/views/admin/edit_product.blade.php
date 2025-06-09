@@ -50,8 +50,12 @@
                                                 <source src="{{ asset( $product->music) }}" type="audio/mpeg">
                                                 Your browser does not support the audio tag.
                                             </audio>
-                                                                           <label>Upload Music<span class="text-danger">*</span></label>
+                                           <label>Upload Music<span class="text-danger">*</span></label>
                                             <input type="file" name="song" class="form-control-file">
+
+                                            <label>Upload Demo Music<span class="text-danger">*</span></label>
+                                            <input type="file" name="demo_song" class="form-control-file">
+
                                         </div>
                                         <div class="form-group col-6">
                                             @foreach($product->gallery as $key => $pGImg)

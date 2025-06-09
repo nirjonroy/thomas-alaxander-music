@@ -138,7 +138,7 @@
         </audio>
       @else
         <audio controls>
-        <source src="...." type="audio/mpeg">
+        <source src="{{ asset($product->demo_song) }}" type="audio/mpeg">
         </audio>
       @endif
       @endif

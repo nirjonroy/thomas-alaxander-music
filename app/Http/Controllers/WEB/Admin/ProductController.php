@@ -148,7 +148,8 @@ class ProductController extends Controller
             'weight' => '',
             'video_link' => '',
             'quantity' => '',
-            'song' => '', // Accept MP3, WAV, OGG up to 20MB
+            'song' => 'nullable|mimes:mp3,wav,ogg|max:20480', // 20MB
+    'demo_song' => 'nullable|mimes:mp3,wav,ogg|max:20480',
         ];
     
         $customMessages = [
@@ -161,6 +162,9 @@ class ProductController extends Controller
             'song.required' => trans('admin_validation.Song file is required'),
             'song.mimes' => trans('admin_validation.Invalid file format (Allowed: MP3, WAV, OGG)'),
             'song.max' => trans('admin_validation.Song file must be less than 20MB'),
+            'demo_song.mimes' => trans('admin_validation.Invalid file format (Allowed: MP3, WAV, OGG)'),
+'demo_song.max' => trans('admin_validation.Song file must be less than 20MB'),
+
         ];
     
         $this->validate($request, $rules, $customMessages);
@@ -185,6 +189,28 @@ class ProductController extends Controller
             $product->thumb_image = $image_name;
         }
     
+        // Handle demo song file upload
+if ($request->hasFile('demo_song')) {
+    $demoSong = $request->file('demo_song');
+
+    if (!$demoSong->isValid()) {
+        return back()->withErrors(['demo_song' => 'Invalid demo song file!']);
+    }
+
+    $demoSongName = Str::slug($request->name) . '-demo-' . time() . '.' . $demoSong->getClientOriginalExtension();
+    $demoSongPath = public_path('uploads/songs/');
+
+    if (!file_exists($demoSongPath)) {
+        mkdir($demoSongPath, 0777, true);
+    }
+
+    $demoSong->move($demoSongPath, $demoSongName);
+
+    // Save demo song path
+    $product->demo_music = 'uploads/songs/' . $demoSongName;
+}
+
+
         $discount_price = '';
         if ($request->offer_price != null) {
             $discount_price = $request->price - $request->offer_price;
@@ -488,6 +514,18 @@ class ProductController extends Controller
                 if(File::exists(public_path().'/uploads/main-image/'.$old_thumbnail))unlink(public_path().'/uploads/main-image/'.$old_thumbnail);
             }
         }
+
+        if ($request->hasFile('demo_song')) {
+    $demo_song = $request->file('demo_song');
+    if (!$demo_song->isValid()) {
+        return back()->withErrors(['demo_song' => 'Invalid demo song file!']);
+    }
+    $song_name = Str::slug($request->name) . '-demo-' . time() . '.' . $demo_song->getClientOriginalExtension();
+    $song_path = public_path('uploads/demo_song/');
+    if (!file_exists($song_path)) mkdir($song_path, 0777, true);
+    $demo_song->move($song_path, $song_name);
+    $product->demo_song = 'uploads/demo_song/' . $song_name;
+}
 
 
         // $product->short_name = $request->short_name;

@@ -179,7 +179,7 @@
                                                 <div class="songslist_number">
                                                     <h4 class="songslist_sn">{{++$key}}</h4>
                                                     <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
+                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                 </div>
                                                 <div class="songslist_details">
                                                     <div class="songslist_thumb">
