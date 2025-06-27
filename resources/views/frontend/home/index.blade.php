@@ -498,33 +498,38 @@
 <div class="container my-4 event-content">
     <div class="row">
         <h1 style="text-align: center; margin-bottom: 10px;"><u>Recent Event's</u></h1>
-        @forelse($events as $product)
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                <div class="event-card">
-                    <div class="event-map">
-                        @if(!empty($product->image))
-                            <img src="{{ asset('uploads/events/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid">
-                        @else
-                            <iframe 
-                                src="https://www.google.com/maps?q={{ urlencode($product->location) }}&output=embed" 
-                                allowfullscreen 
-                                frameborder="0">
-                            </iframe>
-                        @endif
-                    </div>
-                    <div class="event-content">
-                        <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
-                        <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
-                        <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>
-                        <div class="event-info"><i class="fa fa-calendar-alt"></i> {{ $product->date }} {{ $product->time }}</div>
-                    </div>
-                </div>
+           @forelse($events as $product)
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+        <div class="event-card">
+            <div class="event-map">
+                @if(!empty($product->image))
+                    <img src="{{ asset('uploads/custom-images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid w-100" style="height: 150px; object-fit: cover;"
+                    onclick="showEventImage('{{ asset('uploads/custom-images/' . $product->image) }}')"
+                    >
+                @else
+                    <iframe 
+                        src="https://www.google.com/maps?q={{ urlencode($product->location) }}&output=embed" 
+                        allowfullscreen 
+                        width="100%" 
+                        height="150" 
+                        frameborder="0" 
+                        style="border:0;">
+                    </iframe>
+                @endif
             </div>
-        @empty
-            <div class="text-center text-danger">
-                <strong>No events are available</strong>
+            <div class="event-content">
+                <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
+                <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
+                <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>
+                <div class="event-info"><i class="fa fa-calendar-alt"></i> {{ $product->date }} {{ $product->time }}</div>
             </div>
-        @endforelse
+        </div>
+    </div>
+@empty
+    <div class="text-center text-danger">
+        <strong>No events are available</strong>
+    </div>
+@endforelse
     </div>
 </div>
 
