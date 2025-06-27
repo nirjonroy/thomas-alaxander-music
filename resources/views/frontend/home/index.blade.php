@@ -34,9 +34,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
 @section('content')
-@php
-    $sliders = DB::table('sliders')->get();
-@endphp
+
 
 <style>
     .slider-img {

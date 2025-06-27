@@ -22,109 +22,61 @@ use DB;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        
-        // dd($slider);
-        $offer = AboutUs::find('2');
-        $feateuredCategories = featuredCategories();
-         $popularCats = popularCategories();
-    $popularProducts = [];
+    
 
-    foreach ($popularCats as $pCats) {
-        $poProducts = Product::where('category_id', $pCats->category_id)->limit(12)->latest()->get();
-        $popularProducts[$pCats->category_id] = $poProducts;
-    }
-    // dd($poProducts);
-        // dd($popularCats);
-        // dd($feateuredCategories);
-        $products = Product::with(['category', 'subCategory', 'childCategory'])
-                    ->where('type', 'single')
-                    ->latest()
-                    ->take(24)
-                    ->get();
+public function index()
+{
+    $now = Carbon::now();
 
-        
-        $top_picks = Product::with(['category', 'subCategory', 'childCategory'])
-                                        ->where('today_special', 1)
-                                        ->where('type', 'single')
-                                        ->latest()
-                                        ->take(24)
-                                        ->get();
-        $tranding_songs = Product::with(['category', 'subCategory', 'childCategory'])
-                                        ->where('tranding_songs', 1)
-                                        ->where('type', 'single')
-                                        ->latest()
-                                        ->take(24)
-                                        ->get();
+    $sliders = Slider::where('status', 1)
+        ->orderBy('serial', 'asc')
+        ->get();
 
-        $physical_product = Product::with(['category', 'subCategory', 'childCategory'])
-                                        
-                                        ->where('type', 'variable')
-                                        ->latest()
-                                        ->take(24)
-                                        ->get();
+    $products = Product::with(['category', 'subCategory', 'childCategory'])
+        ->where('type', 'single')
+        ->latest()
+        ->take(24)
+        ->get();
 
+    $top_picks = Product::with(['category', 'subCategory', 'childCategory'])
+        ->where([
+            ['today_special', 1],
+            ['type', 'single'],
+        ])
+        ->latest()
+        ->take(24)
+        ->get();
 
-        $comp_pro = Product::latest()->get();
+    $tranding_songs = Product::with(['category', 'subCategory', 'childCategory'])
+        ->where([
+            ['tranding_songs', 1],
+            ['type', 'single'],
+        ])
+        ->latest()
+        ->take(24)
+        ->get();
 
-        // $products = Product::with('category', 'subCategory', 'childCategory', 'brand')
-        //                         ->whereHas('brand', function($q){
-        //                             $q->whereSlug(request('slug'));
-        //                         })
-        //                         ->get();
-        $cat_wise_prod = Category::with('subCategories', 'products', 'activeSubCategories')
-                            ->has('products')
-                            ->where('status', 1)
-                            ->latest()
-                            ->get();
+    $physical_product = Product::with(['category', 'subCategory', 'childCategory'])
+        ->where('type', 'variable')
+        ->latest()
+        ->take(24)
+        ->get();
 
-                            // dd($cat_wise_prod);
-        $about = DB::table('about_us')->first();
-        $about_2 = DB::table('about_us')->where('id', 2)->first();
-        // dd($about_2);
-        $is_reco_prod = Product::where('status', 1)->latest()->limit(3)->get();
-        // dd($about);
+    $events = Event::whereMonth('date', $now->month)
+        ->whereYear('date', $now->year)
+        ->orderBy('date', 'asc')
+        ->get();
 
-        $flashSell = FlashSaleProduct::with('product')->limit(10)->where('status', 1)->latest()->get();
-        $firstColumns  = FooterLink::where('column', 1)->get();
-        $secondColumns = FooterLink::where('column', 2)->get();
-        $thirdColumns  = FooterLink::where('column', 3)->get();
+    return view('frontend.home.index', compact(
+        'products',
+        'tranding_songs',
+        'top_picks',
+        'physical_product',
+        'events',
+        'sliders'
+    ));
+}
 
-        $title  = Footer::first();
-        $brands = Brand::all();
-        $cart = session()->get('cart', []);
-        $events = Event::whereMonth('date', Carbon::now()->month)
-                                ->whereYear('date', Carbon::now()->year)
-                                ->orderBy('date', 'asc')
-                                ->get();
-
-        // dd($most_sell);
-
-        return view('frontend.home.index', compact(
-                 'feateuredCategories', 'products',
-                'firstColumns',
-                'secondColumns',
-                'thirdColumns',
-                'title',
-                'brands',
-                'flashSell',
-                'cat_wise_prod',
-                'cart',
-                'comp_pro',
-                'about',
-                'about_2',
-                'popularCats',
-                 'is_reco_prod',
-                'popularProducts',
-                'offer',
-                'tranding_songs',
-                'top_picks',
-                'physical_product',
-                'events'
-                
-        ));
-    }
 
     public function about(){
         $about = DB::table('about_us')->first();
