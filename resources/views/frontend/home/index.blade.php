@@ -528,6 +528,56 @@
     </div>
 </div>
 
+
+<div class="product-box py-1 bg-muted row" style="margin:20px">
+            <h1 style="text-align: center; margin-bottom: 10px;"><u>Latest Blogs</u></h1>
+                        @foreach ($blogs as $blog)
+
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 custom-padding-10">
+                            <div class="product-item">
+                                <div class="product_thumb">
+                                    
+                                    <a class="secondary_img" href="{{ route('front.blog_details', [$blog->slug]) }}"><img src="{{ asset($blog->image) }}" alt="" style="height: 240px; width: 220px; object-fit: cover;"></a>
+                                   
+                                </div>
+                                <div class="product_content ">
+                                    <h4 class="ps-1" style="height: 40px;">
+                                         
+                                        <a href="{{ route('front.blog_details', [$blog->slug]) }}" class="font-16" style="font-size: 14px">{!! Str::limit($blog->title, 90, ' ...') !!}</a>
+                                    </h4>
+                                   
+                                    <div class="price_box ps-1" style="padding-bottom: 0px;">
+                                        
+                                        <span class="current_price">{{ date('m/d/Y', strtotime($blog->created_at)) }}</span>
+
+                                       
+
+                                        
+
+                                    </div>
+                                    <div class="rounded-0 bg-muted p-2 d-flex justify-content-between">
+
+                        
+                      	            <a href="{{ route('front.blog_details', [$blog->slug]) }}"
+                                           style="color: white; font-size: 15px;padding-top: 4%;background: red;border: solid;width: 100%;"
+                                           class="btn btn-sm btn-warning semi "
+                                          >
+                                        Details
+                                        </a>
+                      
+                      	
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    
+                                    @endforeach
+
+
+                    </div>
+
 @endsection
 
 @push('js')

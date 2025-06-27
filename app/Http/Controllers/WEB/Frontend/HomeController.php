@@ -67,13 +67,16 @@ public function index()
         ->orderBy('date', 'asc')
         ->get();
 
+    $blogs = Blog::limit(12)->latest()->get();
+
     return view('frontend.home.index', compact(
         'products',
         'tranding_songs',
         'top_picks',
         'physical_product',
         'events',
-        'sliders'
+        'sliders',
+        'blogs'
     ));
 }
 
