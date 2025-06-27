@@ -442,7 +442,7 @@
 
 
 </div>
-<!---Main Content end--->
+<!---Main Content end---->
 @endsection
 
 @push('js')
