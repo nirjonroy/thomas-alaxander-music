@@ -432,6 +432,8 @@
                             </div>
 
 
+
+
                         </div>
                     </div>
                 </div>
@@ -443,6 +445,91 @@
 
 </div>
 <!---Main Content end---->
+<style>
+    .event-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .event-map iframe,
+    .event-map img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .event-content {
+        padding: 15px;
+    }
+
+    .event-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        min-height: 40px;
+    }
+
+    .event-info {
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #555;
+    }
+
+    .event-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #007BFF;
+        margin-bottom: 10px;
+    }
+    .event-content{
+        margin: 10px !important;
+    }
+</style>
+
+<div class="container my-4 event-content">
+    <div class="row">
+        <h1 style="text-align: center; margin-bottom: 10px;"><u>Recent Event's</u></h1>
+        @forelse($events as $product)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                <div class="event-card">
+                    <div class="event-map">
+                        @if(!empty($product->image))
+                            <img src="{{ asset('uploads/events/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid">
+                        @else
+                            <iframe 
+                                src="https://www.google.com/maps?q={{ urlencode($product->location) }}&output=embed" 
+                                allowfullscreen 
+                                frameborder="0">
+                            </iframe>
+                        @endif
+                    </div>
+                    <div class="event-content">
+                        <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
+                        <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
+                        <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>
+                        <div class="event-info"><i class="fa fa-calendar-alt"></i> {{ $product->date }} {{ $product->time }}</div>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="text-center text-danger">
+                <strong>No events are available</strong>
+            </div>
+        @endforelse
+    </div>
+</div>
+
 @endsection
 
 @push('js')

@@ -17,6 +17,7 @@ use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\Blog;
 use App\Models\Event;
+use Carbon\Carbon;
 use DB;
 
 class HomeController extends Controller
@@ -93,7 +94,10 @@ class HomeController extends Controller
         $title  = Footer::first();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-
+        $events = Event::whereMonth('date', Carbon::now()->month)
+                                ->whereYear('date', Carbon::now()->year)
+                                ->orderBy('date', 'asc')
+                                ->get();
 
         // dd($most_sell);
 
@@ -116,7 +120,8 @@ class HomeController extends Controller
                 'offer',
                 'tranding_songs',
                 'top_picks',
-                'physical_product'
+                'physical_product',
+                'events'
                 
         ));
     }
