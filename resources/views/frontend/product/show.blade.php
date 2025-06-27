@@ -83,6 +83,7 @@
         
         <div class="ms_about_content" style="margin-top:10px; background: rgb(243, 241, 241); padding: 5px;">
           <div class="ms_about_img " style="float: right">
+            <input type="hidden" value="{{$product->type}}" name="type" id="type">
             @if($product->type == 'single')
             <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
             width="200px" height="200px" style="background:white;  border-radius:50%; ">
@@ -344,7 +345,7 @@
    $(function () {
 
       $(document).on('click', '.add-to-cart', function (e) {
-
+          
           let variation_id = $('#size_variation_id').val();
           let variation_size = $('#size_value').val();
           let variation_size_id = $('input[name="variation_size_id"]').val();
@@ -354,7 +355,7 @@
           var quantity = $('#quantity').val();
           let image = $('input#pro_img').val();
           let pro_type = $('input#type').val();
-          
+          // alert(pro_type);
           
           let proName=$('input[name="product_name"]').val();
           let proId=$('input[name="product_id"]').val();

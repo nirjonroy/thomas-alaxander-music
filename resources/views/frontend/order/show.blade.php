@@ -34,9 +34,11 @@
                                 </td>
                                 <td class="fw-semibold">
                                     {{ $item->product->name }}<br>
+                                    @if($order->order_status == 5)
                                     <audio controls>
                                         <source src="{{ asset($item->product->music) }}" type="audio/mpeg">
                                         </audio>
+                                    @endif    
                                 </td>
                                 <td>{{ $item->qty }}</td>
                                 <td>${{ number_format($item->unit_price, 2) }}</td>
