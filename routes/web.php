@@ -356,7 +356,7 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::get('edit-events/{id}', [EventController::class, 'edit'])->name('event.edit');
     Route::post('event-delete/{id}', [EventController::class, 'destroy'])->name('event.destroy');
     Route::post('create-events-store', [EventController::class, 'store'])->name('event.store');
-    Route::post('create-events-update/{id}', [EventController::class, 'update'])->name('event.update');
+    Route::put('create-events-update/{id}', [EventController::class, 'update'])->name('event.update');
     Route::put('event-status/{id}', [EventController::class,'changeStatus'])->name('event.status');
 
 

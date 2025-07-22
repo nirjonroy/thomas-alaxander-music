@@ -158,7 +158,7 @@ class EventController extends Controller
 
         $notification = trans('admin_validation.Update Successfully');
         $notification = array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->route('admin.product-category.index')->with($notification);
+        return redirect()->route('admin.event.index')->with($notification);
     }
 
     public function destroy($id)
@@ -173,7 +173,7 @@ class EventController extends Controller
 
         $notification = trans('admin_validation.Delete Successfully');
         $notification = array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->route('admin.product-category.index')->with($notification);
+        return redirect()->route('admin.event.index')->with($notification);
     }
 
     public function changeStatus($id){

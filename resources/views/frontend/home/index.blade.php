@@ -21,7 +21,6 @@
     <meta property="og:description" content="{{$SeoSettings->seo_description}}">
     <meta property="og:url" content="{{url()->current()}}">
     <meta property="og:site_name" content="{{$SeoSettings->seo_title}}">
-
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
@@ -33,8 +32,8 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
-@section('content')
 
+@section('content')
 
 <style>
     .slider-img {
@@ -119,6 +118,20 @@
 </section>
 @endif
 
+
+<div class="container" style="margin:20px">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <h1 style="text-align: center; font-size: 25px; padding: 5px;">Who is : Thomas Alexander - "The Voice"</h1>
+            <p style="color: white">
+A legendary Edmonton musician with over 50 years in the industry, Thomas Alexander began his career in 1968 with The Patchwork Quilt and went on to front Edmonton's first funk band, The Key. His musical journey spans from touring North America with Southbound Freeway to performing in Japan where he was dubbed "The Canadian Bluebird" for his stunning tenor voice.
+Thomas has shared the stage with music icons including James Brown (who called him "Soul Brother Number Two"), Irene Cara, and members of The 5th Dimension. His versatile range covers Jazz, R&B, Funk, Gospel, Country, and Pop. Notable performances include starring as Judas in Jesus Christ Superstar and singing for Alberta's centennial celebrations.
+With roots tracing back to Alberta's first Black pioneers, Thomas continues to create and perform, cementing his status as one of Edmonton's most celebrated musical legends.
+
+</p>
+        </div>
+    </div>
+</div>
 
 <div class="ms_content_wrapper padder_top8">
     <!---Header--->
