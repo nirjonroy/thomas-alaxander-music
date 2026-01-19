@@ -1,9 +1,231 @@
 @extends('frontend.app')
 @section('title', $blog->meta_title ?? $blog->seo_title ?? $blog->title)
 @push('css')
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-
+<style>
+  .blog-detail-page {
+    padding: 36px 24px 40px;
+  }
+  .blog-detail-shell {
+    position: relative;
+    width: 100%;
+    border-radius: 26px;
+    padding: 28px;
+    background: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.06), transparent 55%),
+      linear-gradient(140deg, #0c1424 0%, #0b1626 52%, #0a111f 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 70px rgba(6, 10, 18, 0.55);
+    overflow: hidden;
+  }
+  .blog-detail-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--detail-bg);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+  }
+  .blog-detail-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 10%, rgba(255, 120, 50, 0.18), transparent 45%),
+      radial-gradient(circle at 10% 80%, rgba(255, 255, 255, 0.12), transparent 40%);
+  }
+  .blog-detail-content {
+    position: relative;
+    z-index: 1;
+    color: #f7f1e6;
+  }
+  .blog-detail-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgba(12, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .blog-detail-hero-content {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .blog-share {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .blog-share a {
+    color: rgba(245, 235, 220, 0.8);
+    text-decoration: none;
+  }
+  .blog-share a:hover {
+    color: #ff9b60;
+  }
+  .blog-detail-date {
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.7);
+  }
+  .blog-detail-title {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.2;
+  }
+  .blog-detail-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.75);
+  }
+  .blog-detail-hero-media {
+    background-image: var(--hero-image);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 240px;
+  }
+  .blog-detail-hero-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(10, 16, 28, 0.9), rgba(10, 16, 28, 0.1));
+  }
+  .blog-detail-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 20px;
+    margin-top: 22px;
+  }
+  .blog-article {
+    background: rgba(12, 18, 30, 0.75);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 24px;
+  }
+  .blog-article h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+  }
+  .blog-article-meta {
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.7);
+    margin-bottom: 16px;
+  }
+  .blog-article-content {
+    line-height: 1.7;
+    color: rgba(245, 235, 220, 0.86);
+  }
+  .blog-article-content p,
+  .blog-article-content li {
+    font-size: 15px;
+  }
+  .blog-article-content h3 {
+    font-size: 18px;
+    margin: 18px 0 8px;
+  }
+  .blog-article-content h4 {
+    font-size: 16px;
+    margin: 16px 0 6px;
+  }
+  .blog-article-content h3,
+  .blog-article-content h4 {
+    color: #f7f1e6;
+  }
+  .blog-side {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .blog-side-card {
+    background: rgba(12, 18, 30, 0.75);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px;
+    color: rgba(245, 235, 220, 0.86);
+  }
+  .blog-side-kicker {
+    display: inline-flex;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(245, 235, 220, 0.6);
+    margin-bottom: 8px;
+  }
+  .blog-side-card h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+  .blog-side-card p {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: rgba(245, 235, 220, 0.75);
+  }
+  .blog-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, #ff7a2c, #ff4b2b);
+    color: #1b0d05;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .blog-subscribe input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(10, 16, 28, 0.6);
+    color: #f7f1e6;
+    margin-bottom: 10px;
+  }
+  .blog-subscribe button {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(120deg, #ff7a2c, #ff4b2b);
+    color: #1b0d05;
+    font-weight: 700;
+  }
+  .blog-detail-nav {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+  .blog-detail-nav a {
+    color: rgba(245, 235, 220, 0.75);
+    text-decoration: none;
+  }
+  .blog-detail-nav a:hover {
+    color: #ff9b60;
+  }
+  @media (max-width: 991px) {
+    .blog-detail-page {
+      padding: 28px 18px 36px;
+    }
+    .blog-detail-hero {
+      grid-template-columns: 1fr;
+    }
+    .blog-detail-body {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 576px) {
+    .blog-detail-page {
+      padding: 22px 14px 32px;
+    }
+    .blog-detail-shell {
+      padding: 20px;
+    }
+  }
+</style>
 @endpush
 @section('seos')
     {{-- Basic --}}
@@ -71,56 +293,74 @@
 @endsection
 
 @section('content')
+@php
+    $heroImage = $blog->image ? asset($blog->image) : $metaImage;
+    $detailBg = $metaImage ?? $heroImage;
+    $publishDate = optional($blog->created_at)->format('F j, Y');
+    $authorName = $blog->author ?? $authorMeta ?? 'Thomas Alexander';
+    $shareUrl = urlencode($canonical ?? url()->current());
+    $shareTitle = urlencode($pageTitle);
+@endphp
+<div class="ms_index_wrapper common_pages_space blog-detail-page">
+    <div class="blog-detail-shell" style="--detail-bg: url('{{ $detailBg }}');">
+        <div class="blog-detail-content">
+            <div class="blog-detail-hero">
+                <div class="blog-detail-hero-content">
+                    <div class="blog-share">
+                        <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $shareUrl }}&title={{ $shareTitle }}" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <span class="blog-detail-date">{{ $publishDate }}</span>
+                    <h1 class="blog-detail-title">{{ $blog->title }}</h1>
+                    <div class="blog-detail-meta">
+                        <span>{{ $publishDate }}</span>
+                        <span>By {{ $authorName }}</span>
+                    </div>
+                </div>
+                <div class="blog-detail-hero-media" style="--hero-image: url('{{ $heroImage }}');"></div>
+            </div>
 
-<div class="ms_content_wrapper padder_top8">
-<style>
-  .ms_main_wrapper {
-    background: #102034 !important;
-  }
-  .ms_mainindex_wrapper{
-    background: #102034 !important;
-  }
-</style>
-  <d class="ms_content_wrapper padder_top8">
+            <div class="blog-detail-body">
+                <article class="blog-article">
+                    <h2>{{ $blog->title }}</h2>
+                    <div class="blog-article-meta">{{ $publishDate }} - By {{ $authorName }}</div>
+                    <div class="blog-article-content">
+                        {!! $blog->description !!}
+                    </div>
+                </article>
 
-    <div class="ms_index_wrapper common_pages_space">
-  <!--Single Blog Section-->
-  <section >
-    <!-- Title -->
-    <div class="text-center pt-5 pt-lg-5">
-      <p class="text-warning fw-bold small mb-2">
-      <h3 style="font-size: 16px;
-    font-weight: bold;">{{ date('m/d/Y', strtotime($blog->created_at)) }}</h3> 
-      </p>
-      <h1 class="fw-bold fs-2 fs-md-1" >
-       <h1 style="font-size: 27px;
-    font-weight: bold;">{{ $blog->title }}</h1> 
-      </h1>
+                <aside class="blog-side">
+                    <div class="blog-side-card">
+                        <span class="blog-side-kicker">Donate</span>
+                        <h3>Support My Work</h3>
+                        <p>If you enjoy this content, consider supporting me with a donation.</p>
+                        <a class="blog-action-btn" href="{{ route('living-archive.donate') }}">Donate</a>
+                    </div>
+
+                    <div class="blog-side-card">
+                        <span class="blog-side-kicker">Subscribe</span>
+                        <h3>Subscribe to My Blog</h3>
+                        <div class="blog-subscribe">
+                            <input type="text" placeholder="Name">
+                            <input type="email" placeholder="Email address">
+                            <button type="button">Subscribe</button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="blog-detail-nav">
+                <a href="{{ route('front.blog') }}">Back to Blog</a>
+                <a href="{{ route('living-archive.donate') }}">Support the Living Archive</a>
+            </div>
+        </div>
     </div>
-  
-    <!-- Image -->
-    <div class="container my-4">
-      <div
-        class="w-100 rounded mx-auto bg-white mb-5"
-        style="background-image: url('{{ asset($blog->image) }}'); background-size: cover; background-position: center; height: 400px; max-height: 500px;"
-      >
-      </div>
-    </div>
-  <style>
-    p{
-      font-size: 14px !important;
-    }
-  </style>
-    <!-- Container -->
-    <div class="container mt-n5">
-      <div class="bg-white p-4 p-md-5 shadow-sm rounded text-dark" style="font-family: Georgia, serif; font-size: 1.25rem; line-height: 1.8;">
-        <p class="small text-muted mb-4 pb-2 song_name small" style="font-size: 14px">
-          {!! $blog->description !!}
-        </p>
-      </div>
-    </div>
-  </section>
-  </div>
 </div>
-        <!--End Single Blog Section-->
 @endsection

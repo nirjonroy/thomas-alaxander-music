@@ -1,8 +1,231 @@
 @extends('frontend.app')
 @push('css')
-    {{-- <link rel="stylesheet" href="{{ asset('frontend/silck/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/silck/slick-theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/food.css') }}"> --}}
+<style>
+  .blog-page {
+    padding: 36px 24px 40px;
+  }
+  .blog-shell {
+    position: relative;
+    width: 100%;
+    border-radius: 26px;
+    padding: 28px;
+    background: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.06), transparent 55%),
+      linear-gradient(140deg, #0c1424 0%, #0b1626 52%, #0a111f 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 70px rgba(6, 10, 18, 0.55);
+    overflow: hidden;
+  }
+  .blog-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--blog-bg);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+  }
+  .blog-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 65% 0%, rgba(255, 120, 50, 0.18), transparent 45%),
+      radial-gradient(circle at 10% 80%, rgba(255, 255, 255, 0.12), transparent 40%);
+  }
+  .blog-content {
+    position: relative;
+    z-index: 1;
+    color: #f7f1e6;
+  }
+  .blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .blog-title {
+    font-size: 30px;
+    margin: 0 0 4px;
+  }
+  .blog-subtitle {
+    margin: 0;
+    color: rgba(245, 235, 220, 0.8);
+    font-size: 14px;
+  }
+  .blog-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(245, 235, 220, 0.7);
+    font-size: 12px;
+  }
+  .blog-sort select {
+    background: rgba(12, 18, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f7f1e6;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+  .blog-feature {
+    margin-top: 24px;
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgba(12, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    min-height: 280px;
+  }
+  .blog-feature-content {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .blog-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 120, 50, 0.15);
+    border: 1px solid rgba(255, 120, 50, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .blog-feature-title {
+    font-size: 28px;
+    margin: 0;
+  }
+  .blog-feature-excerpt {
+    margin: 0;
+    color: rgba(245, 235, 220, 0.8);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .blog-feature-meta {
+    font-size: 12px;
+    color: rgba(245, 235, 220, 0.7);
+  }
+  .blog-feature-cta {
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, #ff7a2c, #ff4b2b);
+    color: #1b0d05;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .blog-feature-media {
+    background-image: var(--feature-image);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .blog-feature-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(10, 16, 28, 0.85), rgba(10, 16, 28, 0.1));
+  }
+  .blog-section-title {
+    margin: 26px 0 12px;
+    font-size: 20px;
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .blog-card {
+    background: rgba(12, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 28px rgba(6, 10, 18, 0.4);
+  }
+  .blog-card-media {
+    position: relative;
+    background-image: var(--card-image);
+    background-size: cover;
+    background-position: center;
+    padding-top: 60%;
+  }
+  .blog-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(12, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 11px;
+    color: #f7f1e6;
+  }
+  .blog-card-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .blog-card-title {
+    margin: 0;
+    font-size: 15px;
+  }
+  .blog-card-excerpt {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.75);
+    line-height: 1.5;
+  }
+  .blog-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    font-size: 12px;
+    color: rgba(245, 235, 220, 0.7);
+  }
+  .blog-card-link {
+    color: #ff9b60;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .blog-empty {
+    padding: 24px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    text-align: center;
+    color: rgba(245, 235, 220, 0.75);
+  }
+  @media (max-width: 991px) {
+    .blog-page {
+      padding: 28px 18px 36px;
+    }
+    .blog-feature {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 576px) {
+    .blog-page {
+      padding: 22px 14px 32px;
+    }
+    .blog-shell {
+      padding: 20px;
+    }
+  }
+</style>
 @endpush
 @section('seos')
     @php
@@ -50,149 +273,74 @@
     <meta name="twitter:image" content="{{ $metaImage }}">
 @endsection
 @section('content')
-<d class="ms_content_wrapper padder_top8">
-
-    <div class="ms_index_wrapper common_pages_space">
-<div class="categoryHeader">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page" style="background:lightblue;">
-                
-            </li>
-        </ol>
-    </nav>
-</div>
-
-<style>
-    .form-check-label {
-        color: black !important;
-        font-weight: bold;
-    }
-</style>
-<div class="container-fluid">
-<div class="main-wrapper">
-    <div class="overlay-sidebar"></div>
-    <div class="category-page col-lg-12 col-12 p-0 m-auto mt-2 mb-2">
-        <div class="row">
-       
-            <section class="products-box col-lg-12 col-md-12 custom-padding-10" style="padding: 10px">
-                <div class="bg-white p-3 pt-1">
-                    <div class="product-bar">
-                        <div class="btn-list">
-               
-                            <!--<button class="filter-btn btn d-block d-md-block d-lg-none">-->
-                            <!--   <i class="fas fa-filter"></i> Filter-->
-                            <!--</button>-->
-                            <!--<button class="compare-btn btn d-none d-md-none d-lg-block">-->
-                            <!--   <i class="fas fa-repeat"></i> Product Compare-->
-                            <!--</button>-->
-                        </div>
-                        <div class="filter-sort d-flex align-items-center">
-                            <div class="d-flex align-items-center me-2">
-                              <!--<label for="" class="form-label me-2 mb-0" style="white-space: nowrap;">Sort By: </label>-->
-                              <!--<select name="" id="" class="form-select shadow-none">-->
-                              <!--  <option value="">Select One</option>-->
-                              <!--  <option value="">High to Low</option>-->
-                              <!--</select>-->
-                            </div>
-                            <div class="d-lg-flex d-md-none d-none align-items-center">
-                              <!--<label for="" class="form-label me-2 mb-0">Show:</label>-->
-                              <!--<select name="" id="" class="form-select shadow-none">-->
-                              <!--  <option value="">10</option>-->
-                              <!--  <option value="">20</option>-->
-                              <!--</select>-->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-box py-1 bg-muted row">
-                        @foreach ($blogs as $blog)
-
-
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 custom-padding-10">
-                            <div class="product-item">
-                                <div class="product_thumb">
-                                    
-                                    <a class="secondary_img" href="{{ route('front.blog_details', [$blog->slug]) }}"><img src="{{ asset($blog->image) }}" alt="" style="height: 240px; width: 220px; object-fit: cover;"></a>
-                                   
-                                </div>
-                                <div class="product_content ">
-                                    <h4 class="ps-1" style="height: 40px;">
-                                         
-                                        <a href="{{ route('front.blog_details', [$blog->slug]) }}" class="font-16" style="font-size: 14px">{!! Str::limit($blog->title, 90, ' ...') !!}</a>
-                                    </h4>
-                                   
-                                    <div class="price_box ps-1" style="padding-bottom: 0px;">
-                                        
-                                        <span class="current_price">{{ date('m/d/Y', strtotime($blog->created_at)) }}</span>
-
-                                       
-
-                                        
-
-                                    </div>
-                                    <div class="rounded-0 bg-muted p-2 d-flex justify-content-between">
-
-                        
-                      	<a href="{{ route('front.blog_details', [$blog->slug]) }}"
-                                           style="color: white; font-size: 15px;padding-top: 4%;background: red;border: solid;width: 100%;"
-                                           class="btn btn-sm btn-warning semi "
-                                          >
-                                        &nbsp;  Details
-                                        </a>
-                      
-                      	
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    
-                                    @endforeach
-
-
-                    </div>
+@php
+    $featured = $blogs->first();
+    $otherBlogs = $blogs->slice(1);
+    $blogBg = isset($metaImage) ? $metaImage : asset(siteInfo()->logo);
+@endphp
+<div class="ms_index_wrapper common_pages_space blog-page">
+    <div class="blog-shell" style="--blog-bg: url('{{ $blogBg }}');">
+        <div class="blog-content">
+            <div class="blog-header">
+                <div>
+                    <h1 class="blog-title">Blog</h1>
+                    <p class="blog-subtitle">Latest posts, affirmations, and updates</p>
                 </div>
-            </section>
-        <!-- Products -->
+                <div class="blog-sort">
+                    <span>Sort by:</span>
+                    <select>
+                        <option selected>Newest</option>
+                    </select>
+                </div>
+            </div>
+
+            @if($featured)
+                @php
+                    $featuredImage = $featured->image ? asset($featured->image) : $blogBg;
+                @endphp
+                <article class="blog-feature">
+                    <div class="blog-feature-content">
+                        <span class="blog-badge">Featured</span>
+                        <h2 class="blog-feature-title">{{ $featured->title }}</h2>
+                        <p class="blog-feature-excerpt">
+                            {{ \Illuminate\Support\Str::limit(strip_tags($featured->description), 150) }}
+                        </p>
+                        <a class="blog-feature-cta" href="{{ route('front.blog_details', [$featured->slug]) }}">
+                            Read Article
+                        </a>
+                        <span class="blog-feature-meta">{{ date('F j, Y', strtotime($featured->created_at)) }}</span>
+                    </div>
+                    <div class="blog-feature-media" style="--feature-image: url('{{ $featuredImage }}');"></div>
+                </article>
+            @endif
+
+            <h2 class="blog-section-title">Blog</h2>
+            <div class="blog-grid">
+                @forelse($otherBlogs as $blog)
+                    @php
+                        $cardImage = $blog->image ? asset($blog->image) : $blogBg;
+                        $tag = optional($blog->category)->name ?? 'Blog';
+                    @endphp
+                    <article class="blog-card">
+                        <a class="blog-card-media" href="{{ route('front.blog_details', [$blog->slug]) }}" style="--card-image: url('{{ $cardImage }}');">
+                            <span class="blog-tag">{{ $tag }}</span>
+                        </a>
+                        <div class="blog-card-body">
+                            <h3 class="blog-card-title">{{ \Illuminate\Support\Str::limit($blog->title, 60) }}</h3>
+                            <p class="blog-card-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 90) }}</p>
+                            <div class="blog-card-footer">
+                                <span>{{ date('F j, Y', strtotime($blog->created_at)) }}</span>
+                                <a class="blog-card-link" href="{{ route('front.blog_details', [$blog->slug]) }}">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+                @empty
+                    <div class="blog-empty">
+                        No blog posts are available yet.
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
-
-</div>
-</div>
-
-</div>
 </div>
 @endsection
-
-@push('js')
-<script>
-$(document).ready(function () {
-    $('.buy-now').on('click', function (e) {
-        e.preventDefault();
-        
-        var productId = $(this).attr('href').split('/').pop();
-        var proQty = 1;
-        var addToCartUrl = $(this).data('url');
-        var checkoutUrl = "{{ route('front.cart.index') }}";
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        // Include CSRF token in AJAX request headers
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        });
-
-        // Perform AJAX request to add the product to the cart
-        $.post(addToCartUrl, { id: productId, quantity: proQty }, function (response) {
-            // Redirect to checkout page after adding to cart
-           window.location.href = "{{ route('front.checkout.index') }}";
-        });
-    });
-});
-</script>
-
-
-
-
-@endpush

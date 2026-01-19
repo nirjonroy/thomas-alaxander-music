@@ -57,210 +57,554 @@
 @section('content')
 
 <style>
-  .sizes{
-  /*display: flex;*/
+  .product-detail-shell {
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
   }
-  .sizes .size {
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #FE9017;
-  width: auto;
-  text-align: center;
-  cursor: pointer;
-  min-width: 45px;
-  display: inline-block;
+  .product-detail-page {
+    padding: 40px 12px 0 12px;
   }
-  .sizes .size.active{
-  background: #f66326;
-  color: white;
-  font-weight: bold;
+  .product-detail-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    padding: 32px;
+    background: linear-gradient(120deg, rgba(18, 24, 38, 0.95), rgba(16, 22, 36, 0.85));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 70px rgba(6, 10, 18, 0.55);
+    width: 100%;
   }
-  .colors{
-  /*display: flex;*/
+  .product-detail-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--product-bg);
+    background-size: cover;
+    background-position: right center;
+    opacity: 0.35;
   }
-  .colors .color {
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #FE9017;
-  width: auto;
-  text-align: center;
-  cursor: pointer;
-  display: inline-block;
-  height: 35px;
-  width: 35px;
+  .product-detail-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255, 124, 68, 0.18), transparent 45%),
+      radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.12), transparent 40%),
+      linear-gradient(110deg, rgba(12, 18, 30, 0.95), rgba(12, 18, 30, 0.75) 55%, rgba(12, 18, 30, 0.28) 100%);
   }
- .colors .color.active{
- background: #0d6efd;
- color: white;
- font-weight: bold;
- padding: 6px;
- border: 4px solid white;
- outline: 2px solid red;
- }
+  .product-detail-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 36px;
+    align-items: center;
+  }
+  .product-detail-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: #f7f1e6;
+  }
+  .product-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .product-kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(245, 235, 220, 0.75);
+  }
+  .product-title {
+    font-size: clamp(26px, 3vw, 38px);
+    margin: 0;
+    font-weight: 700;
+  }
+  .product-artist {
+    margin: 0;
+    font-size: 15px;
+    color: rgba(245, 235, 220, 0.8);
+  }
+  .product-variant h6 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245, 235, 220, 0.7);
+  }
+  .product-detail-shell .sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+  }
+  .product-detail-shell .sizes .size {
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 140, 80, 0.55);
+    border-radius: 999px;
+    font-size: 12px;
+    background: rgba(14, 20, 32, 0.7);
+    color: #f7f1e6;
+    cursor: pointer;
+    min-width: 60px;
+    text-align: center;
+  }
+  .product-detail-shell .sizes .size.active {
+    background: linear-gradient(120deg, #ff7a2c, #ff4b2b);
+    color: #1b0d05;
+    border-color: rgba(255, 150, 90, 0.9);
+    font-weight: 700;
+  }
+  .product-detail-shell .colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .product-detail-shell .colors .color {
+    border: 1px solid rgba(255, 140, 80, 0.55);
+    border-radius: 10px;
+    height: 34px;
+    width: 34px;
+    cursor: pointer;
+    background: rgba(14, 20, 32, 0.7);
+  }
+  .product-detail-shell .colors .color.active {
+    outline: 2px solid rgba(255, 150, 90, 0.9);
+    border-color: rgba(255, 150, 90, 0.9);
+  }
+  .product-audio {
+    background: rgba(12, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 10px 16px;
+  }
+  .product-audio audio {
+    width: 100%;
+    height: 36px;
+  }
+  .product-audio audio::-webkit-media-controls-panel {
+    background-color: rgba(18, 24, 38, 0.9);
+  }
+  .product-audio audio::-webkit-media-controls-play-button {
+    background-color: #ff7a2c;
+    border-radius: 50%;
+  }
+  .product-price {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .product-price .price-old {
+    font-size: 14px;
+    color: rgba(255, 140, 140, 0.8);
+  }
+  .product-qty {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.8);
+  }
+  .qty-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    background: rgba(11, 16, 28, 0.6);
+    overflow: hidden;
+    width: fit-content;
+  }
+  .qty-btn {
+    width: 40px;
+    height: 38px;
+    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    color: #f7f1e6;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .qty-input {
+    width: 72px;
+    height: 38px;
+    border: none;
+    background: transparent;
+    color: #fdf7ed;
+    text-align: center;
+    font-weight: 700;
+  }
+  .qty-input:focus {
+    outline: none;
+  }
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .qty-input[type=number] {
+    -moz-appearance: textfield;
+  }
+  .product-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .product-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-weight: 700;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .product-btn--primary {
+    background: linear-gradient(120deg, #ff7a2c, #ff4b2b);
+    color: #1b0d05;
+    box-shadow: 0 12px 24px rgba(255, 115, 54, 0.35);
+  }
+  .product-btn--ghost {
+    background: rgba(10, 16, 28, 0.6);
+    color: #f7f1e6;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .product-btn:hover {
+    transform: translateY(-1px);
+  }
+  .product-meta-line {
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .meta-divider {
+    color: rgba(245, 235, 220, 0.5);
+  }
+  .product-detail-right {
+    display: flex;
+    justify-content: center;
+  }
+  .product-cover {
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 16, 28, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 18px 32px rgba(6, 10, 18, 0.45);
+    overflow: hidden;
+  }
+  .product-cover--round {
+    border-radius: 50%;
+    padding: 10px;
+  }
+  .product-cover--round img {
+    border-radius: 50%;
+  }
+  .product-cover--square {
+    border-radius: 20px;
+    padding: 8px;
+  }
+  .product-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .product-section-card {
+    margin-top: 26px;
+    background: rgba(11, 16, 28, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    color: #f7f1e6;
+    box-shadow: 0 18px 40px rgba(6, 10, 18, 0.35);
+  }
+  .product-section-title {
+    font-size: 18px;
+    margin: 0 0 14px;
+  }
+  .product-description {
+    color: rgba(245, 235, 220, 0.85);
+    line-height: 1.7;
+  }
+  .product-description p {
+    color: inherit;
+  }
+  .comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .comment-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(10, 16, 28, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .comment-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+  }
+  .comment-body strong {
+    color: #fdf7ed;
+  }
+  .comment-body p {
+    margin: 6px 0 0;
+    color: rgba(245, 235, 220, 0.8);
+  }
+  .comment-empty {
+    color: rgba(245, 235, 220, 0.7);
+    margin: 0;
+  }
+  .comment-form {
+    margin-top: 18px;
+  }
+  .comment-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.7);
+  }
+  .comment-input {
+    width: 100%;
+    background: rgba(10, 16, 28, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 14px;
+    color: #f7f1e6;
+    resize: vertical;
+    min-height: 120px;
+  }
+  .comment-input:focus {
+    outline: none;
+    border-color: rgba(255, 150, 90, 0.8);
+  }
+  .comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+  @media (max-width: 991px) {
+    .product-detail-page {
+      padding: 60px 16px 0 16px;
+    }
+    .product-detail-inner {
+      grid-template-columns: 1fr;
+    }
+    .product-detail-right {
+      order: -1;
+    }
+    .product-cover {
+      width: 220px;
+      height: 220px;
+    }
+  }
+  @media (max-width: 576px) {
+    .product-detail-page {
+      padding: 80px 12px 0 12px;
+    }
+    .product-detail-card {
+      padding: 22px;
+    }
+    .product-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .product-btn {
+      width: 100%;
+    }
+  }
 </style>
 
-  <div class="ms_content_wrapper padder_top8">
+  <div class="ms_index_wrapper common_pages_space product-detail-page">
+      @php
+        $coverImage = $product->thumb_image
+            ? asset('uploads/custom-images/' . ltrim($product->thumb_image, '/'))
+            : asset(siteInfo()->logo);
+        $displayArtist = $product->artist_name;
+        if ($product->type == 'single') {
+          $displayArtist = trim((string) $displayArtist);
+          if ($displayArtist === '' || preg_match('/^\d+(\.\d+)?$/', $displayArtist)) {
+            $displayArtist = config('app.name', 'Thomas Alexander');
+          }
+        }
+        $durationDisplay = null;
+        if (!empty($product->duration)) {
+          $durationRaw = trim((string) $product->duration);
+          if (preg_match('/^\d+(\.\d+)?$/', $durationRaw)) {
+            $minutes = (int) floor((float) $durationRaw);
+            $seconds = (int) round(((float) $durationRaw - $minutes) * 60);
+            if ($seconds >= 60) {
+              $minutes += 1;
+              $seconds = 0;
+            }
+            $durationDisplay = sprintf('%02d:%02d', $minutes, $seconds);
+          } else {
+            $durationDisplay = $durationRaw;
+          }
+        }
+      @endphp
+      <div class="product-detail-shell">
+        <div class="product-detail-card" style="--product-bg: url('{{ $coverImage }}');">
+          <div class="product-detail-inner">
+            <div class="product-detail-left">
+              <input type="hidden" value="{{ $product->type }}" name="type" id="type">
+              <div class="product-title-block">
+                <span class="product-kicker">{{ $product->type == 'single' ? 'Single' : 'Product' }}</span>
+                <h1 class="product-title">{{ $product->name }}</h1>
+                @if(!empty($displayArtist))
+                  <p class="product-artist">{{ $displayArtist }}</p>
+                @endif
+              </div>
 
-    <div class="ms_index_wrapper common_pages_space">
-
-    <div class="container">
-      <div class="row">
-      <div class="col-md-12">
-        <div class="ms_about_wrapper">
-        
-        <div class="ms_about_content" style="margin-top:10px; background: rgb(243, 241, 241); padding: 5px;">
-          <div class="ms_about_img " style="float: right">
-            <input type="hidden" value="{{$product->type}}" name="type" id="type">
-            @if($product->type == 'single')
-            <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
-            width="200px" height="200px" style="background:white;  border-radius:50%; ">
-            @else
-            <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
-            width="200px" height="200px" style="background:white  ">
-            @endif
-          </div>
-          <h1 style="font-size:14pt">{{$product->name}}</h1>
-
-          @if($product->type == 'variable') <h6 id="select_size">Select Size : </h6> @else @endif
-               @if($product->type == 'variable')
-
-               @if(count($product->variations))
-
-               <div class="sizes" id="sizes" style="margin-bottom: 5px;">
-                  @foreach($product->variations as $v)
-                  @if(!empty($v->size->title))
-                  <div class="size" data-proid="{{ $v->product_id }}" data-varprice="{{ $v->sell_price }}" data-varsize="{{ $v->size->title }}"
-                     value="{{$v->id}}" data-varSizeId="{{$v->size_id}}">
-                     @if($v->size->title == 'free')
-                     {{ $v->size->title }}
-                     <input type="hidden" id="size_value" name="variation_id">
-                     <input type="hidden" id="size_variation_id" name="size_variation_id">
-                     <input type="hidden" name="pro_price" id="pro_price">
-                     <input type="hidden" name="variation_size_id" id="variation_size_id">
-                     @else
-                     {{ $v->size->title }}
-                     <input type="hidden" id="size_value" name="variation_id">
-                     <input type="hidden" id="size_variation_id" name="size_variation_id">
-                     <input type="hidden" name="pro_price" id="pro_price">
-                     <input type="hidden" name="variation_size_id" id="variation_size_id">
-                     @endif
-                  </div>
+              @if($product->type == 'variable')
+                <div class="product-variant">
+                  <h6 id="select_size">Select Size : </h6>
+                  @if(count($product->variations))
+                    <div class="sizes" id="sizes">
+                      @foreach($product->variations as $v)
+                        @if(!empty($v->size->title))
+                          <div class="size" data-proid="{{ $v->product_id }}" data-varprice="{{ $v->sell_price }}" data-varsize="{{ $v->size->title }}"
+                               value="{{$v->id}}" data-varSizeId="{{$v->size_id}}">
+                            {{ $v->size->title }}
+                            <input type="hidden" id="size_value" name="variation_id">
+                            <input type="hidden" id="size_variation_id" name="size_variation_id">
+                            <input type="hidden" name="pro_price" id="pro_price">
+                            <input type="hidden" name="variation_size_id" id="variation_size_id">
+                          </div>
+                        @else
+                          <span>Size Not Available</span>
+                        @endif
+                      @endforeach
+                    </div>
                   @else
-                  Size Not Available
+                    <input type="hidden" id="size_value" name="variation_id" value="free">
+                    <input type="text" name="variation_size_id" id="variation_size_id" value="1">
                   @endif
-                  @endforeach
-               </div>
-               @else
-               <input type="hidden" id="size_value" name="variation_id" value="free">
-               <input type="text" name="variation_size_id" id="variation_size_id" value="1">
-               @endif
-               @else
-               <input type="hidden" id="size_value" name="variation_id" value="free">
-               <input type="hidden" name="variation_size_id" id="variation_size_id" value="1">
-               @endif
-          
-          @if($product->type == 'single')
-        @if($product->download_type == 'free')
-        <audio controls>
-        <source src="{{ asset($product->music) }}" type="audio/mpeg">
-        </audio>
-      @else
-        <audio controls>
-        <source src="{{ asset($product->demo_song) }}" type="audio/mpeg">
-        </audio>
-      @endif
-      @endif
-          @if($product->download_type == 'free')
-        {{-- <a href="{{ asset($product->download_link) }}" class="btn btn-danger btn-lg" style="
-        width: 10%;
-        height: 25px;
-        font-size: 13px;
-        ">Download
-        </a> --}}
-      @else
-        <br>
-        <div style="text-align: center"></div>
-        @if($product->offer_price != 0)
-        <b>${{ number_format($product->price, 2) }}</b>
-        <sub><del style="color: red">${{ number_format($product->offer_price, 2) }}</del></sub>
-        <input type="hidden" name="price" id="price_val" value="{{ $product->offer_price }}">
-      @else
-        ${{ number_format($product->price, 2) }}
-        <input type="hidden" name="price" id="price_val" value="{{ $product->price }}">
-      @endif
-        <br>
-        <br>
-        <div class="qty-btn-box mt-3 col-4">
-                     <div class="qty-box mb-2" >
-                        <p>Quantity: </p>
-                        <input type="number" min="1" name="quantity" id="quantity" value="1" class="form-control font-20 rounded-0 shadow-none qty" style="background: #f66326; color: white; font-weight: bold; text-align: center;">
-                        
-                     </div>
+                </div>
+              @else
+                <input type="hidden" id="size_value" name="variation_id" value="free">
+                <input type="hidden" name="variation_size_id" id="variation_size_id" value="1">
+              @endif
+
+              @if($product->type == 'single')
+                <div class="product-audio">
+                  @if($product->download_type == 'free')
+                    <audio controls>
+                      <source src="{{ asset($product->music) }}" type="audio/mpeg">
+                    </audio>
+                  @else
+                    <audio controls>
+                      <source src="{{ asset($product->demo_song) }}" type="audio/mpeg">
+                    </audio>
+                  @endif
+                </div>
+              @endif
+
+              @if($product->download_type != 'free')
+                <div class="product-price">
+                  @if($product->offer_price != 0)
+                    <span class="price-current">${{ number_format($product->offer_price, 2) }}</span>
+                    <span class="price-old"><del>${{ number_format($product->price, 2) }}</del></span>
+                    <input type="hidden" name="price" id="price_val" value="{{ $product->offer_price }}">
+                  @else
+                    <span class="price-current">${{ number_format($product->price, 2) }}</span>
+                    <input type="hidden" name="price" id="price_val" value="{{ $product->price }}">
+                  @endif
+                </div>
+
+                <div class="product-qty">
+                  <span>Quantity:</span>
+                  <div class="qty-control">
+                    <button type="button" class="qty-btn decrease-qty">-</button>
+                    <input type="number" min="1" name="quantity" id="quantity" value="1" class="qty-input qty">
+                    <button type="button" class="qty-btn increase-qty">+</button>
                   </div>
+                </div>
 
-        <br>
-        <br>          
-        @guest
-        <a href="#" class="add_cart mt-4 add-to-cart " style="background: green; color: black; padding: 5px; font-weight: bold;" data-id="{{ $product->id }}"
-        data-url="{{ route('front.cart.store') }}" onclick="alert('Please login first')">Order Now</a>
-      @else
-        <a href="#" class=" add_cart mt-4 add-to-cart btn btn-success btn-lg" data-id="{{ $product->id }}"
-        data-url="{{ route('front.cart.store') }}" style="width: 100px; height: auto; font-size: 14px;">
-        Order Now
-        </a>
-      @endguest
-        <br><br>
-      @endif
-      @if($product->artist_name !== null)
-          <span><b>Artist : {{$product->artist_name}}</b></span>
-          <br> <br>
-          @endif   
-          
-          <p style="background: white !important">
-           {!!$product->long_description!!}
-          </p>
+                <div class="product-actions">
+                  @guest
+                    <a href="#" class="product-btn product-btn--primary add_cart add-to-cart" data-id="{{ $product->id }}"
+                       data-url="{{ route('front.cart.store') }}" onclick="alert('Please login first')">Buy Now</a>
+                  @else
+                    <a href="#" class="product-btn product-btn--primary add_cart add-to-cart" data-id="{{ $product->id }}"
+                       data-url="{{ route('front.cart.store') }}">Buy Now</a>
+                  @endguest
+                  <a href="{{ route('living-archive.donate') }}" class="product-btn product-btn--ghost">Donate</a>
+                </div>
+              @endif
 
-          <br>
-
-          <div class="container pt-5" style="margin: 5px">
-            <div>
-              <h2 style="text-align: center">All Comments</h2>
-            
-              @foreach ($reviews as $review)
-              <img src="https://merics.org/sites/default/files/styles/ct_team_member_default/public/2022-01/avatar-placeholder_neu.png?h=ecfff384&itok=4epCYDGE" alt="" style="width: 50px; height: 50px; border-radius: 50px;">
-              <b>{{$review->user->name}}</b> <br>
-              <p style="text-align: left; margin-left: 45px;">{{$review->review}}</p> 
-              @endforeach
+              <div class="product-meta-line">
+                @if(!empty($displayArtist))
+                  <span>Artist: {{ $displayArtist }}</span>
+                @endif
+                @if(!empty($durationDisplay))
+                  <span class="meta-divider">|</span>
+                  <span>Length: {{ $durationDisplay }}</span>
+                @endif
+              </div>
             </div>
-            <br> <br>
-          <h2 style="text-align: center">Make Comment</h2>
-          <form action="{{route('front.product.product-reviews.store')}}" method="post">
 
+            <div class="product-detail-right">
+              <div class="product-cover {{ $product->type == 'single' ? 'product-cover--round' : 'product-cover--square' }}">
+                <img src="{{ $coverImage }}" alt="{{ $product->name }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-section-card">
+          <h2 class="product-section-title">About this {{ $product->type == 'single' ? 'track' : 'product' }}</h2>
+          <div class="product-description">
+            {!!$product->long_description!!}
+          </div>
+        </div>
+
+        <div class="product-section-card">
+          <h2 class="product-section-title">Comments</h2>
+          <div class="comment-list">
+            @forelse ($reviews as $review)
+              <div class="comment-item">
+                <img src="https://merics.org/sites/default/files/styles/ct_team_member_default/public/2022-01/avatar-placeholder_neu.png?h=ecfff384&itok=4epCYDGE" alt="{{ $review->user->name }}" class="comment-avatar">
+                <div class="comment-body">
+                  <strong>{{ $review->user->name }}</strong>
+                  <p>{{ $review->review }}</p>
+                </div>
+              </div>
+            @empty
+              <p class="comment-empty">No comments yet.</p>
+            @endforelse
+          </div>
+
+          <form action="{{route('front.product.product-reviews.store')}}" method="post" class="comment-form">
             @csrf
             <input type="hidden" value="{{$product->id}}" name="product_id">
-            <div class="form-group">
-            <label for="comment">Comment:</label>
-            <textarea class="form-control" name="review" rows="5" id="comment"></textarea>
+            <label for="comment" class="comment-label">Write a comment</label>
+            <textarea class="comment-input" name="review" rows="5" id="comment" placeholder="Write a comment..."></textarea>
+            <div class="comment-actions">
+              <button type="submit" class="product-btn product-btn--primary">Post Comment</button>
             </div>
-
-            <button type="submit" class="btn btn-danger"
-            style="width: 20%; height: 20px; font-size: 14px; display:block;  margin: auto; ">Submit</button>
           </form>
-          </div>
-
-        </div>
-
-
         </div>
       </div>
-      </div>
-    </div>
-
-    </div>
-
-
-
-  </div>
   </div>
 
 
