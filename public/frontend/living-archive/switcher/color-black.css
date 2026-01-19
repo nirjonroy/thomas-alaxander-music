@@ -1,0 +1,77 @@
+/* ThemeColor - Black with white text */
+
+.as-color,
+.as-colorhover:hover,
+.widget_categories ul>li:hover>a,
+.widget_categories ul>li:hover>a:before,
+.as-page-title h1,
+.as-breadcrumb li a,
+.as-breadcrumb li:before,
+.widget_search form label:before,
+blockquote:before,
+blockquote:after,
+.as-gallery ul li figure figcaption h3,
+.as-small-view ul li:hover .as-icon,
+.as-small-view ul li:hover h2,
+.as-event-info time {
+    color: #ffffff !important;
+}
+
+.as-bgcolor,
+.as-bgcolorhover:hover,
+.logo:before,
+.main-navigation ul li a:before,
+.main-navigation .as-dropdown>li:hover>a,
+.flex-control-paging li a.flex-active,
+.flex-control-paging li a:hover,
+.flex-direction-nav a:hover,
+.as-caption h1:before,
+div.progressBar,
+.as-volunteerinfo h2:before,
+.as-volunteer ul li:hover .as-volunteerinfo,
+.as-bloghover ul li a:hover,
+.as-bloghover time,
+.as-pagination li:hover a,
+.as-pagination li.active a,
+.as-tags a:hover,
+.as-causes-grid ul li:hover .as-causes-btn,
+.as-shop-list ul li:hover .as-cartbtn,
+.nav-tabs>li.active>a,
+.as-contact-info li span:before,
+.as-contact-info li a:before,
+.owl-dot.active,
+.ticker-controls li a:hover,
+.percent-bar,
+.layout-btn a span {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.as-bordercolor,
+.as-bordercolorhover:hover,
+.as-causes ul li:hover figure,
+.as-causes-grid ul li:hover figure,
+.as-causes-text {
+    border-color: #000000 !important;
+}
+
+body {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.as-main-content,
+.as-main-section,
+.as-causes-text,
+.as-volunteerinfo,
+.living-intro-card,
+.living-phase-lede,
+.living-phase-lede h3,
+.living-phase-lede .living-affirmation,
+.living-ritual,
+.living-ritual h4,
+.living-ritual li,
+.living-empty {
+    color: #ffffff !important;
+    background-color: #000000 !important;
+}

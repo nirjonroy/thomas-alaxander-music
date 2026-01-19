@@ -36,8 +36,26 @@
                                     <input type="file" name="slider_image" class="form-control-file">
                                 </div>
 
-                               
+                                
+                                <div class="form-group col-12">
+                                <label>Title One <span class="text-danger">*</span></label>
+                                <input type="text" name="title_one" value="{{$slider->title_one}}" class="form-control">
+                                </div>
 
+                                <div class="form-group col-12">
+                                <label>Title Two <span class="text-danger">*</span></label>
+                                <input type="text" name="title_two" value="{{$slider->title_two}}" class="form-control">
+                                </div>
+
+                                <div class="form-group col-12">
+                                <label>Button Text <span class="text-danger">*</span></label>
+                                <input type="text" name="slider_location" class="form-control" value="{{$slider->slider_location}}">
+                                </div>
+
+                                <div class="form-group col-12">
+                                <label>Button Link <span class="text-danger">*</span></label>
+                                <input type="text" name="link" value="{{$slider->link}}" class="form-control">
+                                </div>
                                
 
                                 <div class="form-group col-12">

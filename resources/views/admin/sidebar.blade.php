@@ -279,7 +279,7 @@ i
 
           <!--</li>-->
           <!--@endif-->
-          <li class="nav-item dropdown {{ Route::is('admin.about-us.*') || Route::is('admin.custom-page.*') || Route::is('admin.terms-and-condition.*') || Route::is('admin.privacy-policy.*')  || Route::is('admin.error-page.*') || Route::is('admin.contact-us.*') || Route::is('admin.login-page') ? 'active' : '' }}">
+          <li class="nav-item dropdown {{ Route::is('admin.about-us.*') || Route::is('admin.custom-page.*') || Route::is('admin.terms-and-condition.*') || Route::is('admin.privacy-policy.*')  || Route::is('admin.error-page.*') || Route::is('admin.contact-us.*') || Route::is('admin.login-page') || Route::is('admin.living-archive.*') ? 'active' : '' }}">
 
             <a href="#" class="nav-link has-dropdown">
 
@@ -295,7 +295,9 @@ i
                 <!--<li class="{{ Route::is('admin.contact-us.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.contact-us.index') }}">{{__('admin.Contact Us')}}</a></li>-->
 
                 <li class="{{ Route::is('admin.custom-page.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.custom-page.index') }}">{{__('admin.Custom Page')}}</a></li>
+                <li class="{{ Route::is('admin.living-archive.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.living-archive.page') }}">Living Archive</a></li>
                 <li class="{{ Route::is('admin.event.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.event.index') }}">Events</a></li>
+                <li class="{{ Route::is('admin.event.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.video.index') }}">Videos</a></li>
 
                 <!--<li class="{{ Route::is('admin.terms-and-condition.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.terms-and-condition.index') }}">{{__('admin.Terms And Conditions')}}</a></li>-->
 
@@ -547,4 +549,3 @@ i
     </aside>
 
   </div>
-

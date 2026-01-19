@@ -502,8 +502,8 @@
                        
                             <div class="product-item">
                                 <div class="product_thumb bg-white prd_img" style="">
-                    <a class="primary_img " href="{{ route('front.product.show', [ $product->product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->product->thumb_image) }}" class="primcusImg" alt=""></a>
-                    <a class="secondary_img " href="{{ route('front.product.show', [ $product->product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->product->thumb_image) }}" style="margin-left:5%" class="seccusImg" alt=""></a>
+                    <a class="primary_img " href="{{ route('front.product.show', $product->product->slug ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->product->thumb_image) }}" class="primcusImg" alt=""></a>
+                    <a class="secondary_img " href="{{ route('front.product.show', $product->product->slug ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->product->thumb_image) }}" style="margin-left:5%" class="seccusImg" alt=""></a>
                     
                                   @if($product->product->offer_price > 0)
                                         <div class="label_product" style="width: 102px;">
@@ -526,7 +526,7 @@
                                 <div class="product_content " style="border-top:3px solid #EDEDEF; margin-top: 10%; ">
                                     <h4 class="ps-1" style="height: 40px;">
                                          
-                                        <a href="{{ route('front.product.show', [ $product->product->id ] ) }}" class="font-16" style="font-size:14px">{{ \Illuminate\Support\Str::limit($product->product->name, 50)}}</a>
+                                        <a href="{{ route('front.product.show', $product->product->slug ) }}" class="font-16" style="font-size:14px">{{ \Illuminate\Support\Str::limit($product->product->name, 50)}}</a>
                                     </h4>
                                    
                                     <div class="price_box ps-1" style="padding-bottom: 0px; margin-top:13%;">
@@ -547,7 +547,7 @@
                        <!-- </a>-->
                                       @if($product->product->type == 'variable' || $product->product->prod_color == 'varcolor') 
                                       
-                                      <a href="{{ route('front.product.show', [ $product->product->id ] ) }}"
+                                      <a href="{{ route('front.product.show', $product->product->slug ) }}"
                                          style="color: white; font-size: 16px;background: red;border: solid;width: 100%;padding-top: 3%;"
                                          class="btn btn-sm btn-warning semi "
                                          >
@@ -678,4 +678,3 @@ $(document).ready(function () {
 
 
 @endpush
-

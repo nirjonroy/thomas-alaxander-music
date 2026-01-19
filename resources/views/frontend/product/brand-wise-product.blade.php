@@ -45,8 +45,8 @@
                         
                                      <div class="product-item" style="">
                 <div class="product_thumb bg-white prd_img" style="">
-                    <a class="primary_img " href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" class="primcusImg" alt=""></a>
-                    <a class="secondary_img " href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" class="seccusImg" alt=""></a>
+                    <a class="primary_img " href="{{ route('front.product.show', $product->slug ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" class="primcusImg" alt=""></a>
+                    <a class="secondary_img " href="{{ route('front.product.show', $product->slug ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" class="seccusImg" alt=""></a>
                     
                     @if($product->offer_price > 0)
                     <div class="label_product" style="width: 102px;">
@@ -61,7 +61,7 @@
                 </div>
                 <div class="product_content " style="border-top:3px solid #EDEDEF; ">
                     <h4 class="ps-1" style="height: 35px;">
-                        <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="font-14" style="font-size:14px"> {{ \Illuminate\Support\Str::limit($product->name, 40)}}</a>
+                        <a href="{{ route('front.product.show', $product->slug ) }}" class="font-14" style="font-size:14px"> {{ \Illuminate\Support\Str::limit($product->name, 40)}}</a>
                     </h4>
                     <div class="subText" data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.2.3">
                         
@@ -81,7 +81,7 @@
                         <!--</a>-->
                       
                        @if($product->type == 'variable' || $product->prod_color == 'varcolor') 
-                      		<a href="{{ route('front.product.show', [ $product->id ] ) }}"
+                      		<a href="{{ route('front.product.show', $product->slug ) }}"
                                          style="color: white; font-size: 16px;background:#03259d; border: solid;width: 100%;padding-top: 4%;"
                                          class="btn btn-sm btn-warning semi "
                                          >
@@ -192,4 +192,3 @@ $(document).ready(function () {
 });
 </script>
 @endpush
-

@@ -32,5 +32,5 @@
     @endphp
     @yield('seos')
     <!-- Favicon Link -->
-    <link rel="shortcut icon" type="image/png" href="{{$settings->favicon}}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset(siteInfo()->logo) }}"">
 </head>

@@ -67,8 +67,8 @@
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 custom-padding-10">
                             <div class="product-item">
                                 <div class="product_thumb">
-                                    {{-- <a class="primary_img" href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a> --}}
-                                    <a class="secondary_img" href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a>
+                                    {{-- <a class="primary_img" href="{{ route('front.product.show', $product->slug ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a> --}}
+                                    <a class="secondary_img" href="{{ route('front.product.show', $product->slug ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a>
                                     <!--<div class="action_links">-->
                                     <!--    <ul>-->
                                     <!--        <li class="wishlist"><a href="#" title="Add to Wishlist"><i class="fa-regular fa-heart"></i></a></li>-->
@@ -80,12 +80,12 @@
                                 <div class="product_content ">
                                     <h4 class="ps-1" style="height: 40px;">
                                          
-                                        <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->name, 30)}}</a>
+                                        <a href="{{ route('front.product.show', $product->slug ) }}" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->name, 30)}}</a>
                                     </h4>
                                    
                                     <div class="price_box ps-1" style="padding-bottom: 0px;">
                                         @if(empty($product->offer_price))
-                                        <span class="current_price">৳{{ $product->price }}</span>
+                                        <span class="current_price">${{ $product->price }}</span>
 
                                         @else
                                         <span class="current_price">${{ $product->offer_price }}</span>
@@ -101,7 +101,7 @@
                         <!--</a>-->
                                         
                                         @if($product->type == 'variable' || $product->prod_color == 'varcolor') 
-                      		<a href="{{ route('front.product.show', [ $product->id ] ) }}"
+                      		<a href="{{ route('front.product.show', $product->slug ) }}"
                                          style="color: white; font-size: 16px;background: red;border: solid;width: 100%;padding-top: 4%;"
                                          class="btn btn-sm btn-warning semi "
                                          >
@@ -109,7 +109,7 @@
                                       </a>
                       	@else
                       	
-                      	<a href="{{ route('front.product.show', [ $product->id ] ) }}"
+                      	<a href="{{ route('front.product.show', $product->slug ) }}"
                                            style="color: white; font-size: 15px;padding-top: 4%;background: red;border: solid;width: 100%;"
                                            class="btn btn-sm btn-warning semi buy-now"
                                            data-url="{{ route('front.cart.store') }}">
@@ -174,4 +174,3 @@ $(document).ready(function () {
 
 
 @endpush
-

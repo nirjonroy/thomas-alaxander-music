@@ -1,11 +1,9 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('frontend/assets/js/jquery.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-       
-<script src="{{asset('frontend/assets3/bootstrap/bootstrap.bundle.min.js')}}"></script>
-    
-    <script src="{{asset('frontend/assets3/silck/slick.min.js')}}"></script>
-    <script src="{{asset('frontend/assets3/js/main.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+<script src="{{ asset('frontend/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('frontend/silck/slick.min.js') }}"></script>
+<script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -218,5 +216,4 @@ $(document).ready(function() {
 
 
 @stack('js')
-
 

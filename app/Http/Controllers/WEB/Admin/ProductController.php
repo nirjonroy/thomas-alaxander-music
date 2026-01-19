@@ -121,8 +121,9 @@ class ProductController extends Controller
         $colors= Color::all();
       	//dd($colors);
         $specificationKeys = ProductSpecificationKey::all();
+        $livingArchivePhases = $this->livingArchivePhaseOptions();
 
-        return view('admin.create_product',compact('categories','brands','specificationKeys', 'sizes', 'colors'));
+        return view('admin.create_product',compact('categories','brands','specificationKeys', 'sizes', 'colors','livingArchivePhases'));
     }
 
     public function store(Request $request)
@@ -149,6 +150,7 @@ class ProductController extends Controller
             'video_link' => '',
             'quantity' => '',
             'song' => '', // Accept MP3, WAV, OGG up to 20MB
+             'demo_song' => 'nullable|mimes:mp3,wav,ogg|max:20480',
         ];
     
         $customMessages = [
@@ -161,9 +163,12 @@ class ProductController extends Controller
             'song.required' => trans('admin_validation.Song file is required'),
             'song.mimes' => trans('admin_validation.Invalid file format (Allowed: MP3, WAV, OGG)'),
             'song.max' => trans('admin_validation.Song file must be less than 20MB'),
+            'demo_song.mimes' => trans('admin_validation.Invalid file format (Allowed: MP3, WAV, OGG)'),
+            'demo_song.max' => trans('admin_validation.Song file must be less than 20MB'),
         ];
     
         $this->validate($request, $rules, $customMessages);
+        $this->validateLivingArchiveFields($request);
     
         $product = new Product();
     
@@ -230,13 +235,34 @@ class ProductController extends Controller
         
             }
         
-            if (!empty($imageData)) {
-                // Associate images with the product using the gallery relationship
-                $product->gallery()->createMany($imageData);
-            }
+        if (!empty($imageData)) {
+            // Associate images with the product using the gallery relationship
+            $product->gallery()->createMany($imageData);
         }
+    }
+
+    // Handle demo song file upload
+    if ($request->hasFile('demo_song')) {
+        $demoSong = $request->file('demo_song');
+
+        if (!$demoSong->isValid()) {
+            return back()->withErrors(['demo_song' => 'Invalid demo song file!']);
+        }
+
+        $demoSongName = Str::slug($request->name) . '-demo-' . time() . '.' . $demoSong->getClientOriginalExtension();
+        $demoSongPath = public_path('uploads/songs/');
+
+        if (!file_exists($demoSongPath)) {
+            mkdir($demoSongPath, 0777, true);
+        }
+
+        $demoSong->move($demoSongPath, $demoSongName);
+
+        // Save demo song path
+        $product->demo_music = 'uploads/songs/' . $demoSongName;
+    }
+
         
-         
 
         // Handle song file upload
         if ($request->hasFile('song')) {
@@ -260,9 +286,10 @@ class ProductController extends Controller
             $song->move($song_path, $song_name);
     
             // Store file path in database
-            $product->music = 'uploads/songs/' . $song_name;
+        $product->music = 'uploads/songs/' . $song_name;
         }
-    
+
+        $this->syncLivingArchiveFields($product, $request);
         $product->save();
 
         if($request->is_specification){
@@ -404,7 +431,9 @@ class ProductController extends Controller
         $brands = Brand::all();
        
 
-        return view('admin.edit_product',compact('categories','brands','product','subCategories','childCategories'));
+        $livingArchivePhases = $this->livingArchivePhaseOptions();
+
+        return view('admin.edit_product',compact('categories','brands','product','subCategories','childCategories','livingArchivePhases'));
 
     }
 
@@ -441,6 +470,7 @@ class ProductController extends Controller
             'song.max' => trans('admin_validation.Song file must be less than 20MB'),
         ];
         $this->validate($request, $rules,$customMessages);
+        $this->validateLivingArchiveFields($request);
 
          if($request->thumb_image){
             $old_thumbnail = $product->thumb_image;
@@ -479,9 +509,10 @@ class ProductController extends Controller
             $song->move($song_path, $song_name);
 
             // Store file path in database
-            $product->music = 'uploads/songs/' . $song_name;
+        $product->music = 'uploads/songs/' . $song_name;
         }
 
+        $this->syncLivingArchiveFields($product, $request);
         $product->save();
             if($old_thumbnail){
                 if(File::exists(public_path().'/uploads/custom-images/'.$old_thumbnail))unlink(public_path().'/uploads/custom-images/'.$old_thumbnail);
@@ -489,6 +520,17 @@ class ProductController extends Controller
             }
         }
 
+            if ($request->hasFile('demo_song')) {
+    $demo_song = $request->file('demo_song');
+    if (!$demo_song->isValid()) {
+        return back()->withErrors(['demo_song' => 'Invalid demo song file!']);
+    }
+    $song_name = Str::slug($request->name) . '-demo-' . time() . '.' . $demo_song->getClientOriginalExtension();
+    $song_path = public_path('uploads/demo_song/');
+    if (!file_exists($song_path)) mkdir($song_path, 0777, true);
+    $demo_song->move($song_path, $song_name);
+    $product->demo_song = 'uploads/demo_song/' . $song_name;
+}
 
         // $product->short_name = $request->short_name;
         $product->name = $request->name;
@@ -882,6 +924,81 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['status'=>false ,'msg'=>$e->getMessage()]);
+        }
+    }
+
+
+    protected function livingArchivePhaseOptions(): array
+    {
+        $setting = Setting::select(
+            'living_phase1_title',
+            'living_phase2_title',
+            'living_phase3_title',
+            'living_phase4_title'
+        )->first();
+
+        $defaults = [
+            'phase1' => 'Phase 1 - Breathline',
+            'phase2' => 'Phase 2 - Legacy',
+            'phase3' => 'Phase 3 - Memory Glyphs',
+            'phase4' => 'Phase 4 - Living Documents',
+        ];
+
+        $columns = [
+            'phase1' => 'living_phase1_title',
+            'phase2' => 'living_phase2_title',
+            'phase3' => 'living_phase3_title',
+            'phase4' => 'living_phase4_title',
+        ];
+
+        $options = [];
+        foreach ($columns as $key => $column) {
+            $options[$key] = optional($setting)->{$column} ?: $defaults[$key];
+        }
+
+        return $options;
+    }
+
+    protected function validateLivingArchiveFields(Request $request): void
+    {
+        if (!$request->boolean('is_living_archive')) {
+            return;
+        }
+
+        $allowed = implode(',', array_keys($this->livingArchivePhaseOptions()));
+
+        $rules = [
+            'living_archive_phase' => 'required|in:' . $allowed,
+            'living_archive_feather' => 'nullable|string|max:120',
+            'living_archive_affirmation' => 'nullable|string|max:255',
+            'living_archive_story' => 'nullable|string',
+            'living_archive_qr_caption' => 'nullable|string|max:120',
+            'living_archive_sort' => 'nullable|integer|min:0',
+        ];
+
+        $this->validate($request, $rules);
+    }
+
+    protected function syncLivingArchiveFields(Product $product, Request $request): void
+    {
+        $product->is_living_archive = $request->boolean('is_living_archive');
+
+        if ($product->is_living_archive) {
+            $product->living_archive_phase = $request->input('living_archive_phase');
+            $product->living_archive_feather = $request->input('living_archive_feather');
+            $product->living_archive_affirmation = $request->input('living_archive_affirmation');
+            $product->living_archive_story = $request->input('living_archive_story') ?: $product->long_description;
+            $product->living_archive_qr_caption = $request->input('living_archive_qr_caption') ?: 'Scan to enter';
+            $product->living_archive_sort = $request->filled('living_archive_sort')
+                ? (int) $request->input('living_archive_sort')
+                : null;
+        } else {
+            $product->living_archive_phase = null;
+            $product->living_archive_feather = null;
+            $product->living_archive_affirmation = null;
+            $product->living_archive_story = null;
+            $product->living_archive_qr_caption = null;
+            $product->living_archive_sort = null;
         }
     }
 

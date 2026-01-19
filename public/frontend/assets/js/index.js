@@ -39,60 +39,85 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 document.addEventListener("DOMContentLoaded", function () {
-  const buttons = document.querySelectorAll(".selectable-button");
+  const selectableButtons = document.querySelectorAll(".selectable-button");
   const makeAppointmentBtn = document.getElementById("makeAppointmentBtn");
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", function () {
-      this.classList.toggle("selected");
+  if (selectableButtons.length) {
+    selectableButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        this.classList.toggle("selected");
+      });
+    });
+  }
+
+  if (makeAppointmentBtn) {
+    makeAppointmentBtn.addEventListener("click", function () {
+      const selectedButtons = document.querySelectorAll(
+        ".selectable-button.selected"
+      );
+      if (selectedButtons.length > 0) {
+        console.log("Appointment booked for:", selectedButtons);
+      } else {
+        alert("Please select at least one service.");
+      }
+    });
+  }
+});
+
+const gridButtons = document.querySelectorAll(".grid button");
+
+if (gridButtons.length) {
+  gridButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      gridButtons.forEach((btn) => btn.classList.remove("active"));
+
+      button.classList.add("active");
     });
   });
+}
 
-  makeAppointmentBtn.addEventListener("click", function () {
-    const selectedButtons = document.querySelectorAll(
-      ".selectable-button.selected"
-    );
-    if (selectedButtons.length > 0) {
-      console.log("Appointment booked for:", selectedButtons);
-    } else {
-      alert("Please select at least one service.");
-    }
-  });
+window.addEventListener("load", function () {
+  const content = document.querySelector(".content");
+  const preloader = document.querySelector(".preloader");
+
+  if (content) {
+    content.classList.remove("hidden");
+  }
+
+  if (preloader) {
+    preloader.classList.add("hidden");
+  }
 });
-
-const buttons = document.querySelectorAll(".grid button");
-
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    buttons.forEach((btn) => btn.classList.remove("active"));
-
-    button.classList.add("active");
-  });
-});
-window.onload = function () {
-  document.querySelector(".content").classList.remove("hidden");
-  document.querySelector(".preloader").classList.add("hidden");
-};
 
 const phoneIcon = document.getElementById("phoneIcon");
 const phoneNumber = document.getElementById("phoneNumber");
 
-phoneIcon.addEventListener("mouseenter", () => {
-  phoneNumber.classList.remove("hidden");
-});
+if (phoneIcon && phoneNumber) {
+  phoneIcon.addEventListener("mouseenter", () => {
+    phoneNumber.classList.remove("hidden");
+  });
 
-phoneIcon.addEventListener("mouseleave", () => {
-  phoneNumber.classList.add("hidden");
-});
+  phoneIcon.addEventListener("mouseleave", () => {
+    phoneNumber.classList.add("hidden");
+  });
+}
 //Cart
 function incrementQuantity() {
   var quantityInput = document.getElementById("quantityInput");
-  quantityInput.value = parseInt(quantityInput.value) + 1;
+  if (!quantityInput) {
+    return;
+  }
+  var currentValue = parseInt(quantityInput.value || "0", 10);
+  quantityInput.value = currentValue + 1;
 }
 
 function decrementQuantity() {
   var quantityInput = document.getElementById("quantityInput");
-  if (parseInt(quantityInput.value) > 1) {
-    quantityInput.value = parseInt(quantityInput.value) - 1;
+  if (!quantityInput) {
+    return;
+  }
+  var currentValue = parseInt(quantityInput.value || "0", 10);
+  if (currentValue > 1) {
+    quantityInput.value = currentValue - 1;
   }
 }

@@ -10,6 +10,7 @@ use App\Models\ShopPage;
 use App\Models\SeoSetting;
 use Image;
 use File;
+use Illuminate\Support\Str;
 
 class ContentController extends Controller
 {
@@ -275,6 +276,10 @@ class ContentController extends Controller
         $page = SeoSetting::find($id);
         $page->seo_title = $request->seo_title;
         $page->seo_description = $request->seo_description;
+        $page->seo_author = $request->seo_author;
+        $page->seo_keywords = $request->seo_keywords;
+        $page->seo_publisher = $request->seo_publisher;
+        $page->canonical_url = $request->canonical_url;
         $page->save();
 
         $notification = trans("admin_validation.Update Successfully");
@@ -579,5 +584,212 @@ class ContentController extends Controller
         $notification = trans("admin_validation.Update Successfully");
         $notification = ["messege" => $notification, "alert-type" => "success"];
         return redirect() ->back() ->with($notification);
+    }
+
+    public function livingArchivePage()
+    {
+        $setting = Setting::select(
+            'living_archive_title',
+            'living_archive_subtitle',
+            'living_archive_intro',
+            'living_archive_qr_text',
+            'living_ritual_before',
+            'living_ritual_during',
+            'living_ritual_after',
+            'living_crest_title',
+            'living_crest_body_one',
+            'living_crest_body_two',
+            'living_crest_body_three',
+            'living_crest_mission',
+            'living_crest_secondary_caption',
+            'living_crest_primary_image',
+            'living_crest_secondary_image',
+            'living_archive_logo_image',
+            'living_archive_hero_image',
+            'living_contact_phone',
+            'living_contact_email',
+            'living_phases_intro',
+            'living_handoff_page_name',
+            'living_handoff_logo_url',
+            'living_handoff_email',
+            'living_handoff_phone',
+            'living_handoff_social_instagram',
+            'living_handoff_social_facebook',
+            'living_handoff_social_youtube',
+            'living_handoff_address',
+            'living_handoff_intro',
+            'living_handoff_mission',
+            'living_handoff_supporter',
+            'living_handoff_coming_soon',
+            'living_handoff_tagline1',
+            'living_handoff_tagline2',
+            'living_handoff_tagline3',
+            'living_handoff_tagline4',
+            'living_handoff_merch_apparel',
+            'living_handoff_merch_posters',
+            'living_handoff_merch_music',
+            'living_handoff_merch_donor',
+            'living_handoff_merch_digital',
+            'living_handoff_visual_hierarchy',
+            'living_handoff_palette_primary',
+            'living_handoff_palette_secondary',
+            'living_handoff_palette_accent',
+            'living_handoff_background_guide',
+            'living_handoff_footer_line',
+            'living_phase1_title',
+            'living_phase1_affirmation',
+            'living_phase2_title',
+            'living_phase2_affirmation',
+            'living_phase3_title',
+            'living_phase3_affirmation',
+            'living_phase4_title',
+            'living_phase4_affirmation'
+        )->first();
+
+        $seo = SeoSetting::firstOrNew(['page_name' => 'Living Archive']);
+
+        return view('admin.living_archive_settings', compact('setting', 'seo'));
+    }
+
+    public function updateLivingArchivePage(Request $request)
+    {
+        $rules = [
+            'living_archive_title' => 'nullable|string|max:255',
+            'living_archive_subtitle' => 'nullable|string|max:255',
+            'living_archive_intro' => 'nullable|string',
+            'living_archive_qr_text' => 'nullable|string',
+            'living_ritual_before' => 'nullable|string',
+            'living_ritual_during' => 'nullable|string',
+            'living_ritual_after' => 'nullable|string',
+            'living_crest_title' => 'nullable|string|max:255',
+            'living_crest_body_one' => 'nullable|string',
+            'living_crest_body_two' => 'nullable|string',
+            'living_crest_body_three' => 'nullable|string',
+            'living_crest_mission' => 'nullable|string',
+            'living_crest_secondary_caption' => 'nullable|string|max:255',
+            'living_crest_primary_image' => 'nullable|string|max:255',
+            'living_crest_secondary_image' => 'nullable|string|max:255',
+            'living_archive_logo_image' => 'nullable|string|max:255',
+            'living_archive_hero_image' => 'nullable|string|max:255',
+            'living_contact_phone' => 'nullable|string|max:120',
+            'living_contact_email' => 'nullable|string|max:120',
+            'living_phases_intro' => 'nullable|string',
+            'living_handoff_page_name' => 'nullable|string|max:255',
+            'living_handoff_logo_url' => 'nullable|string|max:255',
+            'living_handoff_email' => 'nullable|string|max:255',
+            'living_handoff_phone' => 'nullable|string|max:120',
+            'living_handoff_social_instagram' => 'nullable|string|max:255',
+            'living_handoff_social_facebook' => 'nullable|string|max:255',
+            'living_handoff_social_youtube' => 'nullable|string|max:255',
+            'living_handoff_address' => 'nullable|string',
+            'living_handoff_intro' => 'nullable|string',
+            'living_handoff_mission' => 'nullable|string',
+            'living_handoff_supporter' => 'nullable|string',
+            'living_handoff_coming_soon' => 'nullable|string',
+            'living_handoff_tagline1' => 'nullable|string|max:255',
+            'living_handoff_tagline2' => 'nullable|string|max:255',
+            'living_handoff_tagline3' => 'nullable|string|max:255',
+            'living_handoff_tagline4' => 'nullable|string|max:255',
+            'living_handoff_merch_apparel' => 'nullable|string|max:255',
+            'living_handoff_merch_posters' => 'nullable|string|max:255',
+            'living_handoff_merch_music' => 'nullable|string|max:255',
+            'living_handoff_merch_donor' => 'nullable|string|max:255',
+            'living_handoff_merch_digital' => 'nullable|string|max:255',
+            'living_handoff_visual_hierarchy' => 'nullable|string',
+            'living_handoff_palette_primary' => 'nullable|string|max:255',
+            'living_handoff_palette_secondary' => 'nullable|string|max:255',
+            'living_handoff_palette_accent' => 'nullable|string|max:255',
+            'living_handoff_background_guide' => 'nullable|string',
+            'living_handoff_footer_line' => 'nullable|string|max:255',
+            'living_archive_logo_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'living_archive_hero_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:6144',
+            'living_crest_primary_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'living_crest_secondary_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'living_phase1_title' => 'nullable|string|max:255',
+            'living_phase1_affirmation' => 'nullable|string',
+            'living_phase2_title' => 'nullable|string|max:255',
+            'living_phase2_affirmation' => 'nullable|string',
+            'living_phase3_title' => 'nullable|string|max:255',
+            'living_phase3_affirmation' => 'nullable|string',
+            'living_phase4_title' => 'nullable|string|max:255',
+            'living_phase4_affirmation' => 'nullable|string',
+            'living_seo_title' => 'nullable|string|max:255',
+            'living_seo_description' => 'nullable|string',
+            'living_seo_keywords' => 'nullable|string|max:255',
+            'living_seo_author' => 'nullable|string|max:255',
+            'living_seo_publisher' => 'nullable|string|max:255',
+            'living_seo_canonical' => 'nullable|string|max:255',
+            'living_seo_meta_image' => 'nullable|string|max:255',
+        ];
+
+        $this->validate($request, $rules);
+
+        $setting = Setting::first();
+        if (!$setting) {
+            $setting = new Setting();
+        }
+
+        $fields = array_keys($rules);
+        foreach ($fields as $field) {
+            if (str_contains($field, '_file')) {
+                continue;
+            }
+            if ($request->exists($field)) {
+                $setting->{$field} = $request->input($field, $setting->{$field});
+            }
+        }
+
+        $uploadMap = [
+            'living_archive_logo_image_file' => 'living_archive_logo_image',
+            'living_archive_hero_image_file' => 'living_archive_hero_image',
+            'living_crest_primary_image_file' => 'living_crest_primary_image',
+            'living_crest_secondary_image_file' => 'living_crest_secondary_image',
+        ];
+
+        foreach ($uploadMap as $fileKey => $targetField) {
+            if ($request->hasFile($fileKey)) {
+                $uploadedPath = $this->handleLivingUpload($request->file($fileKey), $targetField, $setting->{$targetField} ?? null);
+                $setting->{$targetField} = $uploadedPath;
+            }
+        }
+
+        $setting->save();
+
+        // Upsert SEO settings for Living Archive page
+        $seo = SeoSetting::firstOrNew(['page_name' => 'Living Archive']);
+        $seo->page_name = 'Living Archive';
+        $seo->seo_title = $request->input('living_seo_title', $seo->seo_title);
+        $seo->seo_description = $request->input('living_seo_description', $seo->seo_description);
+        $seo->seo_keywords = $request->input('living_seo_keywords', $seo->seo_keywords);
+        $seo->seo_author = $request->input('living_seo_author', $seo->seo_author);
+        $seo->seo_publisher = $request->input('living_seo_publisher', $seo->seo_publisher);
+        $seo->canonical_url = $request->input('living_seo_canonical', $seo->canonical_url);
+        $seo->meta_title = $seo->seo_title; // keep meta_title in sync if present
+        $seo->meta_description = $seo->seo_description;
+        $seo->meta_image = $request->input('living_seo_meta_image', $seo->meta_image);
+        $seo->save();
+
+        $notification = trans("admin_validation.Update Successfully");
+        $notification = ["messege" => $notification, "alert-type" => "success"];
+        return redirect()->back()->with($notification);
+    }
+
+    protected function handleLivingUpload($file, string $label, ?string $oldPath = null): string
+    {
+        $slug = Str::slug($label, '-');
+        $ext = $file->getClientOriginalExtension();
+        $directory = public_path('uploads/living-archive');
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+        $relative = "uploads/living-archive/{$slug}-" . time() . '-' . uniqid() . ".{$ext}";
+
+        Image::make($file)->save(public_path() . "/" . $relative);
+
+        if ($oldPath && File::exists(public_path() . "/" . $oldPath)) {
+            @unlink(public_path() . "/" . $oldPath);
+        }
+
+        return $relative;
     }
 }

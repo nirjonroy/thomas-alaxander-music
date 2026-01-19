@@ -1,31 +1,43 @@
 @extends('frontend.app')
-@section('title', 'Music List')
+@section('title', $product->seo_title ?? $product->name ?? 'Product Details')
 @section('seos')
-
+    @php
+        $pageTitle = $product->seo_title ?? $product->name;
+        $pageDesc = \Illuminate\Support\Str::limit(strip_tags($product->long_description), 180);
+        $pageUrl = url()->current();
+        $imageUrl = $product->thumb_image
+            ? asset('uploads/custom-images2/' . ltrim($product->thumb_image, '/'))
+            : asset(siteInfo()->logo);
+        $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Product Details')->first();
+        $canonical = optional($seoDefaults)->canonical_url ?: $pageUrl;
+        $keywords = optional($seoDefaults)->seo_keywords ?? ($product->name . ', Thomas Alexander merchandise');
+        $authorMeta = optional($seoDefaults)->seo_author ?? 'Thomas Alexander';
+        $publisher = optional($seoDefaults)->seo_publisher ?? 'Thomas Alexander';
+    @endphp
 
     <meta charset="UTF-8">
-
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-
-    <meta name="title" content="{{$product->name}}">
-
-    <meta name="description" content="{{$product->long_description}}">
-    <link rel="canonical" href="">
-    <meta property="og:title" content="{{$product->name}}">
-    <meta property="og:description" content="{{$product->long_description}}">
-    <meta property="og:url" content="{{url()->current()}}">
-    <meta property="og:site_name" content="{{$product->name}}">
-
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDesc }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="author" content="{{ $authorMeta }}">
+    <meta name="publisher" content="{{ $publisher }}">
+    <link rel="canonical" href="{{ $canonical }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDesc }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:site_name" content="{{ $pageTitle }}">
     <meta property="og:locale" content="en_US">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="{{ $imageUrl }}">
+    <meta property="og:image:secure_url" content="{{ $imageUrl }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="628">
-    <meta property="article:modified_time" content="2023-03-01T12:33:34+00:00">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="">
-    <meta name="twitter:image" content="">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDesc }}">
+    <meta name="twitter:url" content="{{ $canonical }}">
+    <meta name="twitter:image" content="{{ $imageUrl }}">
 @endsection
 @section('content')
 
@@ -83,6 +95,7 @@
         
         <div class="ms_about_content" style="margin-top:10px; background: rgb(243, 241, 241); padding: 5px;">
           <div class="ms_about_img " style="float: right">
+            <input type="hidden" value="{{$product->type}}" name="type" id="type">
             @if($product->type == 'single')
             <img src="{{asset('uploads/custom-images/' . $product->thumb_image)}}" alt="About Thomas Alexander"
             width="200px" height="200px" style="background:white;  border-radius:50%; ">
@@ -138,7 +151,7 @@
         </audio>
       @else
         <audio controls>
-        <source src="...." type="audio/mpeg">
+        <source src="{{ asset($product->demo_song) }}" type="audio/mpeg">
         </audio>
       @endif
       @endif
@@ -152,9 +165,9 @@
       @else
         <br>
         <div style="text-align: center"></div>
-        @if($product->offer_price != '0')
-        <b>${{ number_format($product->offer_price, 2) }}</b>
-        <sub><del style="color: red">${{ number_format($product->price, 2) }}</del></sub>
+        @if($product->offer_price != 0)
+        <b>${{ number_format($product->price, 2) }}</b>
+        <sub><del style="color: red">${{ number_format($product->offer_price, 2) }}</del></sub>
         <input type="hidden" name="price" id="price_val" value="{{ $product->offer_price }}">
       @else
         ${{ number_format($product->price, 2) }}
@@ -164,7 +177,7 @@
         <br>
         <div class="qty-btn-box mt-3 col-4">
                      <div class="qty-box mb-2" >
-                        <p>Queantity: </p>
+                        <p>Quantity: </p>
                         <input type="number" min="1" name="quantity" id="quantity" value="1" class="form-control font-20 rounded-0 shadow-none qty" style="background: #f66326; color: white; font-weight: bold; text-align: center;">
                         
                      </div>
@@ -344,7 +357,7 @@
    $(function () {
 
       $(document).on('click', '.add-to-cart', function (e) {
-
+          
           let variation_id = $('#size_variation_id').val();
           let variation_size = $('#size_value').val();
           let variation_size_id = $('input[name="variation_size_id"]').val();
@@ -354,7 +367,7 @@
           var quantity = $('#quantity').val();
           let image = $('input#pro_img').val();
           let pro_type = $('input#type').val();
-          
+          // alert(pro_type);
           
           let proName=$('input[name="product_name"]').val();
           let proId=$('input[name="product_id"]').val();

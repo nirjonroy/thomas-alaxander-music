@@ -110,7 +110,6 @@
 @include('frontend.partials.js')
 
 <script src="{{asset('frontend/assets/js/index.js')}}"></script>
-<script src="{{asset('frontend/assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('frontend/assets/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('frontend/assets/js/plugins/swiper/js/swiper.min.js')}}"></script>
 <script src="{{asset('frontend/assets/js/plugins/player/jplayer.playlist.min.js')}}"></script>

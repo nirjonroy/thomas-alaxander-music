@@ -55,6 +55,33 @@
 
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="">Author</label>
+                                                                        <input type="text" name="seo_author" class="form-control" value="{{ $page->seo_author }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="">Publisher</label>
+                                                                        <input type="text" name="seo_publisher" class="form-control" value="{{ $page->seo_publisher }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">SEO Keywords</label>
+                                                                        <textarea name="seo_keywords" rows="3" class="form-control">{{ $page->seo_keywords }}</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">Canonical URL</label>
+                                                                        <input type="text" name="canonical_url" class="form-control" value="{{ $page->canonical_url }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">{{__('admin.Update')}}</button>
                                                         </form>

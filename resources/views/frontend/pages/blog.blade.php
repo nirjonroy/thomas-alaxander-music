@@ -1,13 +1,39 @@
-
-
-
 @extends('frontend.app')
-@section('title', 'Shop Product List')
+@section('title', 'Blog')
 @push('css')
     {{-- <link rel="stylesheet" href="{{ asset('frontend/silck/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/silck/slick-theme.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/food.css') }}"> --}}
 @endpush
+@section('seos')
+    @php
+        $seoSetting = \App\Models\SeoSetting::where('page_name', 'Blog')->first();
+        $pageTitle = optional($seoSetting)->seo_title ?? 'Thomas Alexander | Blog';
+        $pageDesc = optional($seoSetting)->seo_description ?? 'Stories, ceremonies, and updates from the Living Archive.';
+        $pageUrl = url()->current();
+        $canonical = optional($seoSetting)->canonical_url ?: $pageUrl;
+        $keywords = optional($seoSetting)->seo_keywords ?? 'Thomas Alexander blog, Living Archive stories';
+        $author = optional($seoSetting)->seo_author ?? 'Thomas Alexander';
+        $publisher = optional($seoSetting)->seo_publisher ?? 'Thomas Alexander';
+    @endphp
+    <meta charset="UTF-8">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDesc }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="author" content="{{ $author }}">
+    <meta name="publisher" content="{{ $publisher }}">
+    <link rel="canonical" href="{{ $canonical }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDesc }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:site_name" content="{{ $pageTitle }}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDesc }}">
+@endsection
 @section('content')
 <d class="ms_content_wrapper padder_top8">
 
@@ -96,7 +122,7 @@
                                            style="color: white; font-size: 15px;padding-top: 4%;background: red;border: solid;width: 100%;"
                                            class="btn btn-sm btn-warning semi "
                                           >
-                                       <i class="fas fa-shopping-cart"></i> &nbsp;  Details
+                                        &nbsp;  Details
                                         </a>
                       
                       	
@@ -155,4 +181,3 @@ $(document).ready(function () {
 
 
 @endpush
-

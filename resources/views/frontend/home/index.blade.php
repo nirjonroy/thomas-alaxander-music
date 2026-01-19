@@ -6,34 +6,136 @@
 @endpush
 @section('seos')
     @php
-        $SeoSettings = DB::table('seo_settings')->where('id', 1)->first();
+        $seoSetting = \App\Models\SeoSetting::where('page_name', 'Home Page')->first();
+        $pageTitle = optional($seoSetting)->seo_title ?? 'Thomas Alexander | Home';
+        $pageDesc = optional($seoSetting)->seo_description ?? 'Official home of Thomas Alexander — explore music, events, and ceremonial merchandise.';
+        $pageUrl = url()->current();
+        $canonical = optional($seoSetting)->canonical_url ?: $pageUrl;
+        $keywords = optional($seoSetting)->seo_keywords ?? 'Thomas Alexander, music, Living Archive';
+        $author = optional($seoSetting)->seo_author ?? 'Thomas Alexander';
+        $publisher = optional($seoSetting)->seo_publisher ?? 'Thomas Alexander';
     @endphp
 
     <meta charset="UTF-8">
-
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-
-    <meta name="title" content="{{$SeoSettings->seo_title}}">
-
-    <meta name="description" content="{{$SeoSettings->seo_description}}">
-    <link rel="canonical" href="">
-    <meta property="og:title" content="{{$SeoSettings->seo_title}}">
-    <meta property="og:description" content="{{$SeoSettings->seo_description}}">
-    <meta property="og:url" content="{{url()->current()}}">
-    <meta property="og:site_name" content="{{$SeoSettings->seo_title}}">
-
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDesc }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="author" content="{{ $author }}">
+    <meta name="publisher" content="{{ $publisher }}">
+    <link rel="canonical" href="{{ $canonical }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDesc }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:site_name" content="{{ $pageTitle }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="628">
-    <meta property="article:modified_time" content="2023-03-01T12:33:34+00:00">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="">
-    <meta name="twitter:image" content="">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="twitter:url" content="{{ $pageUrl }}">
 @endsection
 @section('content')
+
+
+
+<style>
+    .slider-img {
+        height: 75vh;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+        .slider-img {
+            height: 45vh;
+        }
+
+        .carousel-caption h2 {
+            font-size: 18px;
+        }
+
+        .carousel-caption p {
+            font-size: 14px;
+        }
+
+        .carousel-caption .btn {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+    }
+
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 1rem 2rem;
+        border-radius: 10px;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        padding: 10px;
+    }
+</style>
+
+@if($sliders->count())
+<section class="mb-4">
+    <div id="homepageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+
+            @foreach($sliders as $index => $slider)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                    
+                    <img src="{{ asset($slider->image) }}" class="d-block w-100 slider-img"
+                        alt="{{ $slider->title_one ?? 'Slider' }}">
+                    
+                    <div class="carousel-caption d-block">
+
+                        @if($slider->title_one)
+                            <h2 class="text-white">{{ $slider->title_one }}</h2>
+                        @endif
+                        @if($slider->title_two)
+                            <p class="text-light">{{ $slider->title_two }}</p>
+                        @endif
+                        @if($slider->slider_location && $slider->link)
+                            <a href="{{ $slider->link }}" class="btn btn-light btn-lg" style="font-size: 14px; font-weight: bold;">
+                                {{ $slider->slider_location }}
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+
+        {{-- Controls --}}
+        <button class="carousel-control-prev" type="button" data-bs-target="#homepageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#homepageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+@endif
+
+<div class="container" style="margin:20px">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <h1 style="text-align: center; font-size: 25px; padding: 5px;">Who is : Thomas Alexander - "The Voice"</h1>
+            <p style="color: white">
+A legendary Edmonton musician with over 50 years in the industry, Thomas Alexander began his career in 1968 with The Patchwork Quilt and went on to front Edmonton's first funk band, The Key. His musical journey spans from touring North America with Southbound Freeway to performing in Japan where he was dubbed "The Canadian Bluebird" for his stunning tenor voice.
+Thomas has shared the stage with music icons including James Brown (who called him "Soul Brother Number Two"), Irene Cara, and members of The 5th Dimension. His versatile range covers Jazz, R&B, Funk, Gospel, Country, and Pop. Notable performances include starring as Judas in Jesus Christ Superstar and singing for Alberta's centennial celebrations.
+With roots tracing back to Alberta's first Black pioneers, Thomas continues to create and perform, cementing his status as one of Edmonton's most celebrated musical legends.
+
+</p>
+        </div>
+    </div>
+</div>
+
 <div class="ms_content_wrapper padder_top8" >
     <!---Header--->
    
@@ -69,18 +171,18 @@
                                                     <div class="songslist_number">
                                                         <h4 class="songslist_sn">{{++$key}}</h4>
                                                         <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                        <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
+                                                        <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                     </div>
                                                     <div class="songslist_details">
                                                         <div class="songslist_thumb">
-                                                            <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                            <a href="{{ route('front.product.show', $product->slug ) }}">
                                                                 <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
                                                             </a>
                                                             
                                                         </div>
                                                         <div class="songslist_name">
     
-                                                            <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
+                                                            <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
                                                             <p class="song_artist">{{$product->artist_name}}</p>
                                                         </div>
                                                     </div>
@@ -124,18 +226,18 @@
                                                     <div class="songslist_number">
                                                         <h4 class="songslist_sn">{{++$key}}</h4>
                                                         <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                        <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
+                                                        <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                     </div>
                                                     <div class="songslist_details">
                                                         <div class="songslist_thumb">
-                                                            <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                            <a href="{{ route('front.product.show', $product->slug ) }}">
                                                                 <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
                                                             </a>
                                                             
                                                         </div>
                                                         <div class="songslist_name">
     
-                                                            <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
+                                                            <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
                                                             <p class="song_artist">{{$product->artist_name}}</p>
                                                         </div>
                                                     </div>
@@ -179,18 +281,18 @@
                                                 <div class="songslist_number">
                                                     <h4 class="songslist_sn">{{++$key}}</h4>
                                                     <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
+                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                 </div>
                                                 <div class="songslist_details">
                                                     <div class="songslist_thumb">
-                                                        <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                        <a href="{{ route('front.product.show', $product->slug ) }}">
                                                             <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
                                                         </a>
                                                         
                                                     </div>
                                                     <div class="songslist_name">
 
-                                                        <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
+                                                        <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
                                                         <p class="song_artist">{{$product->artist_name}}</p>
                                                     </div>
                                                 </div>
@@ -236,18 +338,18 @@
                                                 <div class="songslist_number">
                                                     <h4 class="songslist_sn">{{$key++}}</h4>
                                                     <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
-                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->music) }}" preload="none"></audio>
+                                                    <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                 </div>
                                                 <div class="songslist_details">
                                                     <div class="songslist_thumb">
-                                                        <a href="{{ route('front.product.show', [ $product->id ] ) }}">
+                                                        <a href="{{ route('front.product.show', $product->slug ) }}">
                                                             <img src="{{asset('uploads/custom-images2/' . $product->thumb_image)}}" alt="thumb" class="img-fluid" />
                                                         </a>
                                                         
                                                     </div>
                                                     <div class="songslist_name">
 
-                                                        <h3 class="song_name"><a href="{{ route('front.product.show', [ $product->id ] ) }}">{{$product->name}}</a></h3>
+                                                        <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
                                                         <p class="song_artist">{{$product->artist_name}}</p>
                                                     </div>
                                                 </div>
@@ -295,9 +397,157 @@
 
 </div>
 <!---Main Content end--->
+
+<style>
+    .event-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .event-map iframe,
+    .event-map img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .event-content {
+        padding: 15px;
+    }
+
+    .event-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        min-height: 40px;
+    }
+
+    .event-info {
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #555;
+    }
+
+    .event-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #007BFF;
+        margin-bottom: 10px;
+    }
+    .event-content{
+        margin: 10px !important;
+    }
+</style>
+
+<div class="container my-4 event-content">
+    <div class="row">
+        <h1 class="song_name" style="text-align: center; margin-bottom: 10px; font-size: 25px"><u>Recent Event's</u></h1>
+           @forelse($events as $product)
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+        <div class="event-card">
+            <div class="event-map">
+                 <a href="{{ route('front.events.show', $product->id) }}">
+                @if(!empty($product->image))
+                    <img src="{{ asset('uploads/custom-images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid w-100" style="height: auto; max-height: 200px; object-fit: contain;"
+                    onclick="showEventImage('{{ asset('uploads/custom-images/' . $product->image) }}')"
+                    >
+                @else
+                    <iframe 
+                        src="https://www.google.com/maps?q={{ urlencode($product->location) }}&output=embed" 
+                        allowfullscreen 
+                        width="100%" 
+                        height="150" 
+                        frameborder="0" 
+                        style="border:0;">
+                    </iframe>
+                @endif
+                </a>
+            </div>
+            <div class="event-content">
+                 <a href="{{ route('front.events.show', $product->id) }}">
+                <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
+                <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
+                <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>
+                <div class="event-info"><i class="fa fa-calendar-alt"></i> {{ $product->date }} {{ $product->time }}</div>
+                 </a>
+            </div>
+        </div>
+    </div>
+@empty
+    <div class="text-center text-danger">
+        <strong>No events are available</strong>
+    </div>
+@endforelse
+    </div>
+</div>
+
+
+<div class="container" style="margin: 20px">
+    <h1 class="text-center mb-4" style="text-align: center; margin-bottom: 10px; font-size: 25px"><u>Latest Blogs</u></h1>
+
+    <div class="row">
+        @foreach ($blogs as $blog)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" >
+                <div class="card h-100" style="border-radius: 5% ">
+                    <a href="{{ route('front.blog_details', [$blog->slug]) }}">
+                        <img src="{{ asset($blog->image) }}"
+                             class="card-img-top img-fluid"
+                             alt="{{ $blog->title }}"
+                             style="height: auto; max-height: 200px; object-fit: contain; border-radius: 5%;">
+                    </a>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title font-16 text-center" style="font-size: 14px">
+                            <a href="{{ route('front.blog_details', [$blog->slug]) }}"
+                               class="text-dark text-decoration-none">
+                                {{ Str::limit($blog->title, 90, ' ...') }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted text-center">{{ date('m/d/Y', strtotime($blog->created_at)) }}</p>
+                        <a href="{{ route('front.blog_details', [$blog->slug]) }}"
+                           class="btn btn-danger btn-sm w-100 mt-auto" style="height: 20px; font-size: 14px; border-radius: 15%;">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+                    
+                    <!-- Image Modal -->
+<div class="modal fade" id="eventImageModal" tabindex="-1" aria-labelledby="eventImageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark">
+      <div class="modal-body p-0">
+        <img id="modalEventImage" src="" class="img-fluid w-100" alt="Event Image">
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('js')
+<script>
+    function showEventImage(imageUrl) {
+        const modalImg = document.getElementById('modalEventImage');
+        modalImg.src = imageUrl;
+        const modal = new bootstrap.Modal(document.getElementById('eventImageModal'));
+        modal.show();
+    }
+</script>
+
 <script>
   $(document).ready(function () {
     $(".owl-carousel").owlCarousel({

@@ -44,7 +44,7 @@
                 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($category->products as $product)
                      <a
-          href="{{route('front.product.show', $product->id)}}"
+         href="{{route('front.product.show', $product->slug)}}"
           class="duration-300 ease-in-out hover:scale-105"
         >
                         <div class="bg-white shadow-md rounded-lg overflow-hidden">

@@ -31,11 +31,11 @@
               
                 <p class="addText add-to-cart" data-id="{{ $product->id }}" data-url="{{ route('front.cart.store') }}">Add to Shopping Bag</p>
                 <span>
-                    <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="btnShowDetails">
+                    <a href="{{ route('front.product.show', $product->slug ) }}" class="btnShowDetails">
                         <span>Details</span>
                         <span>  &gt;</span>
                     </a>
-                    <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="btnShowDetailsIcon">
+                    <a href="{{ route('front.product.show', $product->slug ) }}" class="btnShowDetailsIcon">
                         <svg width="24px" height="24px" style="fill:#e1e1e1;stroke:#e1e1e1;display:inline-block;vertical-align:middle;" version="1.1" viewBox="0 0 100 100">
                             <path d="m50 5c-24.898 0-45 20.102-45 45s20.102 45 45 45 45-20.102 45-45-20.102-45-45-45zm7.1016 70c0 2.1992-1.8984 4.1016-4.1016 4.1016h-6.1992c-2.1992 0-4.1016-1.8984-4.1016-4.1016v-26.199c0-2.3008 1.8984-4.1016 4.1016-4.1016h6.1992c2.1992 0 4.1016 1.8984 4.1016 4.1016zm-7.2031-37.102c-4.6016 0-8.3984-3.8008-8.3984-8.5 0-4.6992 3.8008-8.5 8.3984-8.5 4.6992 0 8.5 3.8008 8.5 8.5 0 4.7031-3.7969 8.5-8.5 8.5z"></path>
                         </svg>
@@ -45,7 +45,7 @@
         </div>
         <span data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.3">
             <a href="" class="btnShowDetails" data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.3.0"><span data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.3.0.1">Details</span><span data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.3.0.2">  &gt;</span></a>
-            <a href="{{ route('front.product.show', [ $product->id ] ) }}" class="btnShowDetailsIcon">
+            <a href="{{ route('front.product.show', $product->slug ) }}" class="btnShowDetailsIcon">
                 <svg width="24px" height="24px" style="fill:#e1e1e1;stroke:#e1e1e1;display:inline-block;vertical-align:middle;" version="1.1" viewBox="0 0 100 100">
                     <path d="m50 5c-24.898 0-45 20.102-45 45s20.102 45 45 45 45-20.102 45-45-20.102-45-45-45zm7.1016 70c0 2.1992-1.8984 4.1016-4.1016 4.1016h-6.1992c-2.1992 0-4.1016-1.8984-4.1016-4.1016v-26.199c0-2.3008 1.8984-4.1016 4.1016-4.1016h6.1992c2.1992 0 4.1016 1.8984 4.1016 4.1016zm-7.2031-37.102c-4.6016 0-8.3984-3.8008-8.3984-8.5 0-4.6992 3.8008-8.5 8.3984-8.5 4.6992 0 8.5 3.8008 8.5 8.5 0 4.7031-3.7969 8.5-8.5 8.5z" data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.3.1.0.0"></path>
                 </svg>

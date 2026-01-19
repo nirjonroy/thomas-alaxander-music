@@ -1,9 +1,7 @@
 @extends('frontend.app')
-@section('title', 'Shop Product List')
+@section('title', 'Event List')
 @push('css')
-    {{-- <link rel="stylesheet" href="{{ asset('frontend/silck/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/silck/slick-theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/food.css') }}"> --}}
+   
 @endpush
 @section('content')
 <d class="ms_content_wrapper padder_top8">
@@ -29,113 +27,87 @@
 <div class="main-wrapper">
     <div class="overlay-sidebar"></div>
     <div class="category-page col-lg-12 col-12 p-0 m-auto mt-2 mb-2">
-        <div class="row">
-       
-            <section class="products-box col-lg-12 col-md-12 custom-padding-10" style="padding: 10px">
-                <div class="bg-white p-3 pt-1">
-                    <div class="product-bar">
-                        <div class="btn-list">
-               
-                            <!--<button class="filter-btn btn d-block d-md-block d-lg-none">-->
-                            <!--   <i class="fas fa-filter"></i> Filter-->
-                            <!--</button>-->
-                            <!--<button class="compare-btn btn d-none d-md-none d-lg-block">-->
-                            <!--   <i class="fas fa-repeat"></i> Product Compare-->
-                            <!--</button>-->
-                        </div>
-                        <div class="filter-sort d-flex align-items-center">
-                            <div class="d-flex align-items-center me-2">
-                              <!--<label for="" class="form-label me-2 mb-0" style="white-space: nowrap;">Sort By: </label>-->
-                              <!--<select name="" id="" class="form-select shadow-none">-->
-                              <!--  <option value="">Select One</option>-->
-                              <!--  <option value="">High to Low</option>-->
-                              <!--</select>-->
-                            </div>
-                            <div class="d-lg-flex d-md-none d-none align-items-center">
-                              <!--<label for="" class="form-label me-2 mb-0">Show:</label>-->
-                              <!--<select name="" id="" class="form-select shadow-none">-->
-                              <!--  <option value="">10</option>-->
-                              <!--  <option value="">20</option>-->
-                              <!--</select>-->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-box py-1 bg-muted row">
-                        @forelse($events  as $key => $product)
+        <style>
+    .event-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    .event-map iframe {
+        width: 100%;
+        height: 180px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+    .event-content {
+        padding: 15px;
+    }
+    .event-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        height: 40px;
+    }
+    .event-info {
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #555;
+    }
+    .event-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #007BFF;
+        margin-bottom: 10px;
+    }
+</style>
 
-
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 custom-padding-10">
-                            <div class="product-item">
-                                <div class="product_thumb">
-                                    {{-- <a class="primary_img" href="{{ route('front.product.show', [ $product->id ] ) }}"><img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt=""></a> --}}
-                                    <a class="secondary_img" href=""><img src="{{ asset('uploads/custom-images2/'.$product->image) }}" alt="" width="100%"></a>
-                                    <!--<div class="action_links">-->
-                                    <!--    <ul>-->
-                                    <!--        <li class="wishlist"><a href="#" title="Add to Wishlist"><i class="fa-regular fa-heart"></i></a></li>-->
-                                    <!--        <li class="compare"><a href="#" title="compare"><i class="fa-solid fa-repeat"></i></a></li>-->
-                                    <!--        <li class="quick_button"><a href="#" data-bs-toggle="modal" data-bs-target="#modal_box" title="quick view"> <i class="fa-regular fa-eye"></i></a></li>-->
-                                    <!--    </ul>-->
-                                    <!--</div>-->
-                                </div>
-                                <div class="product_content ">
-                                    <h4 class="ps-1" style="height: 40px;">
-                                         
-                                        <a href="" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->name, 30)}}</a>
-                                        
-                                    </h4>
-                                   
-                                    <div class="price_box ps-1" style="padding-bottom: 0px;">
-                                        @if(empty($product->offer_price))
-                                        <span class="current_price">${{ $product->ticket_price }}</span>
-
-                                        @else
-                                        <span class="current_price">${{ $product->offer_price }}</span>
-                                        <span class="old_price" style="color: red; font-size: 10px;"><del>${{ $product->price }}</del></span>
-
-                                        @endif
-
-                                    </div>
-                                    <a href="" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->location, 30)}}</a>
-                                     <br>   <a href="" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->date, 30)}}</a> <a href="" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->time, 30)}}</a>
-                                    <div class="rounded-0 bg-muted p-2 d-flex justify-content-between">
-
-                        <!--                <a data-id="{{ $product->id }}" data-url="{{ route('front.cart.store') }}" style="color: white;font-size: 12px;" class="btn btn-sm btn-warning semi bg-orange  add-to-cart">-->
-                        <!--Add to cart-->
-                        <!--</a>-->
-                                        
-                                        {{-- @if($product->type == 'variable' || $product->prod_color == 'varcolor') 
-                      		<a href="{{ route('front.product.show', [ $product->id ] ) }}"
-                                         style="color: white; font-size: 16px;background: red;border: solid;width: 100%;padding-top: 4%;"
-                                         class="btn btn-sm btn-warning semi "
-                                         >
-                                     {{ BanglaText('order') }}
-                                      </a>
-                      	@else
-                      	
-                      	<a href="{{ route('front.product.show', [ $product->id ] ) }}"
-                                           style="color: white; font-size: 15px;padding-top: 4%;background: red;border: solid;width: 100%;"
-                                           class="btn btn-sm btn-warning semi buy-now"
-                                           data-url="{{ route('front.cart.store') }}">
-                                       <i class="fas fa-shopping-cart"></i> &nbsp;  {{ BanglaText('order') }}
-                                        </a>
-                      
-                      	@endif --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @empty
-                                    <div align="center">
-                                        <strong class="text-center text-danger">No products are available</strong>
-                                    </div>
-                                    @endforelse
-
-
-                    </div>
-                </div>
-            </section>
-        <!-- Products -->
+<div class="row">
+   @forelse($events as $product)
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+        <div class="event-card">
+            <div class="event-map">
+                @if(!empty($product->image))
+                <a href="{{ route('front.events.show', $product->slug ?? $product->id) }}">
+                    <img src="{{ asset('uploads/custom-images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid w-100" style="height: auto; max-height: 200px; object-fit: contain;"
+                    onclick="showEventImage('{{ asset('uploads/custom-images/' . $product->image) }}')"
+                    >
+                </a>
+                @else
+                    <iframe 
+                        src="https://www.google.com/maps?q={{ urlencode($product->location) }}&output=embed" 
+                        allowfullscreen 
+                        width="100%" 
+                        height="150" 
+                        frameborder="0" 
+                        style="border:0;">
+                    </iframe>
+                @endif
+            </div>
+            <div class="event-content">
+                <a href="{{ route('front.events.show', $product->id) }}">
+                <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
+                <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
+                <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>
+                <div class="event-info"><i class="fa fa-calendar-alt"></i> {{ $product->date }} {{ $product->time }}</div>
+                </a>
+            </div>
         </div>
+    </div>
+@empty
+    <div class="text-center text-danger">
+        <strong>No events are available</strong>
+    </div>
+@endforelse
+
+</div>
+
     </div>
 
 </div>
@@ -143,38 +115,28 @@
 
 </div>
 </div>
+<!-- Image Modal -->
+<div class="modal fade" id="eventImageModal" tabindex="-1" aria-labelledby="eventImageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark">
+      <div class="modal-body p-0">
+        <img id="modalEventImage" src="" class="img-fluid w-100" alt="Event Image">
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('js')
 <script>
-$(document).ready(function () {
-    $('.buy-now').on('click', function (e) {
-        e.preventDefault();
-        
-        var productId = $(this).attr('href').split('/').pop();
-        var proQty = 1;
-        var addToCartUrl = $(this).data('url');
-        var checkoutUrl = "{{ route('front.cart.index') }}";
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        // Include CSRF token in AJAX request headers
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        });
-
-        // Perform AJAX request to add the product to the cart
-        $.post(addToCartUrl, { id: productId, quantity: proQty }, function (response) {
-            // Redirect to checkout page after adding to cart
-           window.location.href = "{{ route('front.checkout.index') }}";
-        });
-    });
-});
+    function showEventImage(imageUrl) {
+        const modalImg = document.getElementById('modalEventImage');
+        modalImg.src = imageUrl;
+        const modal = new bootstrap.Modal(document.getElementById('eventImageModal'));
+        modal.show();
+    }
 </script>
-
-
-
-
 @endpush
+
 

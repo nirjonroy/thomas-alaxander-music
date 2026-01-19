@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\Admin\UserController;
 use App\Http\Controllers\stripePaymentController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WEB\Admin\DashboardController;
 use App\Http\Controllers\WEB\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\WEB\Admin\Auth\AdminForgotPasswordController;
@@ -65,7 +66,7 @@ use App\Http\Controllers\WEB\Admin\FlashSaleController;
 use App\Http\Controllers\WEB\Admin\InventoryController;
 use App\Http\Controllers\WEB\Admin\NotificationController;
 use App\Http\Controllers\WEB\Admin\LandingPageController;
-
+use App\Http\Controllers\WEB\Admin\VideoController;
 use App\Http\Controllers\WEB\Admin\IPBlockController;
 use App\Http\Controllers\WEB\Admin\AttributeController;
 use App\Http\Controllers\WEB\Seller\SellerDashboardController;
@@ -356,8 +357,16 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::get('edit-events/{id}', [EventController::class, 'edit'])->name('event.edit');
     Route::post('event-delete/{id}', [EventController::class, 'destroy'])->name('event.destroy');
     Route::post('create-events-store', [EventController::class, 'store'])->name('event.store');
-    Route::post('create-events-update/{id}', [EventController::class, 'update'])->name('event.update');
+    Route::put('create-events-update/{id}', [EventController::class, 'update'])->name('event.update');
     Route::put('event-status/{id}', [EventController::class,'changeStatus'])->name('event.status');
+    
+     Route::get('all-videos', [VideoController::class, 'index'])->name('video.index');
+    Route::get('create-video', [VideoController::class, 'create'])->name('video.create');
+    Route::get('edit-video/{id}', [VideoController::class, 'edit'])->name('video.edit');
+    Route::delete('delete-video/{id}', [VideoController::class, 'destroy'])->name('video.destroy');
+    Route::post('create-video-store', [VideoController::class, 'store'])->name('video.store');
+    Route::put('create-video-update/{id}', [VideoController::class, 'update'])->name('video.update');
+    Route::put('video-status/{id}', [VideoController::class,'changeStatus'])->name('video.status');
 
 
     Route::resource('product-sub-category', ProductSubCategoryController::class);
@@ -432,6 +441,8 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::resource('contact-us', ContactPageController::class);
 
     Route::resource('custom-page', CustomPageController::class);
+    Route::get('living-archive-page', [ContentController::class,'livingArchivePage'])->name('living-archive.page');
+    Route::put('living-archive-page', [ContentController::class,'updateLivingArchivePage'])->name('living-archive.page.update');
 
     Route::put('custom-page-status/{id}', [CustomPageController::class,'changeStatus'])->name('custom-page.status');
 
@@ -782,6 +793,7 @@ Auth::routes();
 Route::group(['as' => 'front.'], function(){
     Route::controller(FrontHomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+        Route::get('/living-archive', 'livingArchive')->name('home.living-archive');
         Route::get('about-thomas-alexander', 'about')->name('home.about');
         Route::get('/category/{type}/{slug}', 'subCategoriesByCategory')->name('subcategory');
         Route::get('/shop/{slug?}', 'shop')->name('shop');
@@ -792,6 +804,8 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/contact-us', 'contact_us')->name('contact_us');
         Route::get('/blog', 'blog')->name('blog');
         Route::get('/all-events', 'event')->name('events');
+         Route::get('/events/{event}','event_show')->name('events.show');
+        Route::post('/events/{event}/reviews', 'event_review')->name('events.reviews.store');
         Route::get('/blog-details/{slug}', 'blog_details')->name('blog_details');
 
     });
@@ -800,7 +814,7 @@ Route::group(['as' => 'front.'], function(){
         Route::group(['as'=> 'product.'], function(){
             Route::get('/search-product', 'searchProduct')->name('search');
             Route::get('/brand-product/{slug}', 'brandWiseProduct')->name('brand-product');
-            Route::get('/product/{id}', 'show')->name('show');
+            Route::get('/product/{product:slug}', 'show')->name('show');
             Route::get('get-variation_price', 'get_variation_price')->name('get-variation_price');
           Route::get('get-variation_color', 'get_color_price')->name('get-variation_color');
 
@@ -810,6 +824,7 @@ Route::group(['as' => 'front.'], function(){
 
             Route::get('/single-product/{slug}','single_product')->name('single_product');
             Route::get('/all-songs','all_product')->name('all.product');
+            Route::get('/all-video','all_video')->name('all.video');
 
         });
     });
@@ -885,13 +900,10 @@ Route::prefix('front')->group(function(){
 Route::controller(stripePaymentController::class)->group(function(){
     Route::get('stripe/{order_id}', 'stripe')->name('stripe.index');
     Route::post('stripe', 'stripePost')->name('stripe.post');
+    Route::get('living-archive/donate', 'donationForm')->name('living-archive.donate');
 });
 
-
-
-
-
-
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 
 

@@ -1,0 +1,14 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Living Archive Crest">
+    <defs>
+        <radialGradient id="crestGradient" cx="50%" cy="50%" r="65%">
+            <stop stop-color="#f0e4c3" stop-opacity="0.9" offset="0%"/>
+            <stop stop-color="#c7b79c" stop-opacity="0.3" offset="55%"/>
+            <stop stop-color="#8f7753" stop-opacity="0.05" offset="100%"/>
+        </radialGradient>
+    </defs>
+    <circle cx="256" cy="256" r="230" fill="url(#crestGradient)" stroke="#f0e4c3" stroke-opacity="0.2" stroke-width="6"/>
+    <path d="M256 80C212 152 188 230 188 256s24 104 68 176c44-72 68-150 68-176s-24-104-68-176z" fill="none" stroke="#f0e4c3" stroke-opacity="0.25" stroke-width="10" stroke-linecap="round"/>
+    <path d="M118 180c80 34 124 76 124 76s-48 48-124 76M394 180c-80 34-124 76-124 76s48 48 124 76" fill="none" stroke="#c7b79c" stroke-opacity="0.4" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="256" cy="256" r="36" fill="none" stroke="#ce8f3d" stroke-width="6" stroke-opacity="0.7"/>
+    <path d="M256 220v72M220 256h72" stroke="#ce8f3d" stroke-width="6" stroke-linecap="round" stroke-opacity="0.7"/>
+</svg>

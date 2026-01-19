@@ -1,35 +1,64 @@
 @extends('frontend.app')
-@section('title', 'Home')
+@php($detailTitle = $blog->seo_title ?? $blog->title)
+@section('title', $detailTitle)
 @push('css')
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
 @endpush
 @section('seos')
- <meta charset="UTF-8">
-
+    {{-- Basic --}}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-    <meta name="title" content="{{$blog->seo_title}}">
+    {{-- Page title & canonical --}}
+    @php
+        use Illuminate\Support\Str;
+        $pageTitle = $blog->seo_title ?? $blog->title;
+        $pageDesc  = Str::limit(strip_tags($blog->seo_description ?? $blog->description), 180);
+        $pageUrl   = url()->current();
+        $imageUrl  = asset($blog->image);
+        $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Blog Details')->first();
+        $canonical = optional($seoDefaults)->canonical_url ?: $pageUrl;
+        $keywords = optional($seoDefaults)->seo_keywords ?? ($blog->seo_keywords ?? $blog->title);
+        $authorMeta = optional($seoDefaults)->seo_author ?? ($blog->author ?? 'Thomas Alexander');
+        $publisher = optional($seoDefaults)->seo_publisher ?? 'Thomas Alexander';
+    @endphp
 
-    <meta name="description" content="{{ $blog->seo_description }}">
-    <link rel="canonical" href="">
-    <meta property="og:title" content="{{$blog->seo_title}}">
-    <meta property="og:description" content="{!! $blog->seo_description !!}">
-    <meta property="og:url" content="{{url()->current()}}">
-    <meta property="og:site_name" content="{{$blog->seo_title}}">
+    <title>{{ $pageTitle }}</title>
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDesc }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="author" content="{{ $authorMeta }}">
+    <meta name="publisher" content="{{ $publisher }}">
+    <link rel="canonical" href="{{ $canonical }}">
 
+    {{-- Open Graph (Facebook, etc.) --}}
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDesc }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:site_name" content="Thomas Alexander The Voice"> {{-- your site name --}}
     <meta property="og:locale" content="en_US">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="{{ $imageUrl }}">
+    <meta property="og:image:secure_url" content="{{ $imageUrl }}">
     <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="628">
-    <meta property="article:modified_time" content="2023-03-01T12:33:34+00:00">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="">
-    <meta name="twitter:image" content="">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ $pageTitle }}">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {{-- Optional article data --}}
+    <meta property="article:published_time" content="{{ optional($blog->created_at)->toIso8601String() }}">
+    <meta property="article:modified_time" content="{{ optional($blog->updated_at ?? $blog->created_at)->toIso8601String() }}">
+
+    {{-- Twitter --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDesc }}">
+    <meta name="twitter:url" content="{{ $canonical }}">
+    <meta name="twitter:image" content="{{ $imageUrl }}">
 @endsection
+
 @section('content')
 
 <div class="ms_content_wrapper padder_top8">
@@ -49,10 +78,12 @@
     <!-- Title -->
     <div class="text-center pt-5 pt-lg-5">
       <p class="text-warning fw-bold small mb-2">
-      <h3>{{ date('m/d/Y', strtotime($blog->created_at)) }}</h3> 
+      <h3 style="font-size: 16px;
+    font-weight: bold;">{{ date('m/d/Y', strtotime($blog->created_at)) }}</h3> 
       </p>
-      <h1 class="fw-bold fs-2 fs-md-1">
-       <h1>{{ $blog->title }}</h1> 
+      <h1 class="fw-bold fs-2 fs-md-1" >
+       <h1 style="font-size: 27px;
+    font-weight: bold;">{{ $blog->title }}</h1> 
       </h1>
     </div>
   
@@ -60,7 +91,7 @@
     <div class="container my-4">
       <div
         class="w-100 rounded mx-auto bg-white mb-5"
-        style="background-image: url('{{ asset($blog->image) }}'); background-size: cover; background-position: center; height: 400px; max-height: 650px;"
+        style="background-image: url('{{ asset($blog->image) }}'); background-size: cover; background-position: center; height: 400px; max-height: 500px;"
       >
       </div>
     </div>

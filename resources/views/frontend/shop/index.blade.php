@@ -13,7 +13,7 @@
         @forelse($filteredProducts  as $key => $product)
 
         <a
-          href="{{ route('front.product.show', [ $product->id ] ) }}"
+         href="{{ route('front.product.show', $product->slug ) }}"
           class="duration-300 ease-in-out hover:scale-105"
         >
           <div class="bg-white shadow-lg h-88 rounded-lg p-6">
@@ -159,4 +159,3 @@ $(document).ready(function () {
 
 
 @endpush
-

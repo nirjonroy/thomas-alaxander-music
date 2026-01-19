@@ -47,7 +47,7 @@ class ProductController extends Controller
         //
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
 
         $firstColumns  = FooterLink::where('column', 1)->get();
@@ -55,28 +55,27 @@ class ProductController extends Controller
         $thirdColumns  = FooterLink::where('column', 3)->get();
         $title         = Footer::first();
 
-        $product = Product::with('variantItems', 'category', 'subCategory', 'childCategory', 'brand', 'gallery', 'variations')
+        $product->load(['variantItems', 'category', 'subCategory', 'childCategory', 'brand', 'gallery', 'variations']);
+        $productId = $product->id;
 
-                            ->findOrFail($id);
-                            // dd($id);
-        $flavours = Flavour::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $freeSides = freeSide::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $topings = Toping::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $dips = dip::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $protins = protin::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $cheeses = cheese::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $vaggies = vaggi::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
+        $flavours = Flavour::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $freeSides = freeSide::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $topings = Toping::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $dips = dip::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $protins = protin::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $cheeses = cheese::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $vaggies = vaggi::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
         // dd($vaggies);
-        $sauces = sauce::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $sides = Side::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
-        $productVariation = productVariation::where('product_id', $id)->whereNotNull('name')->where('name', '!=', '')->get();
+        $sauces = sauce::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $sides = Side::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
+        $productVariation = productVariation::where('product_id', $productId)->whereNotNull('name')->where('name', '!=', '')->get();
         // dd($productVariation);
                      //dd($product);
         $Specification = DB::table('product_specifications')
                             ->join('products', 'products.id', 'product_specifications.product_id' )
                             ->join('product_specification_keys', 'product_specification_keys.id', 'product_specifications.product_specification_key_id')
                             ->select('product_specifications.*', 'products.name', 'product_specification_keys.key')
-                            ->where('product_specifications.product_id', $id)->get();
+                            ->where('product_specifications.product_id', $productId)->get();
                             // dd($Specification);
 
         $relatedProducts = Product::with('variantItems', 'category', 'subCategory', 'childCategory', 'brand')
@@ -265,6 +264,11 @@ else{
     return back()->with('success', 'Review submitted successfully. It will be visible after approval.');   
 }
  
+    }
+    
+    public function all_video(){
+        $videos = \App\Models\Video::where('status', 1)->latest()->get();
+        return view('frontend.pages.video', compact('videos'));
     }
 
 }

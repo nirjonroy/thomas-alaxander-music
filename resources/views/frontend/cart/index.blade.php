@@ -6,6 +6,8 @@
 $totalAmount = 0 ;
 @endphp
 
+       
+
 {{-- <section>
     <div class="w-full pt-32 lg:pt-48 bg-white border-t border-b border-gray-200 px-4 py-10 text-gray-800">
         <div class="w-full max-w-3xl mx-auto">
@@ -104,7 +106,7 @@ $totalAmount = 0 ;
                                 <!-- Remove Button -->
                                 <div class="col-auto">
                                     <button class="btn btn-sm btn-danger remove-item" data-id="{{ $key }}" style="width:20px; height: 20px; color: black; font-weight: bolder;">
-                                        X
+                                        <i class="fa-solid fa-icon-remove"></i>
                                     </button>
                                 </div>
     
@@ -146,28 +148,51 @@ $totalAmount = 0 ;
                         </div>
                         @php
                             $totalAmount += $item['price'] * $item['quantity'];                                        
-                            print_r($totalAmount);
+                            // print_r($totalAmount);
                         @endphp
                     @empty
                         <p class="text-center">No items added</p>
                     @endforelse
     
                     @if($totalAmount > 0)
-                        @php $tax = $totalAmount + 0.00; @endphp
+                        @php $tax = $totalAmount + 9.50; @endphp
     
                         <!-- Summary -->
-                        <div class="card p-4 border-0 border-bottom mb-4">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="small text-muted mb-4 pb-2 song_name small">Subtotal</span>
-                                <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount, 2) }}</span>
-                            </div>
-                            
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <span class="small text-muted mb-4 pb-2 song_name small">Total</span>
-                                <span class="small text-muted mb-4 pb-2 song_name small">${{ number_format($totalAmount , 2) }}</span>
-                            </div>
-                        </div>
+       
+          @php
+    $hasVariableProduct = false;
+
+    foreach ($cart as $item) {
+        if ($item['type'] == 'variable') {
+            $hasVariableProduct = true;
+            break;
+        }
+    }
+
+    $shippingCharge = $hasVariableProduct ? 9.5 : 0;
+    $finalTotal = $totalAmount + $shippingCharge;
+@endphp
+<div class="card p-4 border-0 border-bottom mb-4">
+    <div class="d-flex justify-content-between mb-2">
+        <span class="small text-muted mb-4 pb-2 song_name">Subtotal</span>
+        <span class="small text-muted mb-4 pb-2 song_name">${{ number_format($totalAmount, 2) }}</span>
+    </div>
+
+    @if($hasVariableProduct)
+        <div class="d-flex justify-content-between mb-2">
+            <span class="small text-muted mb-4 pb-2 song_name">Shipping Charge</span>
+            <span class="small text-muted mb-4 pb-2 song_name">${{ number_format($shippingCharge, 2) }}</span>
+        </div>
+    @endif
+
+    <hr>
+
+    <div class="d-flex justify-content-between">
+        <span class="small text-muted mb-4 pb-2 song_name">Total</span>
+        <span class="small text-muted mb-4 pb-2 song_name">${{ number_format($finalTotal, 2) }}</span>
+    </div>
+</div>
+
     
                         <!-- Checkout Button -->
                         <a href="{{ route('front.checkout.index') }}"

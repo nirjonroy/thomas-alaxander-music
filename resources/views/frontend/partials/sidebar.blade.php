@@ -56,6 +56,17 @@
                         </span>
                     </a>
                 </li>
+                
+                <li>
+                    <a href="{{ route('front.product.all.video') }}" title="Albums">
+                        <span class="nav_icon">
+                            <span class="icon icon_albums"></span>
+                        </span>
+                        <span class="nav_text">
+                            All Video
+                        </span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="{{route('front.blog')}}" title="Stations">

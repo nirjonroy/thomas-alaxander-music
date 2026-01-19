@@ -55,7 +55,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                        <a href="{{ route('admin.product-category.edit',$event->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                        <a href="{{ route('admin.event.edit',$event->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>
 
                                         
                                             <a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData({{ $event->id }})"><i class="fa fa-trash" aria-hidden="true"></i></a>

@@ -26,6 +26,9 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
+                                    @php
+                                        $livingArchiveEnabled = old('is_living_archive', $product->is_living_archive);
+                                    @endphp
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <label>{{__('admin.Thumbnail Image Preview')}}</label>
@@ -52,6 +55,9 @@
                                             </audio>
                                                                            <label>Upload Music<span class="text-danger">*</span></label>
                                             <input type="file" name="song" class="form-control-file">
+                                            
+                                            <label>Upload Demo Music<span class="text-danger">*</span></label>
+                                            <input type="file" name="demo_song" class="form-control-file">
                                         </div>
                                         <div class="form-group col-6">
                                             @foreach($product->gallery as $key => $pGImg)
@@ -270,6 +276,53 @@
                                             <label>{{__('admin.SEO Description')}}</label>
                                             <textarea name="seo_description" id="" cols="30" rows="10"
                                                 class="form-control text-area-5">{{ $product->seo_description }}</textarea>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="card border mb-4">
+                                                <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                                    <h4 class="mb-2 mb-md-0">Living Archive Placement</h4>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input living-archive-toggle" type="checkbox" id="livingArchiveToggleEdit" name="is_living_archive" value="1" {{ $livingArchiveEnabled ? 'checked' : '' }}>
+                                                        <label class="form-check-label" for="livingArchiveToggleEdit">Feature this product on “The Living Archive” page</label>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body living-archive-fields {{ $livingArchiveEnabled ? '' : 'd-none' }}">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Phase</label>
+                                                            <select name="living_archive_phase" class="form-control">
+                                                                <option value="">Select a phase</option>
+                                                                @foreach(($livingArchivePhases ?? []) as $phaseKey => $phaseLabel)
+                                                                    <option value="{{ $phaseKey }}" {{ old('living_archive_phase', $product->living_archive_phase) === $phaseKey ? 'selected' : '' }}>{{ $phaseLabel }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <small class="text-muted">Update labels via Content &rarr; Living Archive.</small>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Feather / Task Token</label>
+                                                            <input type="text" class="form-control" name="living_archive_feather" value="{{ old('living_archive_feather', $product->living_archive_feather) }}" placeholder="e.g. Feather One">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Sort Order</label>
+                                                            <input type="number" class="form-control" name="living_archive_sort" value="{{ old('living_archive_sort', $product->living_archive_sort) }}" placeholder="0">
+                                                            <small class="text-muted">Lower numbers appear first within the phase.</small>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">QR Caption</label>
+                                                            <input type="text" class="form-control" name="living_archive_qr_caption" value="{{ old('living_archive_qr_caption', $product->living_archive_qr_caption ?: 'Scan to enter') }}">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Affirmation</label>
+                                                            <input type="text" class="form-control" name="living_archive_affirmation" value="{{ old('living_archive_affirmation', $product->living_archive_affirmation) }}" placeholder="Short affirmation text">
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label class="form-label">Ceremonial Description</label>
+                                                            <textarea name="living_archive_story" class="form-control" rows="3" placeholder="Describe how this item functions inside the ceremony">{{ old('living_archive_story', $product->living_archive_story) }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -606,5 +659,29 @@
             // Add event listener to show/hide container based on selection
             productTypeSelect.addEventListener('change', toggleVariableContainer);
         });
+    </script>
+
+    <script>
+    (function($) {
+        "use strict";
+        function syncLivingArchiveToggle($toggle){
+            const $wrapper = $toggle.closest('.card').find('.living-archive-fields');
+            if($toggle.is(':checked')){
+                $wrapper.removeClass('d-none');
+            } else {
+                $wrapper.addClass('d-none');
+            }
+        }
+
+        $(document).ready(function(){
+            $('.living-archive-toggle').each(function(){
+                syncLivingArchiveToggle($(this));
+            });
+        });
+
+        $(document).on('change', '.living-archive-toggle', function(){
+            syncLivingArchiveToggle($(this));
+        });
+    })(jQuery);
     </script>
 @endsection

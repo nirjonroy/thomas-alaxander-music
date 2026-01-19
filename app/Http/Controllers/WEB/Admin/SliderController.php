@@ -67,6 +67,8 @@ class SliderController extends Controller
         $slider->status = $request->status;
         $slider->title_one = $request->title_one;
         $slider->title_two = $request->title_two;
+        $slider->slider_location = $request->slider_location;
+        $slider->link = $request->link;
         $slider->save();
 
         $notification= trans('admin_validation.Created Successfully');
@@ -130,6 +132,8 @@ class SliderController extends Controller
         $slider->status = $request->status;
         $slider->title_one = $request->title_one;
         $slider->title_two = $request->title_two;
+        $slider->slider_location = $request->slider_location;
+        $slider->link = $request->link;
         $slider->save();
 
         $notification= trans('admin_validation.Update Successfully');
