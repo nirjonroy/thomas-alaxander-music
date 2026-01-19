@@ -20,6 +20,7 @@ use App\Models\Setting;
 use App\Models\ProductVariant;
 use App\Models\productColorVariation;
 use App\Models\Payment;
+use App\Models\PaypalPayment;
 use Auth, DB;
 use Omnipay\Omnipay;
 
@@ -28,12 +29,23 @@ class CheckoutController extends Controller
 {
 
     private $gateway;
+    private $paypalCurrency;
 
     public function __construct(){
         $this->gateway = Omnipay::create('PayPal_Rest');
-        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
-        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
-        $this->gateway->setTestMode(true);
+        $paypal = PaypalPayment::first();
+        if ($paypal) {
+            $accountMode = strtolower((string) $paypal->account_mode);
+            $this->gateway->setClientId($paypal->client_id);
+            $this->gateway->setSecret($paypal->secret_id);
+            $this->gateway->setTestMode($accountMode !== 'live');
+            $this->paypalCurrency = $paypal->currency_code ?: env('PAYPAL_CURRENCY', 'USD');
+        } else {
+            $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
+            $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
+            $this->gateway->setTestMode(true);
+            $this->paypalCurrency = env('PAYPAL_CURRENCY', 'USD');
+        }
     }
 
 
@@ -41,7 +53,7 @@ class CheckoutController extends Controller
         try {
             $response = $this->gateway->purchase(array(
                 'amount' => $request->amount,
-                 'currency' => env('PAYPAL_CURRENCY'),
+                 'currency' => $this->paypalCurrency,
                  'returnUrl' => url('success'),
 
                  'cancelUrl' => url('error'),
@@ -76,7 +88,7 @@ class CheckoutController extends Controller
                 $payment->payer_id = $arr['payer'] ['payer_info'] ['payer_id'];
                 $payment->payer_email = $arr['payer'] ['payer_info'] ['email'];
                 $payment->amount = $arr['transactions'] [0] ['amount'] ['total'];
-                $payment->currency = env('PAYPAL_CURRENCY');
+                $payment->currency = $this->paypalCurrency;
                 $payment->payment_status = $arr['state'];
 
                 $payment->save();

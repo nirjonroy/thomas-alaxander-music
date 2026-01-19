@@ -591,10 +591,10 @@
         border-color: var(--earth-ochre);
         box-shadow: 0 0 0 3px rgba(201,135,31,0.2);
     }
-    .donation-panel .btn-donate {
-        background: linear-gradient(120deg, var(--earth-ochre), #9f6115);
-        border: none;
-        color: #1b1107;
+            .donation-panel .btn-donate {
+                background: linear-gradient(120deg, var(--earth-ochre), #9f6115);
+                border: none;
+                color: #1b1107;
         padding: 16px 22px;
         text-transform: uppercase;
         font-weight: 800;
@@ -610,8 +610,44 @@
         cursor: pointer;
         line-height: 1.2;
         opacity: 1 !important;
-        text-shadow: none !important;
-        -webkit-text-fill-color: #1b1107;
+                text-shadow: none !important;
+                -webkit-text-fill-color: #1b1107;
+            }
+            .donation-panel .btn-donate[disabled] {
+                opacity: 0.55;
+                cursor: not-allowed;
+                box-shadow: none;
+                transform: none;
+            }
+    .donation-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+    }
+    .donation-actions .btn {
+        width: 100%;
+        margin-top: 0 !important;
+    }
+    .donation-panel .btn-paypal {
+        background: #f7c34b;
+        color: #1b1107;
+        border: 1px solid #e2b23e;
+        padding: 15px 20px;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 0.1rem;
+        border-radius: 999px;
+        font-family: var(--donate-sans);
+        font-size: 15px;
+        transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+        box-shadow: 0 14px 24px rgba(25, 20, 8, 0.2);
+        cursor: pointer;
+    }
+    .donation-panel .btn-paypal:hover {
+        transform: translateY(-1px);
+        background: #f2b940;
+        box-shadow: 0 16px 28px rgba(25, 20, 8, 0.24);
     }
     .donation-panel .btn-donate:hover {
         transform: translateY(-1px);
@@ -742,7 +778,8 @@
                   method="post"
                   class="require-validation"
                   data-cc-on-file="false"
-                  data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                  data-stripe-publishable-key="{{ $stripePublishableKey ?? '' }}"
+                  data-stripe-enabled="{{ !empty($stripeEnabled) ? '1' : '0' }}"
                   id="donation-payment-form">
                 @csrf
                 <div class="mb-3 form-group">
@@ -790,12 +827,25 @@
                 </div>
 
                 <input type="hidden" name="order_id" value="">
-                <button class="btn btn-donate" type="submit">Donate now</button>
-                    <div class="donation-secure">
-                        <span><i class="fa fa-lock"></i> Secure SSL checkout</span>
-                        <span>Powered by Stripe</span>
-                    </div>
+                <div class="donation-actions">
+                    <button class="btn btn-donate" type="submit" @if(empty($stripeEnabled)) disabled aria-disabled="true" @endif>Donate with card</button>
+                    @if(!empty($paypalEnabled))
+                        <button class="btn btn-paypal" type="button" id="paypal-donate-button">Donate with PayPal</button>
+                    @endif
+                </div>
+                    @if(!empty($stripeEnabled))
+                        <div class="donation-secure">
+                            <span><i class="fa fa-lock"></i> Secure SSL checkout</span>
+                            <span>Card payments powered by Stripe</span>
+                        </div>
+                    @endif
                 </form>
+                @if(!empty($paypalEnabled))
+                    <form id="paypal-donation-form" action="{{ route('living-archive.paypal') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="total_amount" id="paypal-amount" value="25">
+                    </form>
+                @endif
             </div>
         </div>
         <div class="footer-line">{{ data_get($handoff, 'footer', 'The Yamassee Rising - A Living Archive of Ceremony and Song.') }}</div>
@@ -815,6 +865,9 @@
     const $form = $('#donation-payment-form');
     const $amountInput = $('#donation-amount');
     const $amountChips = $('.amount-chip');
+    const $paypalForm = $('#paypal-donation-form');
+    const $paypalAmountInput = $('#paypal-amount');
+    const $paypalButton = $('#paypal-donate-button');
     const minAmount = 5;
 
     function normalizeAmount(value) {
@@ -825,8 +878,15 @@
         return parseInt(digits, 10);
     }
 
+    function syncPaypalAmount(amount) {
+        if ($paypalAmountInput.length) {
+            $paypalAmountInput.val(amount || minAmount);
+        }
+    }
+
     function updateAmountDisplay(amount) {
         setChipState(amount);
+        syncPaypalAmount(amount);
     }
 
     function setChipState(amount) {
@@ -865,6 +925,18 @@
 
     updateAmountDisplay(normalizeAmount($amountInput.val()) || minAmount);
 
+    $paypalButton.on('click', function() {
+        let amount = normalizeAmount($amountInput.val());
+        if (!amount || amount < minAmount) {
+            amount = minAmount;
+            $amountInput.val(amount);
+        }
+        syncPaypalAmount(amount);
+        if ($paypalForm.length) {
+            $paypalForm.trigger('submit');
+        }
+    });
+
     $('.card-number').on('input', function() {
         const digits = digitsOnly($(this).val(), 19);
         const groups = digits.match(/.{1,4}/g) || [];
@@ -884,6 +956,12 @@
     });
 
     $form.on('submit', function(e){
+        if ($form.data('stripe-enabled') !== 1 && $form.data('stripe-enabled') !== '1') {
+            e.preventDefault();
+            $('.payment-error').removeClass('d-none').text('Card payments are currently unavailable.');
+            return false;
+        }
+
         const $requiredGroups = $form.find('.required, .form-control');
         let valid = true;
         $form.find('.has-error').removeClass('has-error');

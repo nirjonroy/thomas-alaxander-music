@@ -27,13 +27,14 @@
                         </div>
                     @endif
 
+                    @if (!empty($stripeEnabled))
                     <form
                             role="form"
                             action="{{ route('stripe.post') }}"
                             method="post"
                             class="require-validation"
                             data-cc-on-file="false"
-                            data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                            data-stripe-publishable-key="{{ $stripePublishableKey ?? '' }}"
                             id="payment-form">
                         @csrf
 
@@ -85,6 +86,11 @@
                         </div>
 
                     </form>
+                    @else
+                        <div class="alert alert-danger">
+                            Stripe is not available right now.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

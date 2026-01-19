@@ -5,8 +5,35 @@ use Session;
 use Stripe;
 use App\Models\Order;
 use App\Models\Setting;
+use App\Models\PaypalPayment;
+use App\Models\StripePayment;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Payer;
+use PayPal\Api\Amount as PaypalAmount;
+use PayPal\Api\Transaction;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
 class StripePaymentController extends Controller
 {
+    private function buildPaypalContext(PaypalPayment $paypal)
+    {
+        $apiContext = new ApiContext(new OAuthTokenCredential(
+            $paypal->client_id,
+            $paypal->secret_id
+        ));
+
+        $apiContext->setConfig([
+            'mode' => $paypal->account_mode,
+            'http.ConnectionTimeOut' => 30,
+            'log.LogEnabled' => true,
+            'log.FileName' => storage_path() . '/logs/paypal.log',
+            'log.LogLevel' => 'ERROR',
+        ]);
+
+        return $apiContext;
+    }
     /**
      * success response method.
      *
@@ -15,8 +42,11 @@ class StripePaymentController extends Controller
     public function stripe($id)
     {
         $order_inv = Order::with('orderProducts', 'orderAddress')->where('id', $id)->first();
+        $stripe = StripePayment::select('stripe_key', 'status')->first();
+        $stripePublishableKey = $stripe ? $stripe->stripe_key : env('STRIPE_KEY');
+        $stripeEnabled = $stripe && (int) $stripe->status === 1;
         // dd($order_inv);
-        return view('stripe', compact('order_inv'));
+        return view('stripe', compact('order_inv', 'stripePublishableKey', 'stripeEnabled'));
     }
 
     /**
@@ -26,14 +56,25 @@ class StripePaymentController extends Controller
      */
     public function stripePost(Request $request)
 {
-    Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    $stripe = StripePayment::first();
+    if (!$stripe || (int) $stripe->status !== 1) {
+        return back()->with('error', 'Stripe is not available right now.');
+    }
+
+    $stripeSecret = $stripe->stripe_secret ?: env('STRIPE_SECRET');
+    if (!$stripeSecret) {
+        return back()->with('error', 'Stripe is not configured.');
+    }
+
+    Stripe\Stripe::setApiKey($stripeSecret);
+    $currency = strtolower($stripe->currency_code ?: 'USD');
     $totalAmount = $request->total_amount;
     $orderId = $request->input('order_id');
 
     try {
         $charge = Stripe\Charge::create ([
             "amount" => $totalAmount * 100,
-            "currency" => "usd",
+            "currency" => $currency,
             "source" => $request->stripeToken,
             "description" => "Test payment from ."
         ]);
@@ -95,6 +136,11 @@ class StripePaymentController extends Controller
             'living_handoff_background_guide',
             'living_handoff_footer_line',
         ])->first();
+        $paypal = PaypalPayment::select('status')->first();
+        $paypalEnabled = $paypal && (int) $paypal->status === 1;
+        $stripe = StripePayment::select('stripe_key', 'status')->first();
+        $stripePublishableKey = $stripe ? $stripe->stripe_key : env('STRIPE_KEY');
+        $stripeEnabled = $stripe && (int) $stripe->status === 1;
 
         $handoff = [
             'page_name' => optional($setting)->living_handoff_page_name ?? 'The Yamassee Rising - Living Archive',
@@ -142,6 +188,98 @@ class StripePaymentController extends Controller
                 ?? 'The Yamassee Rising - A Living Archive of Ceremony and Song.',
         ];
 
-        return view('frontend.home.living-archive-donate', compact('handoff'));
+        return view('frontend.home.living-archive-donate', compact('handoff', 'paypalEnabled', 'stripePublishableKey', 'stripeEnabled'));
+    }
+
+    public function donateWithPaypal(Request $request)
+    {
+        $request->validate([
+            'total_amount' => 'required|numeric|min:5',
+        ]);
+
+        $paypal = PaypalPayment::first();
+        if (!$paypal || (int) $paypal->status !== 1) {
+            return back()->with('error', 'PayPal is not available right now.');
+        }
+
+        $amount = (float) $request->total_amount;
+        $payableAmount = round($amount * $paypal->currency_rate, 2);
+        if ($payableAmount <= 0) {
+            return back()->with('error', 'Invalid donation amount.');
+        }
+
+        $apiContext = $this->buildPaypalContext($paypal);
+
+        $payer = new Payer();
+        $payer->setPaymentMethod('paypal');
+
+        $paymentAmount = new PaypalAmount();
+        $paymentAmount->setCurrency($paypal->currency_code ?: 'USD')
+            ->setTotal($payableAmount);
+
+        $transaction = new Transaction();
+        $transaction->setAmount($paymentAmount)
+            ->setDescription('Living Archive Donation');
+
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl(route('living-archive.paypal.success'))
+            ->setCancelUrl(route('living-archive.paypal.cancel'));
+
+        $payment = new Payment();
+        $payment->setIntent('sale')
+            ->setPayer($payer)
+            ->setRedirectUrls($redirectUrls)
+            ->setTransactions([$transaction]);
+
+        try {
+            $payment->create($apiContext);
+        } catch (\PayPal\Exception\PPConnectionException $ex) {
+            return back()->with('error', 'PayPal payment failed. Please try again.');
+        } catch (\Exception $ex) {
+            return back()->with('error', 'PayPal payment failed. Please try again.');
+        }
+
+        return redirect($payment->getApprovalLink());
+    }
+
+    public function donatePaypalSuccess(Request $request)
+    {
+        $paypal = PaypalPayment::first();
+        if (!$paypal || (int) $paypal->status !== 1) {
+            return redirect()->route('living-archive.donate')
+                ->with('error', 'PayPal is not available right now.');
+        }
+
+        if (empty($request->get('PayerID')) || empty($request->get('token'))) {
+            return redirect()->route('living-archive.donate')
+                ->with('error', 'Payment failed. Please try again.');
+        }
+
+        $paymentId = $request->get('paymentId');
+        $apiContext = $this->buildPaypalContext($paypal);
+
+        try {
+            $payment = Payment::get($paymentId, $apiContext);
+            $execution = new PaymentExecution();
+            $execution->setPayerId($request->get('PayerID'));
+            $result = $payment->execute($execution, $apiContext);
+        } catch (\Exception $ex) {
+            return redirect()->route('living-archive.donate')
+                ->with('error', 'Payment failed. Please try again.');
+        }
+
+        if ($result->getState() === 'approved') {
+            Session::flash('success', 'Thank you for supporting the Living Archive.');
+        } else {
+            Session::flash('error', 'Payment was not approved.');
+        }
+
+        return redirect()->route('living-archive.donate');
+    }
+
+    public function donatePaypalCancel()
+    {
+        return redirect()->route('living-archive.donate')
+            ->with('error', 'Payment was canceled.');
     }
 }

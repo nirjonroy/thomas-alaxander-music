@@ -431,7 +431,9 @@ i
            <span style="color:black">About Artist</span></a>
           </li>
           <!--<li class="{{ Route::is('admin.shipping.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.shipping.index') }}">{{__('admin.Shipping Rule')}}</a></li>-->
-                <!--<li class="{{ Route::is('admin.payment-method') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.payment-method') }}">{{__('admin.Payment Method')}}</a></li>-->
+          @endif
+          @if(auth()->user()->can('payment-method-index'))
+                <li class="{{ Route::is('admin.payment-method') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.payment-method') }}">{{__('admin.Payment Method')}}</a></li>
           @endif
            @if(auth()->user()->can('admin.seo-setup') || auth()->user()->can('admin.slider'))
           <li class="{{ Route::is('admin.seo-setup') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.seo-setup') }}">{{__('admin.SEO Setup')}}</a></li>

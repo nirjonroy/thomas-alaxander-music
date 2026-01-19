@@ -901,10 +901,12 @@ Route::controller(stripePaymentController::class)->group(function(){
     Route::get('stripe/{order_id}', 'stripe')->name('stripe.index');
     Route::post('stripe', 'stripePost')->name('stripe.post');
     Route::get('living-archive/donate', 'donationForm')->name('living-archive.donate');
+    Route::post('living-archive/donate/paypal', 'donateWithPaypal')->name('living-archive.paypal');
+    Route::get('living-archive/donate/paypal/success', 'donatePaypalSuccess')->name('living-archive.paypal.success');
+    Route::get('living-archive/donate/paypal/cancel', 'donatePaypalCancel')->name('living-archive.paypal.cancel');
 });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-
 
 
 
