@@ -13,14 +13,17 @@
         $url = url()->current();
         $fallbackLogo = siteInfo()->logo ?? null;
         $defaultImage = $fallbackLogo ? asset($fallbackLogo) : asset('images/og-default.jpg');
-        $ogImage = $seoSettings?->meta_image ? asset($seoSettings->meta_image) : $defaultImage;
+        $metaImageValue = $seoSettings?->meta_image;
+        $ogImage = $metaImageValue
+            ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+            : $defaultImage;
         $updatedIso = optional($seoSettings?->updated_at)->toIso8601String() ?? now()->toIso8601String();
         $twitter = $seoSettings->twitter_site ?? '@livingarchive';
         $indexable = isset($seoSettings->indexable) ? (bool) $seoSettings->indexable : true;
-        $author = $seoSettings->author ?? $siteName;
-        $publisher = $seoSettings->publisher ?? $siteName;
-        $copyright = $seoSettings->copyright ?? null;
-        $keywords = $seoSettings->keywords ?? ($seoSettings->seo_keywords ?? null);
+        $author = $seoSettings->seo_author ?? ($seoSettings->author ?? $siteName);
+        $publisher = $seoSettings->seo_publisher ?? ($seoSettings->publisher ?? $siteName);
+        $copyright = $seoSettings->meta_copyright ?? ($seoSettings->copyright ?? null);
+        $keywords = $seoSettings->seo_keywords ?? ($seoSettings->keywords ?? null);
     @endphp
     @section('title', $title)
     <meta name="title" content="{{ $title }}">

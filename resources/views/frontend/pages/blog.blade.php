@@ -1,5 +1,4 @@
 @extends('frontend.app')
-@section('title', 'Blog')
 @push('css')
     {{-- <link rel="stylesheet" href="{{ asset('frontend/silck/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/silck/slick-theme.css') }}">
@@ -13,9 +12,19 @@
         $pageUrl = url()->current();
         $canonical = optional($seoSetting)->canonical_url ?: $pageUrl;
         $keywords = optional($seoSetting)->seo_keywords ?? 'Thomas Alexander blog, Living Archive stories';
-        $author = optional($seoSetting)->seo_author ?? 'Thomas Alexander';
-        $publisher = optional($seoSetting)->seo_publisher ?? 'Thomas Alexander';
+        $siteName = optional($seoSetting)->site_name ?? config('app.name', 'Thomas Alexander');
+        $pageTitle = optional($seoSetting)->meta_title ?: $pageTitle;
+        $rawDesc = optional($seoSetting)->meta_description ?: $pageDesc;
+        $pageDesc = \Illuminate\Support\Str::limit(strip_tags($rawDesc), 180);
+        $author = optional($seoSetting)->seo_author ?? $siteName;
+        $publisher = optional($seoSetting)->seo_publisher ?? $siteName;
+        $metaImageValue = optional($seoSetting)->meta_image;
+        $metaImage = $metaImageValue
+            ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+            : asset(siteInfo()->logo);
+        $copyright = optional($seoSetting)->meta_copyright;
     @endphp
+    @section('title', $pageTitle)
     <meta charset="UTF-8">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="title" content="{{ $pageTitle }}">
@@ -23,16 +32,22 @@
     <meta name="keywords" content="{{ $keywords }}">
     <meta name="author" content="{{ $author }}">
     <meta name="publisher" content="{{ $publisher }}">
+    @if ($copyright)
+        <meta name="copyright" content="{{ $copyright }}">
+    @endif
     <link rel="canonical" href="{{ $canonical }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDesc }}">
     <meta property="og:url" content="{{ $canonical }}">
-    <meta property="og:site_name" content="{{ $pageTitle }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDesc }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
 @endsection
 @section('content')
 <d class="ms_content_wrapper padder_top8">

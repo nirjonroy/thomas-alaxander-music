@@ -18,12 +18,23 @@
         $pageTitle = $blog->seo_title ?? $blog->title;
         $pageDesc  = Str::limit(strip_tags($blog->seo_description ?? $blog->description), 180);
         $pageUrl   = url()->current();
-        $imageUrl  = asset($blog->image);
+        $imageUrl  = $blog->image ? asset($blog->image) : null;
         $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Blog Details')->first();
         $canonical = optional($seoDefaults)->canonical_url ?: $pageUrl;
         $keywords = optional($seoDefaults)->seo_keywords ?? ($blog->seo_keywords ?? $blog->title);
         $authorMeta = optional($seoDefaults)->seo_author ?? ($blog->author ?? 'Thomas Alexander');
-        $publisher = optional($seoDefaults)->seo_publisher ?? 'Thomas Alexander';
+        $siteName = optional($seoDefaults)->site_name ?? config('app.name', 'Thomas Alexander');
+        $pageTitle = $pageTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
+        $rawDesc = $blog->seo_description ?? $blog->description;
+        $rawDesc = $rawDesc ?: optional($seoDefaults)->meta_description;
+        $pageDesc = Str::limit(strip_tags($rawDesc ?? ''), 180);
+        $metaImageValue = optional($seoDefaults)->meta_image;
+        $metaImage = $imageUrl
+            ?: ($metaImageValue
+                ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+                : asset(siteInfo()->logo));
+        $publisher = optional($seoDefaults)->seo_publisher ?? $siteName;
+        $copyright = optional($seoDefaults)->meta_copyright;
     @endphp
 
     <title>{{ $pageTitle }}</title>
@@ -32,17 +43,20 @@
     <meta name="keywords" content="{{ $keywords }}">
     <meta name="author" content="{{ $authorMeta }}">
     <meta name="publisher" content="{{ $publisher }}">
+    @if ($copyright)
+        <meta name="copyright" content="{{ $copyright }}">
+    @endif
     <link rel="canonical" href="{{ $canonical }}">
 
     {{-- Open Graph (Facebook, etc.) --}}
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDesc }}">
     <meta property="og:url" content="{{ $canonical }}">
-    <meta property="og:site_name" content="Thomas Alexander The Voice"> {{-- your site name --}}
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="article">
-    <meta property="og:image" content="{{ $imageUrl }}">
-    <meta property="og:image:secure_url" content="{{ $imageUrl }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="{{ $pageTitle }}">
@@ -56,7 +70,7 @@
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDesc }}">
     <meta name="twitter:url" content="{{ $canonical }}">
-    <meta name="twitter:image" content="{{ $imageUrl }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
 @endsection
 
 @section('content')

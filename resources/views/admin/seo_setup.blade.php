@@ -35,7 +35,7 @@
                                             <div class="tab-pane fade {{ $index == 0  ? 'show active' : '' }}" id="errorTab-{{ $page->id }}" role="tabpanel" aria-labelledby="error-tab-{{ $page->id }}">
                                                 <div class="card m-0">
                                                     <div class="card-body">
-                                                        <form action="{{ route('admin.update-seo-setup',$page->id) }}" method="POST">
+                                                        <form action="{{ route('admin.update-seo-setup',$page->id) }}" method="POST" enctype="multipart/form-data">
                                                             @method('PUT')
                                                             @csrf
                                                             <div class="row">
@@ -53,6 +53,45 @@
                                                                         <label for="">{{__('admin.SEO Description')}}</label>
                                                                         <textarea name="seo_description" id="" cols="30" rows="5" class="form-control text-area-5">{{ $page->seo_description }}</textarea>
 
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">Meta Title</label>
+                                                                        <input type="text" name="meta_title" class="form-control" value="{{ $page->meta_title }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">Meta Description</label>
+                                                                        <textarea name="meta_description" cols="30" rows="4" class="form-control text-area-5">{{ $page->meta_description }}</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">Meta Image (upload)</label>
+                                                                        <input type="file" name="meta_image" class="form-control" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                                                        @if ($page->meta_image)
+                                                                            <div class="mt-2">
+                                                                                <img src="{{ str_starts_with($page->meta_image, 'http') ? $page->meta_image : asset($page->meta_image) }}" alt="Meta image preview" style="max-height: 120px;">
+                                                                            </div>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="">Site Name</label>
+                                                                        <input type="text" name="site_name" class="form-control" value="{{ $page->site_name }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="">Meta Copyright</label>
+                                                                        <input type="text" name="meta_copyright" class="form-control" value="{{ $page->meta_copyright }}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">

@@ -260,6 +260,11 @@ class ContentController extends Controller
         $rules = [
             "seo_title" => "required",
             "seo_description" => "required",
+            "meta_title" => "nullable|string|max:255",
+            "meta_description" => "nullable|string",
+            "meta_image" => "nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096",
+            "meta_copyright" => "nullable|string|max:255",
+            "site_name" => "nullable|string|max:255",
         ];
 
         $customMessages = [
@@ -280,6 +285,25 @@ class ContentController extends Controller
         $page->seo_keywords = $request->seo_keywords;
         $page->seo_publisher = $request->seo_publisher;
         $page->canonical_url = $request->canonical_url;
+        $page->meta_title = $request->meta_title;
+        $page->meta_description = $request->meta_description;
+        $page->meta_copyright = $request->meta_copyright;
+        $page->site_name = $request->site_name;
+
+        if ($request->hasFile('meta_image')) {
+            $old_image = $page->meta_image;
+            $image = $request->file('meta_image');
+            $ext = $image->getClientOriginalExtension();
+            $image_name = 'meta-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $image_name = 'uploads/website-images/' . $image_name;
+            Image::make($image)->save(public_path() . '/' . $image_name);
+            $page->meta_image = $image_name;
+
+            if ($old_image && File::exists(public_path() . '/' . $old_image)) {
+                unlink(public_path() . '/' . $old_image);
+            }
+        }
+
         $page->save();
 
         $notification = trans("admin_validation.Update Successfully");

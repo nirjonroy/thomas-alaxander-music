@@ -12,7 +12,19 @@
         $canonical = optional($seoDefaults)->canonical_url ?: $pageUrl;
         $keywords = optional($seoDefaults)->seo_keywords ?? ($product->name . ', Thomas Alexander merchandise');
         $authorMeta = optional($seoDefaults)->seo_author ?? 'Thomas Alexander';
-        $publisher = optional($seoDefaults)->seo_publisher ?? 'Thomas Alexander';
+        $siteName = optional($seoDefaults)->site_name ?? config('app.name', 'Thomas Alexander');
+        $authorMeta = optional($seoDefaults)->seo_author ?? $siteName;
+        $pageTitle = $pageTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
+        $rawDesc = $product->long_description;
+        $rawDesc = $rawDesc ?: optional($seoDefaults)->meta_description;
+        $pageDesc = \Illuminate\Support\Str::limit(strip_tags($rawDesc ?? ''), 180);
+        $metaImageValue = optional($seoDefaults)->meta_image;
+        $metaImage = $imageUrl
+            ?: ($metaImageValue
+                ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+                : asset(siteInfo()->logo));
+        $publisher = optional($seoDefaults)->seo_publisher ?? $siteName;
+        $copyright = optional($seoDefaults)->meta_copyright;
     @endphp
 
     <meta charset="UTF-8">
@@ -22,22 +34,25 @@
     <meta name="keywords" content="{{ $keywords }}">
     <meta name="author" content="{{ $authorMeta }}">
     <meta name="publisher" content="{{ $publisher }}">
+    @if ($copyright)
+        <meta name="copyright" content="{{ $copyright }}">
+    @endif
     <link rel="canonical" href="{{ $canonical }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDesc }}">
     <meta property="og:url" content="{{ $canonical }}">
-    <meta property="og:site_name" content="{{ $pageTitle }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="product">
-    <meta property="og:image" content="{{ $imageUrl }}">
-    <meta property="og:image:secure_url" content="{{ $imageUrl }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="628">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDesc }}">
     <meta name="twitter:url" content="{{ $canonical }}">
-    <meta name="twitter:image" content="{{ $imageUrl }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
 @endsection
 @section('content')
 

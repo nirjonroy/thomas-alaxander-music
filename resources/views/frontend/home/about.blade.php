@@ -1,6 +1,4 @@
 @extends('frontend.app')
-@section('title', 'About Thomas Alexander')
-
 @push('css')
 @section('seos')
     @php
@@ -10,9 +8,20 @@
         $pageUrl = url()->current();
         $canonical = optional($SeoSettings)->canonical_url ?: $pageUrl;
         $keywords = optional($SeoSettings)->seo_keywords ?? 'Thomas Alexander biography, About Thomas Alexander';
-        $author = optional($SeoSettings)->seo_author ?? 'Thomas Alexander';
-        $publisher = optional($SeoSettings)->seo_publisher ?? 'Thomas Alexander';
+        $siteName = optional($SeoSettings)->site_name ?? config('app.name', 'Thomas Alexander');
+        $pageTitle = optional($SeoSettings)->meta_title ?: $pageTitle;
+        $rawDesc = optional($SeoSettings)->meta_description ?: $pageDesc;
+        $pageDesc = \Illuminate\Support\Str::limit(strip_tags($rawDesc), 180);
+        $author = optional($SeoSettings)->seo_author ?? $siteName;
+        $publisher = optional($SeoSettings)->seo_publisher ?? $siteName;
+        $metaImageValue = optional($SeoSettings)->meta_image;
+        $fallbackImage = asset($about->video_background);
+        $metaImage = $metaImageValue
+            ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+            : $fallbackImage;
+        $copyright = optional($SeoSettings)->meta_copyright;
     @endphp
+    @section('title', $pageTitle)
 
     <meta charset="UTF-8">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -21,21 +30,25 @@
     <meta name="keywords" content="{{ $keywords }}">
     <meta name="author" content="{{ $author }}">
     <meta name="publisher" content="{{ $publisher }}">
+    @if ($copyright)
+        <meta name="copyright" content="{{ $copyright }}">
+    @endif
     <link rel="canonical" href="{{ $canonical }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDesc }}">
     <meta property="og:url" content="{{ $canonical }}">
-    <meta property="og:site_name" content="{{ $pageTitle }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ asset($about->video_background) }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="628">
     <meta property="article:modified_time" content="{{ now()->toIso8601String() }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDesc }}">
-    <meta name="twitter:image" content="{{ asset($about->video_background) }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
 
