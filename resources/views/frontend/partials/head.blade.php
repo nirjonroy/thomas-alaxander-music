@@ -26,6 +26,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/player/volume.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/js/plugins/scroll/jquery.mCustomScrollbar.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/style.css') }}">
+@stack('css')
 @php
     $seo = DB::table('settings')->first();
      $SeoSettings = DB::table('seo_settings')->where('id', 1)->first();

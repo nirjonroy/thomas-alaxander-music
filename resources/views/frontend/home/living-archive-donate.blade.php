@@ -4,6 +4,7 @@
 
 @push('css')
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap');
     :root {
         --earth-ochre: #c9871f;
         --ceremonial-white: #f4efe3;
@@ -13,19 +14,104 @@
         --crimson-red: #8c1f28;
         --sky-silver: #bcc6cf;
         --yamassee-blue: #10344d;
+        --donate-serif: "Cinzel", serif;
+        --donate-sans: "Manrope", sans-serif;
     }
     .living-archive-shell {
-        background: linear-gradient(135deg, #0b0b0a 0%, #0f0f0e 50%, #0b0b0a 100%);
+        background: radial-gradient(circle at 10% 20%, rgba(16,52,77,0.55), transparent 55%),
+                    radial-gradient(circle at 80% 10%, rgba(201,135,31,0.25), transparent 60%),
+                    linear-gradient(160deg, #07111c 0%, #0b1726 45%, #0b0b0a 100%);
         color: var(--ceremonial-white);
-        padding: 48px 16px 80px;
+        padding: 50px 24px 160px;
+        font-family: var(--donate-sans);
+        min-height: 100vh;
     }
     .living-archive-shell a {
         color: var(--ceremonial-white);
         text-decoration: none;
     }
+    .living-archive-shell h1,
+    .living-archive-shell h2,
+    .living-archive-shell h3 {
+        color: #fdf8f0 !important;
+    }
+    .living-float-group {
+        display: none !important;
+    }
+    body .living-float-group {
+        display: none !important;
+    }
+    .donation-page {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        padding: 0 12px;
+        align-items: center;
+    }
+    .donation-hero {
+        text-align: left;
+        padding: 0 28px;
+        width: 100%;
+        max-width: 760px;
+        margin: 0 auto;
+    }
+    .donation-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.18);
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        font-size: 12px !important;
+        font-weight: 700;
+        color: rgba(244,239,227,0.9);
+    }
+    .donation-hero h1 {
+        font-family: var(--donate-serif);
+        font-size: clamp(22px, 2.4vw + 10px, 32px) !important;
+        margin: 14px 0 6px;
+        color: #fdf8f0 !important;
+        letter-spacing: 0.05rem;
+        text-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        line-height: 1.2;
+    }
+    .living-archive-shell .donation-hero h1 {
+        color: #fdf8f0 !important;
+    }
+    .donation-hero p {
+        margin: 0;
+        color: rgba(244,239,227,0.78) !important;
+        font-size: 16px !important;
+        line-height: 1.55;
+        text-decoration: none !important;
+    }
+    .donation-hero h1,
+    .donation-hero p,
+    .donation-panel label {
+        border: 0;
+        box-shadow: none;
+    }
+    .donation-hero h1::before,
+    .donation-hero h1::after,
+    .donation-hero p::before,
+    .donation-hero p::after,
+    .donation-badge::before,
+    .donation-badge::after,
+    .donation-panel label::before,
+    .donation-panel label::after,
+    .donation-form-card::before,
+    .donation-form-card::after {
+        content: none !important;
+    }
     .crest-hero {
         max-width: 1100px;
-        margin: 0 auto 32px;
+        margin: 0 auto 40px;
         display: grid;
         grid-template-columns: 220px 1fr;
         gap: 32px;
@@ -55,6 +141,7 @@
         text-align: center;
         position: relative;
         z-index: 1;
+        color: var(--ceremonial-white);
     }
     .crest-mark .crest-circle {
         width: 150px;
@@ -67,14 +154,14 @@
         background: radial-gradient(circle at 50% 40%, rgba(16,52,77,0.35), rgba(11,11,10,0.9));
     }
     .crest-mark .crest-label {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         letter-spacing: 0.08rem;
         text-transform: uppercase;
-        color: var(--ceremonial-white);
+        color: #f9f3e7;
     }
     .crest-mark .crest-sub {
-        font-size: 0.8rem;
-        color: rgba(244,239,227,0.7);
+        font-size: 0.82rem;
+        color: rgba(244,239,227,0.85);
     }
     .hero-copy {
         position: relative;
@@ -88,7 +175,8 @@
         margin-bottom: 6px;
     }
     .hero-copy h1 {
-        font-size: 2rem;
+        font-family: var(--donate-serif);
+        font-size: 2.2rem;
         letter-spacing: 0.05rem;
         margin-bottom: 10px;
     }
@@ -272,73 +360,360 @@
         box-shadow: 0 16px 32px rgba(0,0,0,0.28);
     }
     .donation-panel {
-        max-width: 820px;
-        margin: 26px auto 0;
-        background: rgba(11,11,10,0.92);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 22px;
-        padding: 28px;
-        box-shadow: 0 16px 38px rgba(0,0,0,0.32);
+        margin: 0;
+        background: transparent;
+        border: none;
+        padding: 0;
+        box-shadow: none;
+        animation: riseIn 0.6s ease-out;
+        width: 100%;
     }
-    .donation-panel h2 {
-        font-size: 1.4rem;
+    .donation-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 1fr) minmax(320px, 420px);
+        gap: 28px;
+        align-items: start;
+    }
+    .donation-intro {
+        font-family: var(--donate-sans);
+    }
+    .donation-kicker {
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        font-size: 0.7rem;
+        color: rgba(244,239,227,0.65);
+        margin-bottom: 10px;
+    }
+    .donation-intro h2 {
+        font-family: var(--donate-serif);
+        font-size: 1.9rem;
         letter-spacing: 0.08rem;
         text-transform: uppercase;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         color: var(--earth-ochre);
     }
-    .donation-panel p {
+    .donation-intro p {
         color: rgba(244,239,227,0.82);
         margin-bottom: 14px;
-        line-height: 1.55;
+        line-height: 1.6;
+    }
+    .donation-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 18px;
+    }
+    .donation-list li {
+        padding: 8px 0;
+        border-bottom: 1px dashed rgba(255,255,255,0.08);
+        color: rgba(244,239,227,0.85);
+        font-size: 0.95rem;
+        display: flex;
+        gap: 8px;
+    }
+    .donation-list li:last-child {
+        border-bottom: none;
+    }
+    .donation-list .label {
+        font-weight: 700;
+        color: var(--ceremonial-white);
+    }
+    .donation-summary {
+        border-radius: 16px;
+        padding: 14px 16px;
+        background: rgba(11,11,10,0.6);
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+    .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 6px;
+    }
+    .summary-label {
+        text-transform: uppercase;
+        font-size: 0.72rem;
+        letter-spacing: 0.14rem;
+        color: rgba(244,239,227,0.7);
+    }
+    .donation-total {
+        font-family: var(--donate-serif);
+        font-size: 1.6rem;
+        color: var(--earth-ochre);
+    }
+    .summary-note {
+        font-size: 0.88rem;
+        color: rgba(244,239,227,0.7);
+        margin: 0;
+    }
+    .donation-help {
+        margin-top: 16px;
+        font-size: 0.9rem;
+        color: rgba(244,239,227,0.75);
+    }
+    .donation-help a {
+        color: var(--earth-ochre);
+        font-weight: 600;
+    }
+    .donation-form-card {
+        background: #fdfaf3 !important;
+        border: 1px solid rgba(222,207,184,0.9) !important;
+        border-radius: 20px;
+        padding: 30px 30px 32px;
+        box-shadow: 0 18px 40px rgba(6,10,16,0.35) !important;
+        font-family: var(--donate-sans);
+        width: 100%;
+        max-width: 760px;
+        margin: 0;
+        position: relative;
+        color: #2b2318;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    .donation-form-card .form-group {
+        margin-bottom: 16px;
+    }
+    .stepper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+    .step {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        font-size: 0.72rem;
+        color: rgba(244,239,227,0.55);
+    }
+    .step span {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.18);
+        display: grid;
+        place-content: center;
+        font-weight: 700;
+        background: rgba(255,255,255,0.06);
+        color: var(--ceremonial-white);
+    }
+    .step.is-active {
+        color: var(--earth-ochre);
+    }
+    .step.is-active span {
+        border-color: var(--earth-ochre);
+        background: rgba(201,135,31,0.2);
+    }
+    .amount-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+    }
+    .amount-chip {
+        border: 1px solid #d8c8b0 !important;
+        background: #f7f2e8 !important;
+        color: #2b2318 !important;
+        padding: 12px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 15.9px !important;
+        letter-spacing: 0.04rem;
+        text-transform: uppercase;
+        text-align: center;
+        transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        appearance: none;
+        cursor: pointer;
+        line-height: 1.2 !important;
+        opacity: 1 !important;
+        text-shadow: none !important;
+        -webkit-text-fill-color: #2b2318;
+    }
+    .amount-chip:hover {
+        transform: translateY(-1px);
+        border-color: rgba(201,135,31,0.6);
+    }
+    .amount-chip.is-active {
+        background: linear-gradient(120deg, var(--earth-ochre), #9f6115);
+        color: #1b1107 !important;
+        border-color: transparent;
+        box-shadow: 0 12px 24px rgba(201,135,31,0.35);
+        -webkit-text-fill-color: #1b1107;
+    }
+    .amount-input {
+        position: relative;
+        margin-top: 14px;
+    }
+    .amount-input input {
+        padding-right: 64px;
+        height: 52px;
+    }
+    .amount-currency {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6f5f47;
+        font-size: 0.78rem;
+        letter-spacing: 0.12rem;
+        text-transform: uppercase;
     }
     .donation-panel label {
         text-transform: uppercase;
-        font-size: 0.8rem;
+        font-size: 15.85px !important;
         letter-spacing: 0.1rem;
-        color: #ddceb0;
+        color: #2b2318 !important;
+        font-family: var(--donate-sans);
+        display: block;
+        margin-bottom: 6px;
+        line-height: 1.2;
+        opacity: 1 !important;
+        text-decoration: none !important;
+        text-shadow: none !important;
+        -webkit-text-fill-color: #2b2318;
     }
     .donation-panel .form-control {
-        background: rgba(18,18,18,0.9);
-        border: 1px solid rgba(255,255,255,0.15);
-        color: #fefaf0;
+        background: #ffffff !important;
+        border: 1px solid #d9cbb6;
+        color: #1b1b1b !important;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-family: var(--donate-sans);
+        font-size: 15px;
+    }
+    .donation-panel .form-control::placeholder {
+        color: #6f6a60;
+    }
+    .donation-panel .form-control:focus {
+        outline: none;
+        border-color: var(--earth-ochre);
+        box-shadow: 0 0 0 3px rgba(201,135,31,0.2);
     }
     .donation-panel .btn-donate {
         background: linear-gradient(120deg, var(--earth-ochre), #9f6115);
         border: none;
         color: #1b1107;
-        padding: 14px 22px;
+        padding: 16px 22px;
         text-transform: uppercase;
         font-weight: 800;
         letter-spacing: 0.12rem;
         border-radius: 999px;
         width: 100%;
         box-shadow: 0 14px 28px rgba(201,135,31,0.35);
+        font-family: var(--donate-serif);
+        font-size: 15.5px !important;
+        transition: transform 0.15s ease, box-shadow 0.2s ease;
+        display: block;
+        margin-top: 14px;
+        cursor: pointer;
+        line-height: 1.2;
+        opacity: 1 !important;
+        text-shadow: none !important;
+        -webkit-text-fill-color: #1b1107;
+    }
+    .donation-panel .btn-donate:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 30px rgba(201,135,31,0.4);
     }
     .donation-panel small {
-        color: #c6b18d;
+        color: #5e4f3c !important;
+        display: block;
+        margin-top: 8px;
+        font-size: 13px;
+        line-height: 1.45;
+    }
+    .donation-secure {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 0.82rem;
+        color: #5c4d3a !important;
+    }
+    .donation-secure i {
+        color: var(--muted-gold);
+        margin-right: 6px;
+    }
+    .payment-error {
+        background: rgba(140,31,40,0.12);
+        border: 1px solid rgba(140,31,40,0.5);
+        color: #6d1f26;
+        border-radius: 12px;
+    }
+    .has-error .form-control {
+        border-color: #d1443a;
+        box-shadow: 0 0 0 2px rgba(209,68,58,0.2);
+    }
+    @keyframes riseIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     .footer-line {
         max-width: 1180px;
-        margin: 26px auto 0;
+        margin: 24px auto 0;
         text-align: center;
         padding-top: 10px;
-        color: rgba(244,239,227,0.7);
+        color: rgba(244,239,227,0.85);
         letter-spacing: 0.08rem;
         text-transform: uppercase;
         border-top: 1px solid rgba(255,255,255,0.08);
     }
     @media (max-width: 920px) {
-        .crest-hero {
-            grid-template-columns: 1fr;
-            text-align: center;
+        .living-archive-shell {
+            padding: 40px 18px 160px;
         }
-        .crest-mark {
-            max-width: 260px;
+        .donation-hero h1 {
+            font-size: 2rem;
+        }
+        .donation-page {
+            align-items: stretch;
+        }
+        .donation-hero {
+            padding: 0 20px;
+        }
+        .donation-form-card {
             margin: 0 auto;
         }
-        .cta-row {
-            justify-content: center;
+    }
+    @media (max-width: 640px) {
+        .amount-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .donation-secure {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .donation-panel .btn-donate {
+            font-size: 1rem;
+        }
+        .donation-form-card {
+            padding: 22px;
+        }
+        .donation-hero {
+            padding: 0 14px;
+        }
+    }
+    @media (max-width: 420px) {
+        .amount-grid {
+            grid-template-columns: 1fr;
+        }
+        .donation-panel {
+            padding: 16px;
+        }
+        .donation-panel .form-control {
+            height: 50px;
+        }
+        .donation-hero {
+            padding: 0 10px;
         }
     }
 </style>
@@ -346,166 +721,85 @@
 
 @section('content')
 <div class="living-archive-shell">
-    <div class="crest-hero" id="top">
-        <div class="crest-mark">
-            <div class="crest-circle">
-                <span class="crest-label">Living Crest</span>
-            </div>
-            <div class="crest-sub">Official crest image here</div>
+    <div class="donation-page">
+        <div class="donation-hero" id="top">
+            <span class="donation-badge">Living Archive</span>
+            <h1>{{ data_get($handoff, 'page_name', 'Support the Living Archive') }}</h1>
+            <p>Secure, one-time donation. Fast checkout.</p>
         </div>
-        <div class="hero-copy">
-            <div class="eyebrow">Living Archive Team Handoff</div>
-            <h1>{{ data_get($handoff, 'page_name', 'The Yamassee Rising - Living Archive') }}</h1>
-            <p class="hero-tagline">{{ data_get($handoff, 'taglines.0', 'Carrying the Breath-line, Restoring the Living Memory.') }}</p>
-            <div class="cta-row">
-                <a class="cta primary" href="#donation">Donate Now</a>
-                <a class="cta ghost" href="#contact">Contact and Links</a>
+
+        <div class="donation-panel" id="donation">
+            <div class="donation-form-card">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
+            <form role="form"
+                  action="{{ route('stripe.post') }}"
+                  method="post"
+                  class="require-validation"
+                  data-cc-on-file="false"
+                  data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                  id="donation-payment-form">
+                @csrf
+                <div class="mb-3 form-group">
+                    <label for="donation-amount">Donation amount (USD)</label>
+                    <div class="amount-grid" role="group" aria-label="Choose a donation amount">
+                        <button type="button" class="amount-chip" data-amount="10" aria-pressed="false">$10</button>
+                        <button type="button" class="amount-chip is-active" data-amount="25" aria-pressed="true">$25</button>
+                        <button type="button" class="amount-chip" data-amount="50" aria-pressed="false">$50</button>
+                        <button type="button" class="amount-chip" data-amount="75" aria-pressed="false">$75</button>
+                        <button type="button" class="amount-chip" data-amount="100" aria-pressed="false">$100</button>
+                        <button type="button" class="amount-chip" data-amount="250" aria-pressed="false">$250</button>
+                    </div>
+                    <div class="amount-input">
+                        <input type="number" min="5" step="1" class="form-control" id="donation-amount" name="total_amount" value="25" required>
+                        <span class="amount-currency">USD</span>
+                    </div>
+                    <small>Minimum $5.00. Choose a quick amount or enter your own.</small>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-12 form-group">
+                        <label for="card-name">Name on card</label>
+                        <input class="form-control" id="card-name" type="text" autocomplete="cc-name" placeholder="Full name" required>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label for="card-number">Card number</label>
+                        <input class="form-control card-number" id="card-number" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" required>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="card-cvc">CVC</label>
+                        <input class="form-control card-cvc" id="card-cvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC" required>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="card-exp-month">Exp. month</label>
+                        <input class="form-control card-expiry-month" id="card-exp-month" type="text" inputmode="numeric" autocomplete="cc-exp-month" placeholder="MM" required>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="card-exp-year">Exp. year</label>
+                        <input class="form-control card-expiry-year" id="card-exp-year" type="text" inputmode="numeric" autocomplete="cc-exp-year" placeholder="YYYY" required>
+                    </div>
+                </div>
+
+                <div class="alert alert-danger mt-3 d-none payment-error" role="alert" aria-live="polite">
+                    Please correct the highlighted fields.
+                </div>
+
+                <input type="hidden" name="order_id" value="">
+                <button class="btn btn-donate" type="submit">Donate now</button>
+                    <div class="donation-secure">
+                        <span><i class="fa fa-lock"></i> Secure SSL checkout</span>
+                        <span>Powered by Stripe</span>
+                    </div>
+                </form>
             </div>
         </div>
+        <div class="footer-line">{{ data_get($handoff, 'footer', 'The Yamassee Rising - A Living Archive of Ceremony and Song.') }}</div>
     </div>
-
-    <div class="summary-grid">
-        <section class="card-block">
-            <h2>Page Setup Checklist</h2>
-            <ul class="checklist">
-                <li><span class="label">Page name:</span> {{ data_get($handoff, 'page_name', 'The Yamassee Rising - Living Archive') }}.</li>
-                <li><span class="label">Logo:</span> {{ data_get($handoff, 'logo_url') ? 'Configured crest logo' : 'Official Living Crest image (default)' }}.</li>
-                <li><span class="label">Primary tagline:</span> {{ data_get($handoff, 'taglines.0', 'Carrying the Breath-line, Restoring the Living Memory.') }}</li>
-                <li><span class="label">Contact email:</span> <a href="mailto:{{ data_get($handoff, 'email', 'info@thomasalexanderthevoice.com') }}">{{ data_get($handoff, 'email', 'info@thomasalexanderthevoice.com') }}</a></li>
-                <li><span class="label">Phone:</span> {{ data_get($handoff, 'phone', '(to be added)') }}.</li>
-                <li><span class="label">Social links:</span>
-                    Instagram, Facebook, YouTube
-                    @php
-                        $social = data_get($handoff, 'social', []);
-                    @endphp
-                    @if(!empty($social['instagram']) || !empty($social['facebook']) || !empty($social['youtube']))
-                        <span>(handles configured)</span>
-                    @endif
-                </li>
-                <li><span class="label">Address:</span> {{ data_get($handoff, 'address', 'Pending; use P.O. Box or publishing company address once registered.') }}</li>
-            </ul>
-        </section>
-
-        <section class="card-block" id="contact">
-            <h2>Text Blocks</h2>
-            <div class="text-block">
-                <h3>Intro</h3>
-                <p>{{ data_get($handoff, 'intro') }}</p>
-            </div>
-            <div class="text-block">
-                <h3>Mission</h3>
-                <p>{{ data_get($handoff, 'mission') }}</p>
-            </div>
-            <div class="text-block">
-                <h3>Supporter Acknowledgment</h3>
-                <p>{{ data_get($handoff, 'supporter') }}</p>
-            </div>
-            <div class="text-block">
-                <h3>Coming Soon Banner</h3>
-                <p>{{ data_get($handoff, 'coming_soon') }}</p>
-            </div>
-        </section>
-
-        <section class="card-block">
-            <h2>Taglines</h2>
-            <div class="tagline-chips">
-                @forelse(data_get($handoff, 'taglines', []) as $line)
-                    <span class="tagline-chip">{{ $line }}</span>
-                @empty
-                    <span class="tagline-chip">Carrying the Breath-line, Restoring the Living Memory.</span>
-                @endforelse
-            </div>
-            <h3>Merch Catalogue Flow</h3>
-            <div class="merch-flow">
-                <div class="merch-row"><strong>Apparel:</strong> "{{ data_get($handoff, 'merch.apparel', 'Where the Crest breathes, the lineage lives.') }}"</div>
-                <div class="merch-row"><strong>Posters and festival cards:</strong> "{{ data_get($handoff, 'merch.posters', 'Carrying the Breath-line, Restoring the Living Memory.') }}"</div>
-                <div class="merch-row"><strong>Music scores and charts:</strong> "{{ data_get($handoff, 'merch.music', 'The Breath-line carried forward, the memory restored.') }}"</div>
-                <div class="merch-row"><strong>Donor items:</strong> "{{ data_get($handoff, 'merch.donor', 'Every supporter a carrier of the Living Crest.') }}"</div>
-                <div class="merch-row"><strong>Digital products:</strong> "{{ data_get($handoff, 'merch.digital', 'Carrying the Breath-line, Restoring the Living Memory.') }}"</div>
-            </div>
-        </section>
-
-        <section class="card-block">
-            <h2>Visual Hierarchy</h2>
-            <ul class="visual-list">
-                <li>{{ data_get($handoff, 'visual_hierarchy', 'Primary: Living Crest. Secondary: Tagline. Supporting: Glyphs, feathers, Yamassee wheel. Informational: Mission, supporter text, contact info.') }}</li>
-            </ul>
-        </section>
-
-        <section class="card-block">
-            <h2>Color Palette</h2>
-            <div class="color-swatches">
-                <div class="swatch" style="background: var(--earth-ochre);">{{ data_get($handoff, 'palette_primary', 'Earth Ochre, Ceremonial White, Charcoal Black') }}</div>
-                <div class="swatch" style="background: var(--muted-gold);">{{ data_get($handoff, 'palette_secondary', 'Muted Gold, Forest Green, Crimson Red') }}</div>
-                <div class="swatch" style="background: var(--sky-silver); color: #0b0b0a;">{{ data_get($handoff, 'palette_accent', 'Sky Silver, Deep Yamassee Blue') }}</div>
-            </div>
-            <h3>Background Pairing Guide</h3>
-            <ul class="guide-list">
-                <li>{{ data_get($handoff, 'background_guide', 'Posters: parchment beige with texture. Apparel: charcoal black, deep blue, or warm brown. Website: ceremonial white or parchment beige; optional deep blue with crest border. Music scores: charcoal black or deep blue, matte/parchment overlay.') }}</li>
-            </ul>
-        </section>
-    </div>
-
-    <div class="coming-soon">{{ data_get($handoff, 'coming_soon', 'The Yamassee Rising Suite - audio recording in progress.') }}</div>
-
-    <div class="donation-panel" id="donation">
-        <h2>Support the Living Archive</h2>
-        <p>This archive is sustained by the covenant of supporters, each honored as a carrier of the Breath-line. Enter any amount to keep the crest, music, and ceremony moving forward.</p>
-
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        <form role="form"
-              action="{{ route('stripe.post') }}"
-              method="post"
-              class="require-validation"
-              data-cc-on-file="false"
-              data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
-              id="donation-payment-form">
-            @csrf
-            <div class="mb-3 form-group">
-                <label for="donation-amount">Donation Amount (USD)</label>
-                <input type="number" min="5" step="1" class="form-control" id="donation-amount" name="total_amount" value="25" required>
-                <small>Minimum $5.00</small>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-md-12 form-group">
-                    <label>Name on Card</label>
-                    <input class="form-control" type="text" required>
-                </div>
-                <div class="col-md-12 form-group">
-                    <label>Card Number</label>
-                    <input class="form-control card-number" type="text" autocomplete="off" required>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>CVC</label>
-                    <input class="form-control card-cvc" type="text" autocomplete="off" required>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Exp. Month</label>
-                    <input class="form-control card-expiry-month" type="text" placeholder="MM" required>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Exp. Year</label>
-                    <input class="form-control card-expiry-year" type="text" placeholder="YYYY" required>
-                </div>
-            </div>
-
-            <div class="alert alert-danger mt-3 d-none payment-error">
-                Please correct the highlighted fields.
-            </div>
-
-            <input type="hidden" name="order_id" value="">
-            <button class="btn btn-donate mt-4" type="submit" style="font-size:22px">Donate Now</button>
-        </form>
-    </div>
-
-    <div class="footer-line">{{ data_get($handoff, 'footer', 'The Yamassee Rising - A Living Archive of Ceremony and Song.') }}</div>
 </div>
 @endsection
 
@@ -514,7 +808,81 @@
 <script>
 (function($){
     "use strict";
+    const floatGroup = document.querySelector('.living-float-group');
+    if (floatGroup) {
+        floatGroup.style.display = 'none';
+    }
     const $form = $('#donation-payment-form');
+    const $amountInput = $('#donation-amount');
+    const $amountChips = $('.amount-chip');
+    const minAmount = 5;
+
+    function normalizeAmount(value) {
+        const digits = String(value || '').replace(/[^0-9]/g, '');
+        if (!digits) {
+            return null;
+        }
+        return parseInt(digits, 10);
+    }
+
+    function updateAmountDisplay(amount) {
+        setChipState(amount);
+    }
+
+    function setChipState(amount) {
+        $amountChips.each(function() {
+            const chipAmount = parseInt($(this).data('amount'), 10);
+            const isActive = amount && chipAmount === amount;
+            $(this)
+                .toggleClass('is-active', isActive)
+                .attr('aria-pressed', isActive ? 'true' : 'false');
+        });
+    }
+
+    function digitsOnly(value, maxLen) {
+        return String(value || '').replace(/[^0-9]/g, '').slice(0, maxLen);
+    }
+
+    $amountChips.on('click', function() {
+        const amount = parseInt($(this).data('amount'), 10);
+        $amountInput.val(amount);
+        updateAmountDisplay(amount);
+    });
+
+    $amountInput.on('input', function() {
+        const amount = normalizeAmount($(this).val());
+        updateAmountDisplay(amount);
+    });
+
+    $amountInput.on('blur', function() {
+        let amount = normalizeAmount($(this).val());
+        if (!amount || amount < minAmount) {
+            amount = minAmount;
+        }
+        $(this).val(amount);
+        updateAmountDisplay(amount);
+    });
+
+    updateAmountDisplay(normalizeAmount($amountInput.val()) || minAmount);
+
+    $('.card-number').on('input', function() {
+        const digits = digitsOnly($(this).val(), 19);
+        const groups = digits.match(/.{1,4}/g) || [];
+        $(this).val(groups.join(' '));
+    });
+
+    $('.card-cvc').on('input', function() {
+        $(this).val(digitsOnly($(this).val(), 4));
+    });
+
+    $('.card-expiry-month').on('input', function() {
+        $(this).val(digitsOnly($(this).val(), 2));
+    });
+
+    $('.card-expiry-year').on('input', function() {
+        $(this).val(digitsOnly($(this).val(), 4));
+    });
+
     $form.on('submit', function(e){
         const $requiredGroups = $form.find('.required, .form-control');
         let valid = true;
@@ -537,7 +905,7 @@
             e.preventDefault();
             Stripe.setPublishableKey($form.data('stripe-publishable-key'));
             Stripe.createToken({
-                number: $('.card-number').val(),
+                number: $('.card-number').val().replace(/\s+/g, ''),
                 cvc: $('.card-cvc').val(),
                 exp_month: $('.card-expiry-month').val(),
                 exp_year: $('.card-expiry-year').val()
