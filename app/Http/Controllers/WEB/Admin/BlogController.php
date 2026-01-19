@@ -40,6 +40,7 @@ class BlogController extends Controller
             'slug'=>'required|unique:blogs',
             'image'=>'required',
             'description'=>'required',
+            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             
             'status'=>'required',
             
@@ -65,6 +66,14 @@ class BlogController extends Controller
                 ->save(public_path().'/'.$image_name);
             $blog->image = $image_name;
         }
+        if ($request->hasFile('meta_image')) {
+            $extention = $request->meta_image->getClientOriginalExtension();
+            $image_name = 'blog-meta-' . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extention;
+            $image_name = 'uploads/website-images/' . $image_name;
+            Image::make($request->meta_image)
+                ->save(public_path() . '/' . $image_name);
+            $blog->meta_image = $image_name;
+        }
 
         $blog->admin_id = 1;
         $blog->title = $request->title;
@@ -75,6 +84,14 @@ class BlogController extends Controller
         $blog->show_homepage = $request->show_homepage;
         $blog->seo_title = $request->seo_title ? $request->seo_title : $request->title;
         $blog->seo_description = $request->seo_description ? $request->seo_description : $request->title;
+        $blog->seo_keywords = $request->seo_keywords;
+        $blog->seo_author = $request->seo_author;
+        $blog->seo_publisher = $request->seo_publisher;
+        $blog->canonical_url = $request->canonical_url;
+        $blog->meta_title = $request->meta_title;
+        $blog->meta_description = $request->meta_description;
+        $blog->meta_copyright = $request->meta_copyright;
+        $blog->site_name = $request->site_name;
         $blog->save();
 
         $notification= trans('admin_validation.Created Successfully');
@@ -104,6 +121,7 @@ class BlogController extends Controller
             'title'=>'required|unique:blogs,title,'.$blog->id,
             'slug'=>'required|unique:blogs,slug,'.$blog->id,
             'description'=>'required',
+            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             
             'status'=>'required',
            
@@ -131,6 +149,19 @@ class BlogController extends Controller
                 if(File::exists(public_path().'/'.$old_image))unlink(public_path().'/'.$old_image);
             }
         }
+        if ($request->hasFile('meta_image')) {
+            $old_meta = $blog->meta_image;
+            $extention = $request->meta_image->getClientOriginalExtension();
+            $image_name = 'blog-meta-' . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extention;
+            $image_name = 'uploads/website-images/' . $image_name;
+            Image::make($request->meta_image)
+                ->save(public_path() . '/' . $image_name);
+            $blog->meta_image = $image_name;
+            $blog->save();
+            if ($old_meta && File::exists(public_path() . '/' . $old_meta)) {
+                unlink(public_path() . '/' . $old_meta);
+            }
+        }
 
         $blog->title = $request->title;
         $blog->slug = $request->slug;
@@ -140,6 +171,14 @@ class BlogController extends Controller
         $blog->show_homepage = $request->show_homepage;
         $blog->seo_title = $request->seo_title ? $request->seo_title : $request->title;
         $blog->seo_description = $request->seo_description ? $request->seo_description : $request->title;
+        $blog->seo_keywords = $request->seo_keywords;
+        $blog->seo_author = $request->seo_author;
+        $blog->seo_publisher = $request->seo_publisher;
+        $blog->canonical_url = $request->canonical_url;
+        $blog->meta_title = $request->meta_title;
+        $blog->meta_description = $request->meta_description;
+        $blog->meta_copyright = $request->meta_copyright;
+        $blog->site_name = $request->site_name;
         $blog->save();
 
         $notification= trans('admin_validation.Updated Successfully');

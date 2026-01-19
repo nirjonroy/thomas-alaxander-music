@@ -86,6 +86,42 @@
                                     <label>{{__('admin.SEO Description')}}</label>
                                     <textarea name="seo_description" id="" cols="30" rows="10" class="form-control text-area-5">{{ old('seo_description') }}</textarea>
                                 </div>
+                                <div class="form-group col-12">
+                                    <label>SEO Keywords</label>
+                                    <textarea name="seo_keywords" rows="3" class="form-control">{{ old('seo_keywords') }}</textarea>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Author</label>
+                                    <input type="text" class="form-control" name="seo_author" value="{{ old('seo_author') }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Publisher</label>
+                                    <input type="text" class="form-control" name="seo_publisher" value="{{ old('seo_publisher') }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Canonical URL</label>
+                                    <input type="text" class="form-control" name="canonical_url" value="{{ old('canonical_url') }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Title</label>
+                                    <input type="text" class="form-control" name="meta_title" value="{{ old('meta_title') }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" cols="30" rows="4" class="form-control text-area-5">{{ old('meta_description') }}</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Meta Image (upload)</label>
+                                    <input type="file" class="form-control" name="meta_image" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Site Name</label>
+                                    <input type="text" class="form-control" name="site_name" value="{{ old('site_name') }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Meta Copyright</label>
+                                    <input type="text" class="form-control" name="meta_copyright" value="{{ old('meta_copyright') }}">
+                                </div>
 
                             </div>
                             <div class="row">

@@ -806,7 +806,10 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/all-events', 'event')->name('events');
          Route::get('/events/{event}','event_show')->name('events.show');
         Route::post('/events/{event}/reviews', 'event_review')->name('events.reviews.store');
-        Route::get('/blog-details/{slug}', 'blog_details')->name('blog_details');
+        Route::get('/blog/{slug}', 'blog_details')->name('blog_details');
+        Route::get('/blog-details/{slug}', function ($slug) {
+            return redirect()->route('front.blog_details', $slug);
+        })->name('blog_details_legacy');
 
     });
 
@@ -907,7 +910,6 @@ Route::controller(stripePaymentController::class)->group(function(){
 });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-
 
 
 

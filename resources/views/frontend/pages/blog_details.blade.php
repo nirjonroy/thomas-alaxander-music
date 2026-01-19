@@ -1,5 +1,5 @@
 @extends('frontend.app')
-@php($detailTitle = $blog->seo_title ?? $blog->title)
+@php($detailTitle = $blog->meta_title ?? $blog->seo_title ?? $blog->title)
 @section('title', $detailTitle)
 @push('css')
 
@@ -15,26 +15,24 @@
     {{-- Page title & canonical --}}
     @php
         use Illuminate\Support\Str;
-        $pageTitle = $blog->seo_title ?? $blog->title;
-        $pageDesc  = Str::limit(strip_tags($blog->seo_description ?? $blog->description), 180);
         $pageUrl   = url()->current();
         $imageUrl  = $blog->image ? asset($blog->image) : null;
         $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Blog Details')->first();
-        $canonical = optional($seoDefaults)->canonical_url ?: $pageUrl;
-        $keywords = optional($seoDefaults)->seo_keywords ?? ($blog->seo_keywords ?? $blog->title);
-        $authorMeta = optional($seoDefaults)->seo_author ?? ($blog->author ?? 'Thomas Alexander');
-        $siteName = optional($seoDefaults)->site_name ?? config('app.name', 'Thomas Alexander');
-        $pageTitle = $pageTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
-        $rawDesc = $blog->seo_description ?? $blog->description;
-        $rawDesc = $rawDesc ?: optional($seoDefaults)->meta_description;
+        $siteName = $blog->site_name ?: (optional($seoDefaults)->site_name ?? config('app.name', 'Thomas Alexander'));
+        $baseTitle = $blog->meta_title ?: ($blog->seo_title ?: $blog->title);
+        $pageTitle = $baseTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
+        $rawDesc = $blog->meta_description ?: ($blog->seo_description ?: $blog->description);
+        $rawDesc = $rawDesc ?: (optional($seoDefaults)->meta_description ?: optional($seoDefaults)->seo_description);
         $pageDesc = Str::limit(strip_tags($rawDesc ?? ''), 180);
-        $metaImageValue = optional($seoDefaults)->meta_image;
-        $metaImage = $imageUrl
-            ?: ($metaImageValue
-                ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
-                : asset(siteInfo()->logo));
-        $publisher = optional($seoDefaults)->seo_publisher ?? $siteName;
-        $copyright = optional($seoDefaults)->meta_copyright;
+        $canonical = $blog->canonical_url ?: (optional($seoDefaults)->canonical_url ?: $pageUrl);
+        $keywords = $blog->seo_keywords ?: (optional($seoDefaults)->seo_keywords ?? $blog->title);
+        $authorMeta = $blog->seo_author ?: ($blog->author ?? (optional($seoDefaults)->seo_author ?? $siteName));
+        $publisher = $blog->seo_publisher ?: (optional($seoDefaults)->seo_publisher ?? $siteName);
+        $metaImageValue = $blog->meta_image ?: optional($seoDefaults)->meta_image;
+        $metaImage = $metaImageValue
+            ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+            : ($imageUrl ?: asset(siteInfo()->logo));
+        $copyright = $blog->meta_copyright ?: optional($seoDefaults)->meta_copyright;
     @endphp
 
     <title>{{ $pageTitle }}</title>
