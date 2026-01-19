@@ -1,6 +1,5 @@
 @extends('frontend.app')
-@php($detailTitle = $blog->meta_title ?? $blog->seo_title ?? $blog->title)
-@section('title', $detailTitle)
+@section('title', $blog->meta_title ?? $blog->seo_title ?? $blog->title)
 @push('css')
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -15,12 +14,12 @@
     {{-- Page title & canonical --}}
     @php
         use Illuminate\Support\Str;
+        $pageTitle = $blog->meta_title ?? $blog->seo_title ?? $blog->title;
         $pageUrl   = url()->current();
         $imageUrl  = $blog->image ? asset($blog->image) : null;
         $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Blog Details')->first();
         $siteName = $blog->site_name ?: (optional($seoDefaults)->site_name ?? config('app.name', 'Thomas Alexander'));
-        $baseTitle = $blog->meta_title ?: ($blog->seo_title ?: $blog->title);
-        $pageTitle = $baseTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
+        $pageTitle = $pageTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
         $rawDesc = $blog->meta_description ?: ($blog->seo_description ?: $blog->description);
         $rawDesc = $rawDesc ?: (optional($seoDefaults)->meta_description ?: optional($seoDefaults)->seo_description);
         $pageDesc = Str::limit(strip_tags($rawDesc ?? ''), 180);
