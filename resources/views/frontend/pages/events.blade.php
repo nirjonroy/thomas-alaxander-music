@@ -1,8 +1,53 @@
 @extends('frontend.app')
-@section('title', 'Event List')
 @push('css')
    
 @endpush
+@section('seos')
+    @php
+        $seoSetting = \App\Models\SeoSetting::where('page_name', 'Events')->first();
+        $siteName = optional($seoSetting)->site_name ?? config('app.name', 'Thomas Alexander');
+        $pageTitle = optional($seoSetting)->meta_title ?: (optional($seoSetting)->seo_title ?: 'Event List');
+        $rawDesc = optional($seoSetting)->meta_description
+            ?: (optional($seoSetting)->seo_description ?: 'Upcoming and past events from Thomas Alexander.');
+        $pageDesc = \Illuminate\Support\Str::limit(strip_tags($rawDesc), 180);
+        $pageUrl = url()->current();
+        $canonical = optional($seoSetting)->canonical_url ?: $pageUrl;
+        $keywords = optional($seoSetting)->seo_keywords ?? 'Thomas Alexander events, live shows, appearances';
+        $author = optional($seoSetting)->seo_author ?? $siteName;
+        $publisher = optional($seoSetting)->seo_publisher ?? $siteName;
+        $metaImageValue = optional($seoSetting)->meta_image;
+        $metaImage = $metaImageValue
+            ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+            : asset(siteInfo()->logo);
+        $copyright = optional($seoSetting)->meta_copyright;
+    @endphp
+    @section('title', $pageTitle)
+    <meta charset="UTF-8">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDesc }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="author" content="{{ $author }}">
+    <meta name="publisher" content="{{ $publisher }}">
+    @if ($copyright)
+        <meta name="copyright" content="{{ $copyright }}">
+    @endif
+    <link rel="canonical" href="{{ $canonical }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDesc }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDesc }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
+@endsection
 @section('content')
 <d class="ms_content_wrapper padder_top8">
 

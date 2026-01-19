@@ -8,20 +8,29 @@
     $eventName = $event->name;
     $pageUrl   = url()->current();
     $desc      = Str::limit(strip_tags($event->description ?? ''), 180);
+    $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Events')->first();
+    $siteName = optional($seoDefaults)->site_name ?? (siteInfo()->site_name ?? 'Website');
+    $keywords = optional($seoDefaults)->seo_keywords ?? $eventName;
+    $author = optional($seoDefaults)->seo_author ?? $siteName;
+    $publisher = optional($seoDefaults)->seo_publisher ?? $siteName;
+    $copyright = optional($seoDefaults)->meta_copyright;
 
     // Resolve image to an absolute URL
     $imgRaw = $event->image;
+    $eventImage = null;
     if ($imgRaw) {
         if (preg_match('#^(https?:)?//#', $imgRaw)) {
-            $imageUrl = $imgRaw;                     // already absolute (CDN/S3)
+            $eventImage = $imgRaw;                     // already absolute (CDN/S3)
         } elseif (strpos($imgRaw, '/') !== false) {
-            $imageUrl = asset($imgRaw);              // e.g. 'uploads/.../file.jpg'
+            $eventImage = asset($imgRaw);              // e.g. 'uploads/.../file.jpg'
         } else {
-            $imageUrl = asset('uploads/custom-images/'.$imgRaw);
+            $eventImage = asset('uploads/custom-images/'.$imgRaw);
         }
-    } else {
-        $imageUrl = asset(siteInfo()->logo);         // fallback to site logo
     }
+    $metaImageValue = optional($seoDefaults)->meta_image;
+    $metaImage = $eventImage ?: ($metaImageValue
+        ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
+        : asset(siteInfo()->logo));
 
     // Dates for structured data
     $start = \Carbon\Carbon::parse(trim(($event->date ?? '').' '.($event->time ?? '')));
@@ -32,15 +41,21 @@
 <link rel="canonical" href="{{ $pageUrl }}"/>
 
 <meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="keywords" content="{{ $keywords }}">
+<meta name="author" content="{{ $author }}">
+<meta name="publisher" content="{{ $publisher }}">
+@if ($copyright)
+  <meta name="copyright" content="{{ $copyright }}">
+@endif
 <meta name="description" content="{{ $desc }}"/>
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="{{ siteInfo()->site_name ?? 'Website' }}">
+<meta property="og:site_name" content="{{ $siteName }}">
 <meta property="og:title" content="{{ $eventName }}">
 <meta property="og:description" content="{{ $desc }}">
 <meta property="og:url" content="{{ $pageUrl }}">
-<meta property="og:image" content="{{ $imageUrl }}">
-<meta property="og:image:secure_url" content="{{ $imageUrl }}">
+<meta property="og:image" content="{{ $metaImage }}">
+<meta property="og:image:secure_url" content="{{ $metaImage }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{{ $eventName }}">
@@ -48,7 +63,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $eventName }}">
 <meta name="twitter:description" content="{{ $desc }}">
-<meta name="twitter:image" content="{{ $imageUrl }}">
+<meta name="twitter:image" content="{{ $metaImage }}">
 
 <script type="application/ld+json">
 {
@@ -65,7 +80,7 @@
     "name": {{ json_encode($event->location ?? '') }},
     "address": {{ json_encode($event->location ?? '') }}
   },
-  "image": [{{ json_encode($imageUrl) }}],
+  "image": [{{ json_encode($metaImage) }}],
   "offers": {
     "@type": "Offer",
     "price": {{ json_encode((string)($event->ticket_price ?? 0)) }},
@@ -75,7 +90,7 @@
   },
   "organizer": {
     "@type": "Organization",
-    "name": {{ json_encode(siteInfo()->site_name ?? 'Thomas Alexander The Voice') }},
+    "name": {{ json_encode($siteName) }},
     "url": {{ json_encode(url('/')) }}
   }
 }
