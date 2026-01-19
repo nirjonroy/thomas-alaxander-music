@@ -149,8 +149,8 @@ class ProductController extends Controller
             'weight' => '',
             'video_link' => '',
             'quantity' => '',
-            'song' => '', // Accept MP3, WAV, OGG up to 20MB
-             'demo_song' => 'nullable|mimes:mp3,wav,ogg|max:20480',
+            'song' => 'nullable|mimes:mp3,wav,ogg|max:20480',
+            'demo_song' => 'nullable|mimes:mp3,wav,ogg|max:20480',
         ];
     
         $customMessages = [
@@ -235,32 +235,32 @@ class ProductController extends Controller
         
             }
         
-        if (!empty($imageData)) {
-            // Associate images with the product using the gallery relationship
-            $product->gallery()->createMany($imageData);
-        }
-    }
-
-    // Handle demo song file upload
-    if ($request->hasFile('demo_song')) {
-        $demoSong = $request->file('demo_song');
-
-        if (!$demoSong->isValid()) {
-            return back()->withErrors(['demo_song' => 'Invalid demo song file!']);
+            if (!empty($imageData)) {
+                // Associate images with the product using the gallery relationship
+                $product->gallery()->createMany($imageData);
+            }
         }
 
-        $demoSongName = Str::slug($request->name) . '-demo-' . time() . '.' . $demoSong->getClientOriginalExtension();
-        $demoSongPath = public_path('uploads/songs/');
+        // Handle demo song file upload
+        if ($request->hasFile('demo_song')) {
+            $demoSong = $request->file('demo_song');
 
-        if (!file_exists($demoSongPath)) {
-            mkdir($demoSongPath, 0777, true);
+            if (!$demoSong->isValid()) {
+                return back()->withErrors(['demo_song' => 'Invalid demo song file!']);
+            }
+
+            $demoSongName = Str::slug($request->name) . '-demo-' . time() . '.' . $demoSong->getClientOriginalExtension();
+            $demoSongPath = public_path('uploads/demo_song/');
+
+            if (!file_exists($demoSongPath)) {
+                mkdir($demoSongPath, 0777, true);
+            }
+
+            $demoSong->move($demoSongPath, $demoSongName);
+
+            // Save demo song path
+            $product->demo_song = 'uploads/demo_song/' . $demoSongName;
         }
-
-        $demoSong->move($demoSongPath, $demoSongName);
-
-        // Save demo song path
-        $product->demo_music = 'uploads/songs/' . $demoSongName;
-    }
 
         
 
@@ -512,7 +512,6 @@ class ProductController extends Controller
         $product->music = 'uploads/songs/' . $song_name;
         }
 
-        $this->syncLivingArchiveFields($product, $request);
         $product->save();
             if($old_thumbnail){
                 if(File::exists(public_path().'/uploads/custom-images/'.$old_thumbnail))unlink(public_path().'/uploads/custom-images/'.$old_thumbnail);
@@ -566,6 +565,7 @@ class ProductController extends Controller
         if($product->vendor_id != 0){
             $product->approve_by_admin = $request->approve_by_admin;
         }
+        $this->syncLivingArchiveFields($product, $request);
         $product->save();
 
         $notification = trans('admin_validation.Update Successfully');

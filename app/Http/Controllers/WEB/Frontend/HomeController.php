@@ -17,354 +17,108 @@ use App\Models\Footer;
 use App\Models\CustomPage;
 use App\Models\Blog;
 use App\Models\Event;
-use App\Models\eventReview;
-use App\Models\Setting;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Relationships that should always be eager-loaded for homepage products.
-     */
-    protected array $productRelations = ['category', 'subCategory', 'childCategory'];
-
-    /**
-     * Cache lifetime (seconds) for repeated homepage widgets.
-     */
-    protected int $homeCacheSeconds = 300;
-
     public function index()
     {
-        $now = Carbon::now();
+        
+        // dd($slider);
+        $offer = AboutUs::find('2');
+        $feateuredCategories = featuredCategories();
+         $popularCats = popularCategories();
+    $popularProducts = [];
 
-        $sliders = $this->rememberHomeData('home.sliders', function () {
-            return Slider::where('status', 1)
-                ->orderBy('serial', 'asc')
-                ->get();
-        });
+    foreach ($popularCats as $pCats) {
+        $poProducts = Product::where('category_id', $pCats->category_id)->limit(12)->latest()->get();
+        $popularProducts[$pCats->category_id] = $poProducts;
+    }
+    // dd($poProducts);
+        // dd($popularCats);
+        // dd($feateuredCategories);
+        $products = Product::with(['category', 'subCategory', 'childCategory'])
+                    ->where('type', 'single')
+                    ->latest()
+                    ->take(24)
+                    ->get();
 
-        $products = $this->fetchProducts('home.products.latest', function (Builder $query) {
-            $query->where('type', 'single');
-        });
+        
+        $top_picks = Product::with(['category', 'subCategory', 'childCategory'])
+                                        ->where('today_special', 1)
+                                        ->where('type', 'single')
+                                        ->latest()
+                                        ->take(24)
+                                        ->get();
+        $tranding_songs = Product::with(['category', 'subCategory', 'childCategory'])
+                                        ->where('tranding_songs', 1)
+                                        ->where('type', 'single')
+                                        ->latest()
+                                        ->take(24)
+                                        ->get();
 
-        $top_picks = $this->fetchProducts('home.products.top_picks', function (Builder $query) {
-            $query->where('type', 'single')
-                ->where('today_special', 1);
-        });
+        $physical_product = Product::with(['category', 'subCategory', 'childCategory'])
+                                        
+                                        ->where('type', 'variable')
+                                        ->latest()
+                                        ->take(24)
+                                        ->get();
 
-        $tranding_songs = $this->fetchProducts('home.products.trending', function (Builder $query) {
-            $query->where('type', 'single')
-                ->where('tranding_songs', 1);
-        });
 
-        $physical_product = $this->fetchProducts('home.products.physical', function (Builder $query) {
-            $query->where('type', 'variable');
-        });
+        $comp_pro = Product::latest()->get();
 
-        $eventsKey = 'home.events.' . $now->format('Y-m');
-        $events = $this->rememberHomeData($eventsKey, function () use ($now) {
-            return Event::whereMonth('date', $now->month)
-                ->whereYear('date', $now->year)
-                ->orderBy('date', 'asc')
-                ->get();
-        });
+        // $products = Product::with('category', 'subCategory', 'childCategory', 'brand')
+        //                         ->whereHas('brand', function($q){
+        //                             $q->whereSlug(request('slug'));
+        //                         })
+        //                         ->get();
+        $cat_wise_prod = Category::with('subCategories', 'products', 'activeSubCategories')
+                            ->has('products')
+                            ->where('status', 1)
+                            ->latest()
+                            ->get();
 
-        $blogs = $this->rememberHomeData('home.blogs', function () {
-            return Blog::latest()->limit(12)->get();
-        });
+                            // dd($cat_wise_prod);
+        $about = DB::table('about_us')->first();
+        $about_2 = DB::table('about_us')->where('id', 2)->first();
+        // dd($about_2);
+        $is_reco_prod = Product::where('status', 1)->latest()->limit(3)->get();
+        // dd($about);
+
+        $flashSell = FlashSaleProduct::with('product')->limit(10)->where('status', 1)->latest()->get();
+        $firstColumns  = FooterLink::where('column', 1)->get();
+        $secondColumns = FooterLink::where('column', 2)->get();
+        $thirdColumns  = FooterLink::where('column', 3)->get();
+
+        $title  = Footer::first();
+        $brands = Brand::all();
+        $cart = session()->get('cart', []);
+
+
+        // dd($most_sell);
 
         return view('frontend.home.index', compact(
-            'products',
-            'tranding_songs',
-            'top_picks',
-            'physical_product',
-            'events',
-            'sliders',
-            'blogs'
+                 'feateuredCategories', 'products',
+                'firstColumns',
+                'secondColumns',
+                'thirdColumns',
+                'title',
+                'brands',
+                'flashSell',
+                'cat_wise_prod',
+                'cart',
+                'comp_pro',
+                'about',
+                'about_2',
+                'popularCats',
+                 'is_reco_prod',
+                'popularProducts',
+                'offer',
+                'tranding_songs',
+                'top_picks',
+                'physical_product'
+                
         ));
-    }
-
-    public function livingArchive()
-    {
-        $settings = Setting::select([
-            'living_archive_title',
-            'living_archive_subtitle',
-            'living_archive_intro',
-            'living_archive_qr_text',
-            'living_archive_logo_image',
-            'living_archive_hero_image',
-            'living_phase1_title',
-            'living_phase1_affirmation',
-            'living_phase2_title',
-            'living_phase2_affirmation',
-            'living_phase3_title',
-            'living_phase3_affirmation',
-            'living_phase4_title',
-            'living_phase4_affirmation',
-            'living_ritual_before',
-            'living_ritual_during',
-            'living_ritual_after',
-            'living_crest_title',
-            'living_crest_body_one',
-            'living_crest_body_two',
-            'living_crest_body_three',
-            'living_crest_mission',
-            'living_crest_secondary_caption',
-            'living_crest_primary_image',
-            'living_crest_secondary_image',
-            'living_phases_intro',
-            'living_contact_phone',
-            'living_contact_email',
-            'topbar_phone',
-            'topbar_email',
-            'living_handoff_page_name',
-            'living_handoff_logo_url',
-            'living_handoff_email',
-            'living_handoff_phone',
-            'living_handoff_social_instagram',
-            'living_handoff_social_facebook',
-            'living_handoff_social_youtube',
-            'living_handoff_address',
-            'living_handoff_intro',
-            'living_handoff_mission',
-            'living_handoff_supporter',
-            'living_handoff_coming_soon',
-            'living_handoff_tagline1',
-            'living_handoff_tagline2',
-            'living_handoff_tagline3',
-            'living_handoff_tagline4',
-            'living_handoff_merch_apparel',
-            'living_handoff_merch_posters',
-            'living_handoff_merch_music',
-            'living_handoff_merch_donor',
-            'living_handoff_merch_digital',
-            'living_handoff_visual_hierarchy',
-            'living_handoff_palette_primary',
-            'living_handoff_palette_secondary',
-            'living_handoff_palette_accent',
-            'living_handoff_background_guide',
-            'living_handoff_footer_line',
-        ])->first();
-
-        $mediaUrl = function (?string $path, string $fallback) {
-            if (!$path) {
-                return $fallback;
-            }
-            return Str::startsWith($path, ['http://', 'https://', '//'])
-                ? $path
-                : asset($path);
-        };
-
-        $phaseKeys = collect([
-            'phase1',
-            'phase2',
-            'phase3',
-            'phase4',
-        ]);
-
-        $phaseMeta = $phaseKeys->mapWithKeys(function ($key, $index) use ($settings) {
-            $humanIndex = $index + 1;
-            $titleField = "living_phase{$humanIndex}_title";
-            $affirmField = "living_phase{$humanIndex}_affirmation";
-
-            return [
-                $key => [
-                    'key'         => $key,
-                    'title'       => optional($settings)->{$titleField} ?? "Phase {$humanIndex}",
-                    'affirmation' => optional($settings)->{$affirmField},
-                    'phase_index' => $humanIndex,
-                ],
-            ];
-        });
-
-        $products = Product::with($this->productRelations)
-            ->where('is_living_archive', 1)
-            ->orderByRaw("CASE living_archive_phase
-                WHEN 'phase1' THEN 1
-                WHEN 'phase2' THEN 2
-                WHEN 'phase3' THEN 3
-                WHEN 'phase4' THEN 4
-                ELSE 5 END")
-            ->orderBy('living_archive_sort')
-            ->get();
-
-        $phases = $phaseMeta->map(function ($meta) use ($products) {
-            $items = $products
-                ->where('living_archive_phase', $meta['key'])
-                ->map(function (Product $model) {
-                    $image = $model->thumb_image
-                        ? asset('uploads/custom-images2/' . ltrim($model->thumb_image, '/'))
-                        : asset('frontend/nothing.png');
-
-                    $price = $model->offer_price > 0 ? $model->offer_price : $model->price;
-                    $compare = $model->offer_price > 0 ? $model->price : null;
-
-                    return [
-                        'model'        => $model,
-                        'slug'         => $model->slug,
-                        'name'         => $model->name,
-                        'description'  => $model->living_archive_story ?: strip_tags($model->long_description),
-                        'affirmation'  => $model->living_archive_affirmation,
-                        'qr_caption'   => $model->living_archive_qr_caption ?: 'Scan to enter',
-                        'feather'      => $model->living_archive_feather,
-                        'image_url'    => $image,
-                        'price'        => $price,
-                        'compare'      => $compare,
-                    ];
-                })
-                ->values();
-
-            return [
-                'key'         => $meta['key'],
-                'phase_index' => $meta['phase_index'],
-                'title'       => $meta['title'],
-                'affirmation' => $meta['affirmation'],
-                'products'    => $items,
-            ];
-        })->values();
-
-        $page = [
-            'header' => [
-                'title'    => optional($settings)->living_archive_title
-                    ?? optional($settings)->living_handoff_page_name
-                    ?? 'The Yamassee Rising - Living Archive',
-                'subtitle' => optional($settings)->living_archive_subtitle ?? 'This is not a store. This is ceremony.',
-                'qr_intro' => optional($settings)->living_archive_qr_text ?? 'You have entered the Living Archive. This is ceremony. You are part of the convergence.',
-            ],
-            'intro' => optional($settings)->living_archive_intro
-                ?? optional($settings)->living_handoff_intro
-                ?? 'Welcome to The Yamassee Rising - Living Archive, the ceremonial hub where the Living Crest anchors our covenant. This archive is also known as Thomas Alexander\'s Living Crest of the Breath-line, a testimony to ancestral memory and the continuity of our heritage. Here, supporters become carriers of the Breathline, woven into the covenant through crest, music, and ceremony.',
-            'media' => [
-                'logo' => $mediaUrl(
-                    optional($settings)->living_archive_logo_image
-                    ?? optional($settings)->living_handoff_logo_url,
-                    asset('frontend/living-archive/images/logo.png')
-                ),
-                'hero' => $mediaUrl(optional($settings)->living_archive_hero_image, asset('frontend/living-archive/banner3.jpg')),
-            ],
-            'contact' => [
-                'phone' => optional($settings)->living_contact_phone
-                    ?? optional($settings)->living_handoff_phone
-                    ?? optional($settings)->topbar_phone
-                    ?? '(to be added)',
-                'email' => optional($settings)->living_contact_email
-                    ?? optional($settings)->living_handoff_email
-                    ?? optional($settings)->topbar_email
-                    ?? 'info@thomasalexanderthevoice.com',
-            ],
-            'phases_intro' => optional($settings)->living_phases_intro
-                ?? 'Move through each phase to reveal artefacts, apparel, and recordings inscribed with their own affirmation.',
-            'crest' => [
-                'title' => optional($settings)->living_crest_title ?? 'Ceremonial Crest',
-                'body_one' => optional($settings)->living_crest_body_one
-                    ?? 'Dreamcatcher-style crest with twelve animal segments, central tree, and five feathers.',
-                'body_two' => optional($settings)->living_crest_body_two
-                    ?? 'Five feathers honour the Five Civilized Tribes, with one feather reserved for the unknown yet to be recognized.',
-                'body_three' => optional($settings)->living_crest_body_three
-                    ?? 'Full breathline: Mali, Black Indigenous, Alexander Black Indigenous/Gaelic, and Williams.',
-                'mission' => optional($settings)->living_crest_mission
-                    ?? 'Texas Yamassee: Thomas Alexander (The Voice) - Every note is a thread in the ancestral tapestry. Mission: Yamassee Rising exists to inscribe survival, memory, and chosen legacy through ceremonial music, crest symbolism, and ritual garments. This archive honours the breath.',
-                'secondary_caption' => optional($settings)->living_crest_secondary_caption
-                    ?? 'Secondary crest: Five Feather Lineage',
-                'primary_image' => $mediaUrl(optional($settings)->living_crest_primary_image, asset('frontend/living-archive/Dreamcatcher-style crest.jpeg')),
-                'secondary_image' => $mediaUrl(optional($settings)->living_crest_secondary_image, asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg')),
-            ],
-            'ritual_flow' => [
-                'before' => $this->formatRitualList(
-                    optional($settings)->living_ritual_before,
-                    [
-                        'Speak Phase 1 affirmation aloud: "We begin with breath. We begin to live."',
-                        'Center the crest watermark and dim the space to ceremony lighting.',
-                    ]
-                ),
-                'during' => $this->formatRitualList(
-                    optional($settings)->living_ritual_during,
-                    [
-                        'Assign tasks by feather tokens so each keeper knows their product and duty.',
-                        'Move through tabs with ritual pauses (breath, silence, or drumbeat) between sections.',
-                        'Confirm clarity and unity before publishing each section.',
-                    ]
-                ),
-                'after' => $this->formatRitualList(
-                    optional($settings)->living_ritual_after,
-                    [
-                        'Keeper\'s check-in: Is the page emotionally resonant?',
-                        'Keeper\'s check-in: Is the archive clearly inscribed?',
-                        'Keeper\'s check-in: Is overwhelm transformed into ceremony?',
-                    ]
-                ),
-            ],
-        ];
-
-        $handoff = [
-            'page_name' => optional($settings)->living_handoff_page_name
-                ?? 'The Yamassee Rising - Living Archive',
-            'logo_url' => $mediaUrl(
-                optional($settings)->living_handoff_logo_url,
-                $page['media']['logo']
-            ),
-            'email' => optional($settings)->living_handoff_email
-                ?? 'info@thomasalexanderthevoice.com',
-            'phone' => optional($settings)->living_handoff_phone
-                ?? '(to be added)',
-            'social' => [
-                'instagram' => optional($settings)->living_handoff_social_instagram,
-                'facebook' => optional($settings)->living_handoff_social_facebook,
-                'youtube' => optional($settings)->living_handoff_social_youtube,
-            ],
-            'address' => optional($settings)->living_handoff_address
-                ?? 'Pending (use P.O. Box or publishing company address once registered)',
-            'intro' => optional($settings)->living_handoff_intro
-                ?? 'Welcome to The Yamassee Rising - Living Archive, the ceremonial hub where the Living Crest anchors our covenant. This archive is also known as Thomas Alexander\'s Living Crest of the Breath-line, a testimony to ancestral memory and the continuity of our heritage. Here, supporters become carriers of the Breathline, woven into the covenant through crest, music, and ceremony.',
-            'mission' => optional($settings)->living_handoff_mission
-                ?? 'The Yamassee Rising - Living Archive exists to restore erased Black Indigenous narratives through ceremony, music, and ancestral testimony. Guided by the Living Crest and Breath-line, this archive is a covenant of memory, where heritage is not preserved as a static history but carried forward as a living presence. Every glyph, feather, and song is a thread in the tapestry of continuity, weaving youth and elders into the same ceremonial lineage.',
-            'supporter' => optional($settings)->living_handoff_supporter
-                ?? 'This archive is sustained by the covenant of supporters, each named and honored as carriers of the Breath-line. Your presence is not symbolic alone -- it is ceremonial. By standing within the Living Crest, you become part of the lineage, ensuring that Yamassee Rising continues as a living testimony for generations to come.',
-            'coming_soon' => optional($settings)->living_handoff_coming_soon
-                ?? 'The Yamassee Rising Suite - audio recording in progress. Soon, the Breath-line will be heard in a full ceremony.',
-            'taglines' => array_values(array_filter([
-                optional($settings)->living_handoff_tagline1
-                    ?? 'Carrying the Breath-line, Restoring the Living Memory.',
-                optional($settings)->living_handoff_tagline2
-                    ?? 'Where the Crest breathes, the lineage lives.',
-                optional($settings)->living_handoff_tagline3
-                    ?? 'The Breath-line carried forward, the memory restored.',
-                optional($settings)->living_handoff_tagline4
-                    ?? 'Every supporter a carrier of the Living Crest.',
-            ])),
-            'merch' => [
-                'apparel' => optional($settings)->living_handoff_merch_apparel
-                    ?? 'Where the Crest breathes, the lineage lives.',
-                'posters' => optional($settings)->living_handoff_merch_posters
-                    ?? 'Carrying the Breath-line, Restoring the Living Memory.',
-                'music' => optional($settings)->living_handoff_merch_music
-                    ?? 'The Breath-line carried forward, the memory restored.',
-                'donor' => optional($settings)->living_handoff_merch_donor
-                    ?? 'Every supporter a carrier of the Living Crest.',
-                'digital' => optional($settings)->living_handoff_merch_digital
-                    ?? 'Carrying the Breath-line, Restoring the Living Memory.',
-            ],
-            'visual_hierarchy' => optional($settings)->living_handoff_visual_hierarchy
-                ?? 'Primary: Living Crest (largest, central). Secondary: Tagline (beneath crest). Supporting: Glyphs, feathers, Yamassee wheel (framing accents). Informational: Mission statement, supporter text, contact info (smallest).',
-            'palette' => [
-                'primary' => optional($settings)->living_handoff_palette_primary
-                    ?? 'Earth Ochre, Ceremonial White, Charcoal Black',
-                'secondary' => optional($settings)->living_handoff_palette_secondary
-                    ?? 'Muted Gold, Forest Green, Crimson Red',
-                'accent' => optional($settings)->living_handoff_palette_accent
-                    ?? 'Sky Silver, Deep Yamassee Blue',
-            ],
-            'background_guide' => optional($settings)->living_handoff_background_guide
-                ?? 'Posters: parchment beige with texture. Apparel: charcoal black, deep blue, or warm brown. Website: ceremonial white or parchment beige; optional deep blue with crest border. Music scores: charcoal black or deep blue, matte/parchment overlay.',
-            'footer' => optional($settings)->living_handoff_footer_line
-                ?? 'The Yamassee Rising - A Living Archive of Ceremony and Song.',
-        ];
-
-        return view('frontend.home.living-archive', compact('page', 'phases', 'handoff'));
     }
 
     public function about(){

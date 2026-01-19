@@ -74,7 +74,7 @@
         <div class="event-card">
             <div class="event-map">
                 @if(!empty($product->image))
-                <a href="{{ route('front.events.show', $product->slug ?? $product->id) }}">
+                <a href="{{ route('front.events.show', $product->id) }}">
                     <img src="{{ asset('uploads/custom-images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid w-100" style="height: auto; max-height: 200px; object-fit: contain;"
                     onclick="showEventImage('{{ asset('uploads/custom-images/' . $product->image) }}')"
                     >
