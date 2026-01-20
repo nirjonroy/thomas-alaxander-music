@@ -17,8 +17,7 @@
     <!----Main Wrapper Start---->
     
 
-<div class="ms_main_wrapper ms_mainindex_wrapper" 
-     >
+<div class="ms_main_wrapper ms_mainindex_wrapper">
 
     @include('frontend.partials.sidebar')
     <div class="ms_content_wrapper padder_top8">

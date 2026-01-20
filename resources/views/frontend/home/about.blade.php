@@ -1,10 +1,10 @@
 @extends('frontend.app')
-@push('css')
+
 @section('seos')
     @php
         $SeoSettings = \App\Models\SeoSetting::where('page_name', 'About Us')->first();
         $pageTitle = optional($SeoSettings)->seo_title ?? 'About Thomas Alexander';
-        $pageDesc = optional($SeoSettings)->seo_description ?? 'Learn about Thomas Alexander’s musical legacy.';
+        $pageDesc = optional($SeoSettings)->seo_description ?? "Learn about Thomas Alexander's musical legacy.";
         $pageUrl = url()->current();
         $canonical = optional($SeoSettings)->canonical_url ?: $pageUrl;
         $keywords = optional($SeoSettings)->seo_keywords ?? 'Thomas Alexander biography, About Thomas Alexander';
@@ -15,7 +15,7 @@
         $author = optional($SeoSettings)->seo_author ?? $siteName;
         $publisher = optional($SeoSettings)->seo_publisher ?? $siteName;
         $metaImageValue = optional($SeoSettings)->meta_image;
-        $fallbackImage = asset($about->video_background);
+        $fallbackImage = $about->video_background ? asset($about->video_background) : asset(siteInfo()->logo);
         $metaImage = $metaImageValue
             ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
             : $fallbackImage;
@@ -52,148 +52,176 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 @endsection
 
+@push('css')
 <style>
-    /* Main About Section */
-    .ms_about_wrapper {
-        background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        margin-bottom: 40px;
+    .about-page {
+        padding: 36px 24px 40px;
     }
-
-    /* About Image */
-    .ms_about_img {
+    .about-shell {
         position: relative;
-        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        width: 100%;
+        border-radius: 26px;
+        padding: 28px;
+        background: radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.06), transparent 56%),
+            linear-gradient(140deg, #0b1729 0%, #0a1525 52%, #08101e 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 30px 70px rgba(6, 10, 18, 0.55);
         overflow: hidden;
     }
-
-    .ms_about_img img {
+    .about-shell::before {
+        content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
+        inset: 0;
+        background-image: var(--about-image);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.12;
     }
-
-    .ms_about_img:hover img {
-        transform: scale(1.03);
-    }
-
-    /* About Content */
-    .ms_about_content {
-        padding: 30px;
-        color: #fff;
-    }
-
-    .ms_about_content h1 {
-    font-size: 2.5rem; /* Larger base size */
-    font-weight: 700;
-    margin: 0 0 25px 0;
-    color: #fff;
-    text-align: center;
-    text-transform: uppercase; /* Makes it more prominent */
-    letter-spacing: 1px; /* Improves readability */
-    line-height: 1.2;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* Subtle shadow for depth */
-}
-
-    .ms_about_content h1:after {
-        content: '';
+    .about-shell::after {
+        content: "";
         position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 3px;
-        background: linear-gradient(90deg, #ff4d00, #ff9500);
+        inset: 0;
+        background: radial-gradient(circle at 75% 20%, rgba(255, 120, 50, 0.18), transparent 45%),
+            radial-gradient(circle at 12% 80%, rgba(255, 255, 255, 0.1), transparent 40%);
     }
-
-    .ms_about_content p {
-        font-size: 1.1rem;
+    .about-content {
+        position: relative;
+        z-index: 1;
+        color: #f7f1e6;
+    }
+    .about-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        border-radius: 22px;
+        overflow: hidden;
+        background: rgba(12, 18, 30, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        gap: 12px;
+    }
+    .about-hero-content {
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .about-kicker {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        color: rgba(245, 235, 220, 0.7);
+    }
+    .about-title {
+        margin: 0;
+        font-size: clamp(26px, 3.2vw, 40px);
+        line-height: 1.2;
+        font-weight: 700;
+    }
+    .about-intro {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.6;
+        color: rgba(245, 235, 220, 0.82);
+    }
+    .about-hero-media {
+        background-image: var(--about-image);
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        min-height: 260px;
+    }
+    .about-hero-media::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(10, 16, 28, 0.95), rgba(10, 16, 28, 0.2));
+    }
+    .about-body {
+        margin-top: 22px;
+        background: rgba(12, 18, 30, 0.75);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 24px;
         line-height: 1.8;
-        color: #e0e0e0;
-        margin-bottom: 20px;
+        color: rgba(245, 235, 220, 0.86);
     }
-
-    /* Responsive Adjustments */
-    @media (max-width: 992px) {
-        .ms_about_content {
-            padding: 25px;
+    .about-body p,
+    .about-body li {
+        font-size: 15px;
+    }
+    .about-body h1 {
+        margin: 0 0 12px;
+        font-size: 20px;
+        line-height: 1.3;
+        font-weight: 600;
+        color: #f7f1e6;
+        text-align: left;
+    }
+    .about-body h2 {
+        margin: 0 0 10px;
+        font-size: 22px;
+        color: #f7f1e6;
+    }
+    .about-body h3 {
+        margin: 18px 0 8px;
+        font-size: 18px;
+        color: #f7f1e6;
+    }
+    .about-body h4 {
+        margin: 16px 0 6px;
+        font-size: 16px;
+        color: #f7f1e6;
+    }
+    .about-body a {
+        color: #ff9b60;
+    }
+    @media (max-width: 991px) {
+        .about-page {
+            padding: 28px 18px 36px;
         }
-        
-        .ms_about_content h1 {
-             font-size: 2.2rem;
+        .about-hero {
+            grid-template-columns: 1fr;
         }
     }
-
-    @media (max-width: 768px) {
-        .ms_about_wrapper {
-            border-radius: 8px;
+    @media (max-width: 576px) {
+        .about-page {
+            padding: 22px 14px 32px;
         }
-        
-        .ms_about_content {
+        .about-shell {
             padding: 20px;
         }
-        
-        .ms_about_content h1 {
-            font-size: 1.8rem;
+        .about-hero-content {
+            padding: 20px;
         }
-        
-        .ms_about_content p {
-            font-size: 1rem;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .ms_about_content {
-            padding: 15px;
-        }
-        
-        .ms_about_content h1 {
-            font-size: 1.5rem;
-        margin-bottom: 15px;
-        }
-        
-        .ms_about_content h1:after {
-            width: 60px;
-            height: 2px;
-        }
-    }
-
-    /* Animation */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .ms_about_content {
-        animation: fadeIn 0.8s ease-out;
     }
 </style>
 @endpush
 
 @section('content')
-<div class="ms_content_wrapper padder_top8">
-    <div class="ms_index_wrapper common_pages_space">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 col-md-12">
-                    <div class="ms_about_wrapper">
-                        <div class="ms_about_img">
-                            <img src="{{ asset($about->video_background) }}" alt="Thomas Alexander" class="img-fluid" style="background:#FF4D4F !important;">
-                        </div>
-                        <div class="ms_about_content">
-                            <h1>{{ $about->description_three }}</h1>
-                            <div class="about-text">
-                                {!! $about->about_us !!}
-                            </div>
-                        </div>
-                    </div>
+@php
+    $aboutImage = $about->video_background ? asset($about->video_background) : asset(siteInfo()->logo);
+    $aboutTitle = $about->description_three ?: 'About Thomas Alexander';
+    $aboutBodyHtml = html_entity_decode($about->about_us ?? '', ENT_QUOTES, 'UTF-8');
+    $aboutBodyHtml = str_replace("\xC2\xA0", ' ', $aboutBodyHtml);
+    $aboutBodyHtml = preg_replace('/<p>(\s|&nbsp;)*<\/p>/i', '', $aboutBodyHtml);
+    $aboutBodyPlain = trim(preg_replace('/\s+/', ' ', strip_tags($aboutBodyHtml)));
+    $aboutIntro = \Illuminate\Support\Str::limit($aboutBodyPlain, 180);
+@endphp
+<div class="ms_index_wrapper common_pages_space about-page">
+    <div class="about-shell" style="--about-image: url('{{ $aboutImage }}');">
+        <div class="about-content">
+            <div class="about-hero">
+                <div class="about-hero-content">
+                    <span class="about-kicker">About</span>
+                    <h1 class="about-title">{{ $aboutTitle }}</h1>
+                    @if(!empty($aboutIntro))
+                        <p class="about-intro">{{ $aboutIntro }}</p>
+                    @endif
                 </div>
+                <div class="about-hero-media" role="img" aria-label="Thomas Alexander"></div>
+            </div>
+
+            <div class="about-body">
+                {!! $aboutBodyHtml !!}
             </div>
         </div>
     </div>
