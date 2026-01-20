@@ -433,6 +433,21 @@ class SettingController extends Controller
                 if(File::exists(public_path().'/'.$old_favicon))unlink(public_path().'/'.$old_favicon);
             }
         }
+
+        if($request->loader_image){
+            $old_loader=$setting->loader_image;
+            $loader=$request->loader_image;
+            $ext=$loader->getClientOriginalExtension();
+            $loader_name= 'loader-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
+            $loader_name='uploads/website-images/'.$loader_name;
+            Image::make($loader)
+                    ->save(public_path().'/'.$loader_name);
+            $setting->loader_image=$loader_name;
+            $setting->save();
+            if($old_loader){
+                if(File::exists(public_path().'/'.$old_loader))unlink(public_path().'/'.$old_loader);
+            }
+        }
         
         $setting->save();
 

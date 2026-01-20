@@ -5,9 +5,13 @@
 
 <body>
         <!----loader Start---->
+    @php
+        $loaderImage = optional(siteInfo())->loader_image;
+        $loaderSrc = $loaderImage ? asset($loaderImage) : asset('frontend/assets/images/loader.gif');
+    @endphp
     <div class="ms_loader">
         <div class="wrap">
-            <img src="{{asset('frontend/assets/images/loader.gif')}}" alt="loader">
+            <img src="{{ $loaderSrc }}" alt="loader">
         </div>
     </div>
     <!----Main Wrapper Start---->

@@ -700,6 +700,16 @@
                                                                 <label for="">{{__('admin.New Favicon')}}</label>
                                                                 <input type="file" name="favicon" class="form-control-file">
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label for="">Existing Loader</label>
+                                                                <div>
+                                                                    <img src="{{ asset($setting->loader_image ?: 'frontend/assets/images/loader.gif') }}" alt="" width="120px">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="">New Loader</label>
+                                                                <input type="file" name="loader_image" class="form-control-file">
+                                                            </div>
 
                                                             <button class="btn btn-primary">{{__('admin.Update')}}</button>
                                                         </form>
