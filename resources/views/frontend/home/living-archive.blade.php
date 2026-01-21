@@ -246,6 +246,12 @@
         gap: 16px;
         align-items: center;
     }
+    .living-hero-kicker {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        color: rgba(244, 239, 227, 0.7);
+    }
     .living-hero-crest img {
         max-width: 300px;
         width: 100%;
@@ -263,6 +269,13 @@
         color: rgba(244, 239, 227, 0.8);
         line-height: 1.7;
         margin: 0;
+    }
+    .living-hero-subtitle {
+        font-size: 13px;
+        color: rgba(244, 239, 227, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        margin: -4px 0 0;
     }
     .living-primary-btn {
         display: inline-flex;
@@ -313,6 +326,38 @@
     .lineage-crest img {
         max-width: 170px;
         width: 100%;
+    }
+    .lineage-crest-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 10px;
+        text-align: center;
+    }
+    .lineage-crest-title {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba(244, 239, 227, 0.75);
+    }
+    .lineage-crest-caption {
+        font-size: 13px;
+        color: rgba(244, 239, 227, 0.7);
+    }
+    .crest-notes {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+    }
+    .crest-note {
+        background: rgba(10, 14, 22, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 14px;
+        font-size: 14px;
+        color: rgba(244, 239, 227, 0.78);
+        line-height: 1.6;
     }
     .lineage-endline {
         text-align: center;
@@ -556,23 +601,52 @@
     $handoff = $handoff ?? [];
     $contact = data_get($page, 'contact', []);
     $crest = data_get($page, 'crest', []);
+    $hero = data_get($page, 'hero', []);
+    $lineage = data_get($page, 'lineage', []);
+    $crests = data_get($page, 'crests', []);
+    $pathway = data_get($page, 'pathway', []);
+    $mediaMerch = data_get($page, 'media_merch', []);
+    $qr = data_get($page, 'qr', []);
+    $contactSection = data_get($page, 'contact_section', []);
+    $certification = data_get($page, 'certification', []);
+
     $primaryCrestImage = $crest['primary_image'] ?? asset('frontend/living-archive/Dreamcatcher-style crest.jpeg');
     $secondaryCrestImage = $crest['secondary_image'] ?? asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg');
     $heroImage = data_get($page, 'media.hero', asset('frontend/living-archive/banner3.jpg'));
     $logoImage = data_get($page, 'media.logo', asset('frontend/living-archive/images/logo.png'));
 
-    $youthCrestPath = 'frontend/living-archive/crests/youth-crest.jpg';
-    $keeperCrestPath = 'frontend/living-archive/crests/eagle.jpg';
-    $witnessCrestPath = 'frontend/living-archive/crests/elder-crest.jpg';
-    $qrCrestPath = 'frontend/living-archive/crests/qr-crest.jpg';
-
-    $youthCrestImage = file_exists(public_path($youthCrestPath)) ? asset($youthCrestPath) : $secondaryCrestImage;
-    $keeperCrestImage = file_exists(public_path($keeperCrestPath)) ? asset($keeperCrestPath) : $secondaryCrestImage;
-    $witnessCrestImage = file_exists(public_path($witnessCrestPath)) ? asset($witnessCrestPath) : $secondaryCrestImage;
-    $qrCrestImage = file_exists(public_path($qrCrestPath)) ? asset($qrCrestPath) : $secondaryCrestImage;
+    $youthCrestImage = data_get($crests, 'youth.image', $secondaryCrestImage);
+    $keeperCrestImage = data_get($crests, 'keeper.image', $secondaryCrestImage);
+    $witnessCrestImage = data_get($crests, 'witness.image', $secondaryCrestImage);
+    $qrCrestImage = data_get($qr, 'image', $secondaryCrestImage);
 
     $introText = data_get($page, 'intro')
-        ?? 'Thomas Alexander — The Voice — carries the Living Crest of the Breath-line, a ceremonial archive of memory, music, and lineage.';
+        ?? 'Thomas Alexander - The Voice - carries the Living Crest of the Breath-line, a ceremonial archive of memory, music, and lineage.';
+
+    $splitParagraphs = function ($text) {
+        $lines = preg_split('/\r\n|\r|\n/', (string) $text);
+        $lines = array_map('trim', $lines);
+        return array_values(array_filter($lines, fn ($line) => $line !== ''));
+    };
+
+    $generalContactBody = trim((string) data_get($contactSection, 'general.body'));
+    if ($generalContactBody === '') {
+        $generalContactBody = 'Email: ' . data_get($contact, 'email', 'info@thomasalexanderthevoice.com')
+            . "\nPhone: " . data_get($contact, 'phone', '(to be added)');
+    }
+
+    $crestTitle = trim((string) data_get($crest, 'title', ''));
+    $crestCaption = trim((string) data_get($crest, 'secondary_caption', ''));
+    $crestNotes = array_values(array_filter([
+        data_get($crest, 'body_two'),
+        data_get($crest, 'body_three'),
+        data_get($crest, 'mission'),
+    ], fn ($note) => trim((string) $note) !== ''));
+
+    $certTextRaw = trim((string) data_get($certification, 'text', ''));
+    $certLines = preg_split('/\r\n|\r|\n/', $certTextRaw);
+    $certHeading = $certLines ? array_shift($certLines) : '';
+    $certBody = trim(implode("\n", array_filter($certLines, fn ($line) => trim($line) !== '')));
 @endphp
 
 <div class="as-mainwrapper living-archive-page">
@@ -600,14 +674,20 @@
         <div class="container">
             <div class="living-hero-card" style="--hero-image: url('{{ $heroImage }}');">
                 <div class="living-hero-content">
+                    <span class="living-hero-kicker">{{ data_get($page, 'header.title', 'Living Archive') }}</span>
                     <div class="living-hero-crest">
                         <img src="{{ $primaryCrestImage }}" alt="Main Ceremonial Crest">
                     </div>
-                    <p class="living-affirmation">We Were Never Erased. We Were Replanted.</p>
+                    <p class="living-affirmation">{{ data_get($hero, 'affirmation', 'We Were Never Erased. We Were Replanted.') }}</p>
+                    <p class="living-hero-subtitle">{{ data_get($page, 'header.subtitle', 'This is not a store. This is ceremony.') }}</p>
                     <p class="living-hero-intro">{{ $introText }}</p>
                     <div class="living-cta-row">
-                        <a href="#lineage-story" class="living-primary-btn">Explore the Five Feathers Lineage</a>
-                        <a href="#carrier-pathway" class="living-secondary-btn">Begin the Carrier Pathway</a>
+                        <a href="{{ data_get($hero, 'primary_cta_url', '#lineage-story') }}" class="living-primary-btn">
+                            {{ data_get($hero, 'primary_cta_label', 'Explore the Five Feathers Lineage') }}
+                        </a>
+                        <a href="{{ data_get($hero, 'secondary_cta_url', '#carrier-pathway') }}" class="living-secondary-btn">
+                            {{ data_get($hero, 'secondary_cta_label', 'Begin the Carrier Pathway') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -617,33 +697,50 @@
     <section class="living-section" id="lineage-story">
         <div class="container">
             <div class="living-section-title">
-                <h2>About the Lineage</h2>
-                <p>The Living Archive is a ceremonial record — an ancestral ledger where memory, symbol, and song return to their rightful lineage.</p>
+                <h2>{{ data_get($lineage, 'title', 'About the Lineage') }}</h2>
+                <p>{{ data_get($lineage, 'intro', 'The Living Archive is a ceremonial record -- an ancestral ledger where memory, symbol, and song return to their rightful lineage.') }}</p>
             </div>
             <div class="living-card">
                 <div class="lineage-crest">
                     <img src="{{ $primaryCrestImage }}" alt="Ceremonial Crest">
+                    @if($crestTitle || $crestCaption)
+                        <div class="lineage-crest-meta">
+                            @if($crestTitle)
+                                <span class="lineage-crest-title">{{ $crestTitle }}</span>
+                            @endif
+                            @if($crestCaption)
+                                <span class="lineage-crest-caption">{{ $crestCaption }}</span>
+                            @endif
+                        </div>
+                    @endif
                 </div>
-                <p>The Tree of Life stands at the center of the crest, holding the Breath-line across generations and returning each name to ceremony.</p>
+                <p>{{ data_get($crest, 'body_one', 'The Tree of Life stands at the center of the crest, holding the Breath-line across generations and returning each name to ceremony.') }}</p>
+                @if(!empty($crestNotes))
+                    <div class="crest-notes">
+                        @foreach($crestNotes as $note)
+                            <div class="crest-note">{!! nl2br(e($note)) !!}</div>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="lineage-grid">
                     <div class="living-card">
                         <span class="living-pill">Tree of Life</span>
-                        <p>Root and canopy unite the Breath-line, keeping the living memory in motion.</p>
+                        <p>{{ data_get($lineage, 'tree', 'Root and canopy unite the Breath-line, keeping the living memory in motion.') }}</p>
                     </div>
                     <div class="living-card">
                         <span class="living-pill">Ten Yamassee Clan Animals</span>
-                        <p>Guardians of medicine, each one marking protection, vow, and teaching.</p>
+                        <p>{{ data_get($lineage, 'clan', 'Guardians of medicine, each one marking protection, vow, and teaching.') }}</p>
                     </div>
                     <div class="living-card">
                         <span class="living-pill">Three Ancestral Shields</span>
-                        <p>Three shields hold sovereignty, continuity, and ceremonial protection.</p>
+                        <p>{{ data_get($lineage, 'shields', 'Three shields hold sovereignty, continuity, and ceremonial protection.') }}</p>
                     </div>
                     <div class="living-card">
                         <span class="living-pill">Five Feathers + Ghost Feather</span>
-                        <p>The five tribes honored; the Ghost Feather holds the ancestor still returning.</p>
+                        <p>{{ data_get($lineage, 'feathers', 'The five tribes honored; the Ghost Feather holds the ancestor still returning.') }}</p>
                     </div>
                 </div>
-                <div class="lineage-endline">We Were Never Erased. We Were Replanted.</div>
+                <div class="lineage-endline">{{ data_get($lineage, 'endline', 'We Were Never Erased. We Were Replanted.') }}</div>
             </div>
         </div>
     </section>
@@ -651,30 +748,33 @@
     <section class="living-section" id="three-crests">
         <div class="container">
             <div class="living-section-title">
-                <h2>The Three Crests</h2>
-                <p>These are sacred displays — static and enduring, held as testimony for the youth, the keepers, and the elders of the lineage.</p>
+                <h2>{{ data_get($crests, 'title', 'The Three Crests') }}</h2>
+                <p>{{ data_get($crests, 'intro', 'These are sacred displays -- static and enduring, held as testimony for the youth, the keepers, and the elders of the lineage.') }}</p>
             </div>
             <div class="crest-grid">
                 <div class="living-card crest-card" id="youth-crest">
-                    <img src="{{ $youthCrestImage }}" alt="Youth Crest - Great Horned Owls">
-                    <h3>Youth Crest — The Listener</h3>
-                    <p class="crest-declaration">"We perch where the roof gave way."</p>
-                    <p>The Listener enters by listening first — observing, gathering, and holding the earliest teachings.</p>
-                    <p>They are welcomed into the lineage as the first witnesses, carrying the hush of beginnings.</p>
+                    <img src="{{ $youthCrestImage }}" alt="{{ data_get($crests, 'youth.title', 'Youth Crest - The Listener') }}">
+                    <h3>{{ data_get($crests, 'youth.title', 'Youth Crest - The Listener') }}</h3>
+                    <p class="crest-declaration">{{ data_get($crests, 'youth.declaration', 'We perch where the roof gave way.') }}</p>
+                    @foreach($splitParagraphs(data_get($crests, 'youth.body')) as $line)
+                        <p>{{ $line }}</p>
+                    @endforeach
                 </div>
                 <div class="living-card crest-card" id="keeper-crest">
-                    <img src="{{ $keeperCrestImage }}" alt="Keeper Crest - Eagle">
-                    <h3>Keeper Crest — The Bearer</h3>
-                    <p class="crest-declaration">"As the eagle, I did not blink, for I saw and see it all."</p>
-                    <p>The Bearer holds responsibility for the crest, the teachings, and the living record.</p>
-                    <p>They rise into sight through service, courage, and the clear gaze of stewardship.</p>
+                    <img src="{{ $keeperCrestImage }}" alt="{{ data_get($crests, 'keeper.title', 'Keeper Crest - The Bearer') }}">
+                    <h3>{{ data_get($crests, 'keeper.title', 'Keeper Crest - The Bearer') }}</h3>
+                    <p class="crest-declaration">{{ data_get($crests, 'keeper.declaration', 'As the eagle, I did not blink, for I saw and see it all.') }}</p>
+                    @foreach($splitParagraphs(data_get($crests, 'keeper.body')) as $line)
+                        <p>{{ $line }}</p>
+                    @endforeach
                 </div>
                 <div class="living-card crest-card" id="witness-crest">
-                    <img src="{{ $witnessCrestImage }}" alt="Witness Crest - White Buffalo and Snowy Owl">
-                    <h3>Witness Crest — The Elder</h3>
-                    <p class="crest-declaration">"We kept the fire when the world went dark."</p>
-                    <p>The Elder carries memory as ceremony, protecting the line when silence falls.</p>
-                    <p>They are continuity itself — the living archive made flesh and breath.</p>
+                    <img src="{{ $witnessCrestImage }}" alt="{{ data_get($crests, 'witness.title', 'Witness Crest - The Elder') }}">
+                    <h3>{{ data_get($crests, 'witness.title', 'Witness Crest - The Elder') }}</h3>
+                    <p class="crest-declaration">{{ data_get($crests, 'witness.declaration', 'We kept the fire when the world went dark.') }}</p>
+                    @foreach($splitParagraphs(data_get($crests, 'witness.body')) as $line)
+                        <p>{{ $line }}</p>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -683,28 +783,19 @@
     <section class="living-section" id="carrier-pathway">
         <div class="container">
             <div class="living-section-title">
-                <h2>Carrier Pathway</h2>
-                <p>The lineage moves with intention — Youth to Keeper to Witness — each step recognized through ceremony, accountability, and protection.</p>
+                <h2>{{ data_get($pathway, 'title', 'Carrier Pathway') }}</h2>
+                <p>{{ data_get($pathway, 'intro', 'The lineage moves with intention -- Youth to Keeper to Witness -- each step recognized through ceremony, accountability, and protection.') }}</p>
             </div>
             <div class="pathway-flow">
-                <div class="living-card pathway-step">
-                    <i class="fa fa-owl"></i>
-                    <h4>Youth → Keeper</h4>
-                    <p>Requirements: attentive listening, ceremonial training, and commitment to the Breath-line.</p>
-                    <p>Recognition: named by elders through witness and documented in the archive.</p>
-                </div>
-                <div class="living-card pathway-step">
-                    <i class="fa fa-feather"></i>
-                    <h4>Keeper → Witness</h4>
-                    <p>Requirements: stewardship of rituals, protection of crest teachings, and community responsibility.</p>
-                    <p>Recognition: rises into sight through service, guarded by the shields.</p>
-                </div>
-                <div class="living-card pathway-step">
-                    <i class="fa fa-shield-alt"></i>
-                    <h4>Protection of Lineage</h4>
-                    <p>The lineage is protected by ceremony, council, and the living record held within the crest.</p>
-                    <p>Each carrier is acknowledged and affirmed in the archive.</p>
-                </div>
+                @foreach(data_get($pathway, 'steps', []) as $step)
+                    <div class="living-card pathway-step">
+                        <i class="fa {{ data_get($step, 'icon', 'fa-circle') }}"></i>
+                        <h4>{{ data_get($step, 'title') }}</h4>
+                        @foreach($splitParagraphs(data_get($step, 'body')) as $line)
+                            <p>{{ $line }}</p>
+                        @endforeach
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -712,21 +803,29 @@
     <section class="living-section" id="media-merch">
         <div class="container">
             <div class="living-section-title">
-                <h2>Media & Merch as Ceremonial Artifacts</h2>
-                <p>Music scores, apparel, and recordings are extensions of the Breath-line — artifacts that carry ceremony into the everyday.</p>
+                <h2>{{ data_get($mediaMerch, 'title', 'Media & Merch as Ceremonial Artifacts') }}</h2>
+                <p>{{ data_get($mediaMerch, 'intro', 'Music scores, apparel, and recordings are extensions of the Breath-line -- artifacts that carry ceremony into the everyday.') }}</p>
             </div>
             <div class="media-merch-grid">
                 <div class="living-card">
-                    <img src="{{ $secondaryCrestImage }}" alt="Merch Crest">
-                    <h3>Merch Crest</h3>
-                    <p>Apparel, scores, and ceremonial items are lineage extensions — worn and shared to keep the crest visible.</p>
-                    <p class="mb-0"><a href="{{ route('front.shop') }}" class="subtle-link">Enter the Artifact Hall</a></p>
+                    <img src="{{ data_get($mediaMerch, 'merch.image', $secondaryCrestImage) }}" alt="{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}">
+                    <h3>{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}</h3>
+                    <p>{{ data_get($mediaMerch, 'merch.body', 'Apparel, scores, and ceremonial items are lineage extensions -- worn and shared to keep the crest visible.') }}</p>
+                    <p class="mb-0">
+                        <a href="{{ data_get($mediaMerch, 'merch.cta_url', route('front.shop')) }}" class="subtle-link">
+                            {{ data_get($mediaMerch, 'merch.cta_label', 'Enter the Artifact Hall') }}
+                        </a>
+                    </p>
                 </div>
                 <div class="living-card">
-                    <img src="{{ $qrCrestImage }}" alt="QR Crest">
-                    <h3>QR Crest</h3>
-                    <p>The QR Crest is a digital gateway — a quiet entry into the archive’s living record.</p>
-                    <p class="mb-0"><a href="#qr-access" class="subtle-link">Open the QR Gateway</a></p>
+                    <img src="{{ data_get($mediaMerch, 'qr.image', $qrCrestImage) }}" alt="{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}">
+                    <h3>{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}</h3>
+                    <p>{{ data_get($mediaMerch, 'qr.body', "The QR Crest is a digital gateway -- a quiet entry into the archive's living record.") }}</p>
+                    <p class="mb-0">
+                        <a href="{{ data_get($mediaMerch, 'qr.cta_url', '#qr-access') }}" class="subtle-link">
+                            {{ data_get($mediaMerch, 'qr.cta_label', 'Open the QR Gateway') }}
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -735,13 +834,15 @@
     <section class="living-section" id="qr-access">
         <div class="container">
             <div class="living-section-title">
-                <h2>QR Access</h2>
-                <p>The QR Crest offers a direct ceremonial passage — a digital doorway into the lineage archive.</p>
+                <h2>{{ data_get($qr, 'title', 'QR Access') }}</h2>
+                <p>{{ data_get($qr, 'intro', 'The QR Crest offers a direct ceremonial passage -- a digital doorway into the lineage archive.') }}</p>
             </div>
             <div class="living-card text-center">
-                <img src="{{ $qrCrestImage }}" alt="QR Crest" style="max-width: 320px; margin: 0 auto 18px;">
+                <img src="{{ data_get($qr, 'image', $qrCrestImage) }}" alt="QR Crest" style="max-width: 320px; margin: 0 auto 18px;">
                 <p style="font-size: 16px;">{{ data_get($page, 'header.qr_intro', 'Scan to enter the Living Archive.') }}</p>
-                <a href="{{ route('living-archive.donate') }}" class="living-primary-btn" style="margin-top: 10px;">Open the QR Gateway</a>
+                <a href="{{ data_get($qr, 'cta_url', route('living-archive.donate')) }}" class="living-primary-btn" style="margin-top: 10px;">
+                    {{ data_get($qr, 'cta_label', 'Open the QR Gateway') }}
+                </a>
             </div>
         </div>
     </section>
@@ -749,31 +850,40 @@
     <section class="living-section" id="contact-invitations">
         <div class="container">
             <div class="living-section-title">
-                <h2>Contact & Invitations</h2>
-                <p>Enter the circle through training, ceremony, and direct invitation.</p>
+                <h2>{{ data_get($contactSection, 'title', 'Contact & Invitations') }}</h2>
+                <p>{{ data_get($contactSection, 'intro', 'Enter the circle through training, ceremony, and direct invitation.') }}</p>
             </div>
             <div class="contact-grid">
                 <div class="living-card">
-                    <span class="living-pill">Training Invitation</span>
-                    <p>Receive training in the Five Feathers lineage and learn the responsibilities of ceremonial care.</p>
+                    <span class="living-pill">{{ data_get($contactSection, 'training.title', 'Training Invitation') }}</span>
+                    <p>{{ data_get($contactSection, 'training.body', 'Receive training in the Five Feathers lineage and learn the responsibilities of ceremonial care.') }}</p>
                     <div class="contact-actions">
-                        <a href="mailto:{{ data_get($contact, 'email', 'info@thomasalexanderthevoice.com') }}">Request Training</a>
+                        <a href="{{ data_get($contactSection, 'training.cta_url', 'mailto:' . data_get($contact, 'email', 'info@thomasalexanderthevoice.com')) }}">
+                            {{ data_get($contactSection, 'training.cta_label', 'Request Training') }}
+                        </a>
                     </div>
                 </div>
                 <div class="living-card">
-                    <span class="living-pill">Ceremonial Events</span>
-                    <p>Join ceremonial gatherings that affirm the Breath-line and honor the crest as living memory.</p>
+                    <span class="living-pill">{{ data_get($contactSection, 'events.title', 'Ceremonial Events') }}</span>
+                    <p>{{ data_get($contactSection, 'events.body', 'Join ceremonial gatherings that affirm the Breath-line and honor the crest as living memory.') }}</p>
                     <div class="contact-actions">
-                        <a href="{{ route('living-archive.donate') }}">See Ceremonial Calendar</a>
+                        <a href="{{ data_get($contactSection, 'events.cta_url', route('living-archive.donate')) }}">
+                            {{ data_get($contactSection, 'events.cta_label', 'See Ceremonial Calendar') }}
+                        </a>
                     </div>
                 </div>
                 <div class="living-card">
-                    <span class="living-pill">Contact</span>
-                    <p>Email: {{ data_get($contact, 'email', 'info@thomasalexanderthevoice.com') }}</p>
-                    <p>Phone: {{ data_get($contact, 'phone', '(to be added)') }}</p>
+                    <span class="living-pill">{{ data_get($contactSection, 'general.title', 'Contact') }}</span>
+                    @foreach($splitParagraphs($generalContactBody) as $line)
+                        <p>{{ $line }}</p>
+                    @endforeach
                     <div class="contact-actions">
-                        <a href="mailto:{{ data_get($contact, 'email', 'info@thomasalexanderthevoice.com') }}">Email the Archive</a>
-                        <a href="{{ route('living-archive.donate') }}">Offer Support</a>
+                        <a href="{{ data_get($contactSection, 'general.cta_url', 'mailto:' . data_get($contact, 'email', 'info@thomasalexanderthevoice.com')) }}">
+                            {{ data_get($contactSection, 'general.cta_label', 'Email the Archive') }}
+                        </a>
+                        <a href="{{ data_get($contactSection, 'general.support_url', route('living-archive.donate')) }}">
+                            {{ data_get($contactSection, 'general.support_label', 'Offer Support') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -783,19 +893,14 @@
     <section class="living-section" id="certification">
         <div class="container">
             <div class="living-section-title">
-                <h2>Printable Certification</h2>
-                <p>Static ceremonial document for carriers within the Five Feathers lineage.</p>
+                <h2>{{ data_get($certification, 'title', 'Printable Certification') }}</h2>
+                <p>{{ data_get($certification, 'intro', 'Static ceremonial document for carriers within the Five Feathers lineage.') }}</p>
             </div>
             <div class="certification-block">
-                <strong>THE FIVE FEATHERS LINEAGE CARRIER CERTIFICATION DOCUMENT</strong>
-                <div class="certification-lines">
-                    CARRIER NAME: ____________________________<br>
-                    CREST ROLE: _______________________________<br>
-                    FEATHER DESIGNATION: ______________________<br>
-                    DATE RECEIVED: ____________________________<br>
-                    WITNESS SIGNATURE: ________________________<br>
-                    SEAL OF THE LIVING ARCHIVE: _______________
-                </div>
+                @if($certHeading)
+                    <strong>{{ $certHeading }}</strong><br>
+                @endif
+                {!! nl2br(e($certBody)) !!}
             </div>
         </div>
     </section>

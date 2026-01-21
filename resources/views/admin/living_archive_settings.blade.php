@@ -69,6 +69,34 @@
 
                         <div class="row">
                             <div class="col-md-12">
+                                <h5 class="mb-3">Ceremonial Hero</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Hero Affirmation</label>
+                                <input type="text" class="form-control" name="living_archive_affirmation" value="{{ old('living_archive_affirmation', optional($setting)->living_archive_affirmation) }}" placeholder="We Were Never Erased. We Were Replanted.">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Primary CTA Label</label>
+                                <input type="text" class="form-control" name="living_archive_primary_cta_label" value="{{ old('living_archive_primary_cta_label', optional($setting)->living_archive_primary_cta_label) }}" placeholder="Explore the Five Feathers Lineage">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Primary CTA URL</label>
+                                <input type="text" class="form-control" name="living_archive_primary_cta_url" value="{{ old('living_archive_primary_cta_url', optional($setting)->living_archive_primary_cta_url) }}" placeholder="#lineage-story or https://...">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Secondary CTA Label</label>
+                                <input type="text" class="form-control" name="living_archive_secondary_cta_label" value="{{ old('living_archive_secondary_cta_label', optional($setting)->living_archive_secondary_cta_label) }}" placeholder="Begin the Carrier Pathway">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Secondary CTA URL</label>
+                                <input type="text" class="form-control" name="living_archive_secondary_cta_url" value="{{ old('living_archive_secondary_cta_url', optional($setting)->living_archive_secondary_cta_url) }}" placeholder="#carrier-pathway or https://...">
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
                                 <h5 class="mb-3">SEO (Living Archive)</h5>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -156,8 +184,336 @@
                         </div>
 
                         <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">About the Lineage</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_lineage_title" value="{{ old('living_lineage_title', optional($setting)->living_lineage_title) }}" placeholder="About the Lineage">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Endline</label>
+                                <input type="text" class="form-control" name="living_lineage_endline" value="{{ old('living_lineage_endline', optional($setting)->living_lineage_endline) }}" placeholder="We Were Never Erased. We Were Replanted.">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_lineage_intro" class="form-control" rows="2">{{ old('living_lineage_intro', optional($setting)->living_lineage_intro) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tree of Life Copy</label>
+                                <textarea name="living_lineage_tree_text" class="form-control" rows="2">{{ old('living_lineage_tree_text', optional($setting)->living_lineage_tree_text) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ten Yamassee Clan Animals Copy</label>
+                                <textarea name="living_lineage_clan_text" class="form-control" rows="2">{{ old('living_lineage_clan_text', optional($setting)->living_lineage_clan_text) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Three Ancestral Shields Copy</label>
+                                <textarea name="living_lineage_shields_text" class="form-control" rows="2">{{ old('living_lineage_shields_text', optional($setting)->living_lineage_shields_text) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Five Feathers + Ghost Feather Copy</label>
+                                <textarea name="living_lineage_feathers_text" class="form-control" rows="2">{{ old('living_lineage_feathers_text', optional($setting)->living_lineage_feathers_text) }}</textarea>
+                            </div>
+                        </div>
+
+                        <hr>
 
                         <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Three Crests Section</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_crests_title" value="{{ old('living_crests_title', optional($setting)->living_crests_title) }}" placeholder="The Three Crests">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_crests_intro" class="form-control" rows="2">{{ old('living_crests_intro', optional($setting)->living_crests_intro) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6 class="mb-2">Youth Crest</h6>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-control" name="living_youth_crest_title" value="{{ old('living_youth_crest_title', optional($setting)->living_youth_crest_title) }}" placeholder="Youth Crest - The Listener">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Declaration</label>
+                                <input type="text" class="form-control" name="living_youth_crest_declaration" value="{{ old('living_youth_crest_declaration', optional($setting)->living_youth_crest_declaration) }}" placeholder="We perch where the roof gave way.">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Body (one paragraph per line)</label>
+                                <textarea name="living_youth_crest_body" class="form-control" rows="3">{{ old('living_youth_crest_body', optional($setting)->living_youth_crest_body) }}</textarea>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Image Path / URL</label>
+                                <input type="text" class="form-control" name="living_youth_crest_image" value="{{ old('living_youth_crest_image', optional($setting)->living_youth_crest_image) }}" placeholder="uploads/living-archive/crests/youth.jpg">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Image Upload</label>
+                                <input type="file" class="form-control" name="living_youth_crest_image_file" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                @if(optional($setting)->living_youth_crest_image)
+                                    <small class="text-muted d-block mt-1">Current: {{ optional($setting)->living_youth_crest_image }}</small>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6 class="mb-2">Keeper Crest</h6>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-control" name="living_keeper_crest_title" value="{{ old('living_keeper_crest_title', optional($setting)->living_keeper_crest_title) }}" placeholder="Keeper Crest - The Bearer">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Declaration</label>
+                                <input type="text" class="form-control" name="living_keeper_crest_declaration" value="{{ old('living_keeper_crest_declaration', optional($setting)->living_keeper_crest_declaration) }}" placeholder="As the eagle, I did not blink, for I saw and see it all.">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Body (one paragraph per line)</label>
+                                <textarea name="living_keeper_crest_body" class="form-control" rows="3">{{ old('living_keeper_crest_body', optional($setting)->living_keeper_crest_body) }}</textarea>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Image Path / URL</label>
+                                <input type="text" class="form-control" name="living_keeper_crest_image" value="{{ old('living_keeper_crest_image', optional($setting)->living_keeper_crest_image) }}" placeholder="uploads/living-archive/crests/eagle.jpg">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Image Upload</label>
+                                <input type="file" class="form-control" name="living_keeper_crest_image_file" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                @if(optional($setting)->living_keeper_crest_image)
+                                    <small class="text-muted d-block mt-1">Current: {{ optional($setting)->living_keeper_crest_image }}</small>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6 class="mb-2">Witness Crest</h6>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-control" name="living_witness_crest_title" value="{{ old('living_witness_crest_title', optional($setting)->living_witness_crest_title) }}" placeholder="Witness Crest - The Elder">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Declaration</label>
+                                <input type="text" class="form-control" name="living_witness_crest_declaration" value="{{ old('living_witness_crest_declaration', optional($setting)->living_witness_crest_declaration) }}" placeholder="We kept the fire when the world went dark.">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Body (one paragraph per line)</label>
+                                <textarea name="living_witness_crest_body" class="form-control" rows="3">{{ old('living_witness_crest_body', optional($setting)->living_witness_crest_body) }}</textarea>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Image Path / URL</label>
+                                <input type="text" class="form-control" name="living_witness_crest_image" value="{{ old('living_witness_crest_image', optional($setting)->living_witness_crest_image) }}" placeholder="uploads/living-archive/crests/elder-crest.jpg">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Image Upload</label>
+                                <input type="file" class="form-control" name="living_witness_crest_image_file" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                @if(optional($setting)->living_witness_crest_image)
+                                    <small class="text-muted d-block mt-1">Current: {{ optional($setting)->living_witness_crest_image }}</small>
+                                @endif
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Carrier Pathway</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_pathway_title" value="{{ old('living_pathway_title', optional($setting)->living_pathway_title) }}" placeholder="Carrier Pathway">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_pathway_intro" class="form-control" rows="2">{{ old('living_pathway_intro', optional($setting)->living_pathway_intro) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Step 1 Title</label>
+                                <input type="text" class="form-control" name="living_pathway_step1_title" value="{{ old('living_pathway_step1_title', optional($setting)->living_pathway_step1_title) }}" placeholder="Youth -> Keeper">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Step 1 Body (one paragraph per line)</label>
+                                <textarea name="living_pathway_step1_body" class="form-control" rows="2">{{ old('living_pathway_step1_body', optional($setting)->living_pathway_step1_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Step 2 Title</label>
+                                <input type="text" class="form-control" name="living_pathway_step2_title" value="{{ old('living_pathway_step2_title', optional($setting)->living_pathway_step2_title) }}" placeholder="Keeper -> Witness">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Step 2 Body (one paragraph per line)</label>
+                                <textarea name="living_pathway_step2_body" class="form-control" rows="2">{{ old('living_pathway_step2_body', optional($setting)->living_pathway_step2_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Step 3 Title</label>
+                                <input type="text" class="form-control" name="living_pathway_step3_title" value="{{ old('living_pathway_step3_title', optional($setting)->living_pathway_step3_title) }}" placeholder="Protection of Lineage">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Step 3 Body (one paragraph per line)</label>
+                                <textarea name="living_pathway_step3_body" class="form-control" rows="2">{{ old('living_pathway_step3_body', optional($setting)->living_pathway_step3_body) }}</textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Media & Merch (Ceremonial)</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_media_merch_title" value="{{ old('living_media_merch_title', optional($setting)->living_media_merch_title) }}" placeholder="Media & Merch as Ceremonial Artifacts">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_media_merch_intro" class="form-control" rows="2">{{ old('living_media_merch_intro', optional($setting)->living_media_merch_intro) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Merch Crest Title</label>
+                                <input type="text" class="form-control" name="living_media_merch_card1_title" value="{{ old('living_media_merch_card1_title', optional($setting)->living_media_merch_card1_title) }}" placeholder="Merch Crest">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Merch Crest Body</label>
+                                <textarea name="living_media_merch_card1_body" class="form-control" rows="2">{{ old('living_media_merch_card1_body', optional($setting)->living_media_merch_card1_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Merch CTA Label</label>
+                                <input type="text" class="form-control" name="living_media_merch_card1_cta_label" value="{{ old('living_media_merch_card1_cta_label', optional($setting)->living_media_merch_card1_cta_label) }}" placeholder="Enter the Artifact Hall">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Merch CTA URL</label>
+                                <input type="text" class="form-control" name="living_media_merch_card1_cta_url" value="{{ old('living_media_merch_card1_cta_url', optional($setting)->living_media_merch_card1_cta_url) }}" placeholder="https://... or /shop">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">QR Crest Title</label>
+                                <input type="text" class="form-control" name="living_media_merch_card2_title" value="{{ old('living_media_merch_card2_title', optional($setting)->living_media_merch_card2_title) }}" placeholder="QR Crest">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">QR Crest Body</label>
+                                <textarea name="living_media_merch_card2_body" class="form-control" rows="2">{{ old('living_media_merch_card2_body', optional($setting)->living_media_merch_card2_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">QR CTA Label</label>
+                                <input type="text" class="form-control" name="living_media_merch_card2_cta_label" value="{{ old('living_media_merch_card2_cta_label', optional($setting)->living_media_merch_card2_cta_label) }}" placeholder="Open the QR Gateway">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">QR CTA URL</label>
+                                <input type="text" class="form-control" name="living_media_merch_card2_cta_url" value="{{ old('living_media_merch_card2_cta_url', optional($setting)->living_media_merch_card2_cta_url) }}" placeholder="#qr-access or https://...">
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">QR Access Section</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_qr_title" value="{{ old('living_qr_title', optional($setting)->living_qr_title) }}" placeholder="QR Access">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CTA Label</label>
+                                <input type="text" class="form-control" name="living_qr_cta_label" value="{{ old('living_qr_cta_label', optional($setting)->living_qr_cta_label) }}" placeholder="Open the QR Gateway">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_qr_intro" class="form-control" rows="2">{{ old('living_qr_intro', optional($setting)->living_qr_intro) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CTA URL</label>
+                                <input type="text" class="form-control" name="living_qr_cta_url" value="{{ old('living_qr_cta_url', optional($setting)->living_qr_cta_url) }}" placeholder="https://... or /living-archive/donate">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">QR Crest Image Path / URL</label>
+                                <input type="text" class="form-control" name="living_qr_crest_image" value="{{ old('living_qr_crest_image', optional($setting)->living_qr_crest_image) }}" placeholder="uploads/living-archive/crests/qr-crest.jpg">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">QR Crest Upload</label>
+                                <input type="file" class="form-control" name="living_qr_crest_image_file" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                @if(optional($setting)->living_qr_crest_image)
+                                    <small class="text-muted d-block mt-1">Current: {{ optional($setting)->living_qr_crest_image }}</small>
+                                @endif
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Contact & Invitations</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_contact_title" value="{{ old('living_contact_title', optional($setting)->living_contact_title) }}" placeholder="Contact & Invitations">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_contact_intro" class="form-control" rows="2">{{ old('living_contact_intro', optional($setting)->living_contact_intro) }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Training Title</label>
+                                <input type="text" class="form-control" name="living_contact_training_title" value="{{ old('living_contact_training_title', optional($setting)->living_contact_training_title) }}" placeholder="Training Invitation">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Training Body</label>
+                                <textarea name="living_contact_training_body" class="form-control" rows="2">{{ old('living_contact_training_body', optional($setting)->living_contact_training_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Training CTA Label</label>
+                                <input type="text" class="form-control" name="living_contact_training_cta_label" value="{{ old('living_contact_training_cta_label', optional($setting)->living_contact_training_cta_label) }}" placeholder="Request Training">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Training CTA URL</label>
+                                <input type="text" class="form-control" name="living_contact_training_cta_url" value="{{ old('living_contact_training_cta_url', optional($setting)->living_contact_training_cta_url) }}" placeholder="mailto:info@...">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Events Title</label>
+                                <input type="text" class="form-control" name="living_contact_events_title" value="{{ old('living_contact_events_title', optional($setting)->living_contact_events_title) }}" placeholder="Ceremonial Events">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Events Body</label>
+                                <textarea name="living_contact_events_body" class="form-control" rows="2">{{ old('living_contact_events_body', optional($setting)->living_contact_events_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Events CTA Label</label>
+                                <input type="text" class="form-control" name="living_contact_events_cta_label" value="{{ old('living_contact_events_cta_label', optional($setting)->living_contact_events_cta_label) }}" placeholder="See Ceremonial Calendar">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Events CTA URL</label>
+                                <input type="text" class="form-control" name="living_contact_events_cta_url" value="{{ old('living_contact_events_cta_url', optional($setting)->living_contact_events_cta_url) }}" placeholder="https://...">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Contact Card Title</label>
+                                <input type="text" class="form-control" name="living_contact_general_title" value="{{ old('living_contact_general_title', optional($setting)->living_contact_general_title) }}" placeholder="Contact">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Contact Card Body</label>
+                                <textarea name="living_contact_general_body" class="form-control" rows="2">{{ old('living_contact_general_body', optional($setting)->living_contact_general_body) }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Primary Contact CTA Label</label>
+                                <input type="text" class="form-control" name="living_contact_general_cta_label" value="{{ old('living_contact_general_cta_label', optional($setting)->living_contact_general_cta_label) }}" placeholder="Email the Archive">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Primary Contact CTA URL</label>
+                                <input type="text" class="form-control" name="living_contact_general_cta_url" value="{{ old('living_contact_general_cta_url', optional($setting)->living_contact_general_cta_url) }}" placeholder="mailto:info@...">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Support CTA Label</label>
+                                <input type="text" class="form-control" name="living_contact_support_cta_label" value="{{ old('living_contact_support_cta_label', optional($setting)->living_contact_support_cta_label) }}" placeholder="Offer Support">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Support CTA URL</label>
+                                <input type="text" class="form-control" name="living_contact_support_cta_url" value="{{ old('living_contact_support_cta_url', optional($setting)->living_contact_support_cta_url) }}" placeholder="https://...">
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Contact Phone (Living Archive)</label>
                                 <input type="text" class="form-control" name="living_contact_phone" value="{{ old('living_contact_phone', optional($setting)->living_contact_phone) }}" placeholder="+000 123 45678">
@@ -165,6 +521,26 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Contact Email (Living Archive)</label>
                                 <input type="text" class="form-control" name="living_contact_email" value="{{ old('living_contact_email', optional($setting)->living_contact_email) }}" placeholder="info@example.com">
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Printable Certification</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="living_certification_title" value="{{ old('living_certification_title', optional($setting)->living_certification_title) }}" placeholder="Printable Certification">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="living_certification_intro" class="form-control" rows="2">{{ old('living_certification_intro', optional($setting)->living_certification_intro) }}</textarea>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Certification Text (one line per row)</label>
+                                <textarea name="living_certification_text" class="form-control" rows="6">{{ old('living_certification_text', optional($setting)->living_certification_text) }}</textarea>
                             </div>
                         </div>
 

@@ -94,6 +94,11 @@ class HomeController extends Controller
             'living_archive_title',
             'living_archive_subtitle',
             'living_archive_intro',
+            'living_archive_affirmation',
+            'living_archive_primary_cta_label',
+            'living_archive_primary_cta_url',
+            'living_archive_secondary_cta_label',
+            'living_archive_secondary_cta_url',
             'living_archive_qr_text',
             'living_archive_logo_image',
             'living_archive_hero_image',
@@ -116,6 +121,69 @@ class HomeController extends Controller
             'living_crest_secondary_caption',
             'living_crest_primary_image',
             'living_crest_secondary_image',
+            'living_lineage_title',
+            'living_lineage_intro',
+            'living_lineage_tree_text',
+            'living_lineage_clan_text',
+            'living_lineage_shields_text',
+            'living_lineage_feathers_text',
+            'living_lineage_endline',
+            'living_crests_title',
+            'living_crests_intro',
+            'living_youth_crest_title',
+            'living_youth_crest_declaration',
+            'living_youth_crest_body',
+            'living_youth_crest_image',
+            'living_keeper_crest_title',
+            'living_keeper_crest_declaration',
+            'living_keeper_crest_body',
+            'living_keeper_crest_image',
+            'living_witness_crest_title',
+            'living_witness_crest_declaration',
+            'living_witness_crest_body',
+            'living_witness_crest_image',
+            'living_qr_crest_image',
+            'living_pathway_title',
+            'living_pathway_intro',
+            'living_pathway_step1_title',
+            'living_pathway_step1_body',
+            'living_pathway_step2_title',
+            'living_pathway_step2_body',
+            'living_pathway_step3_title',
+            'living_pathway_step3_body',
+            'living_media_merch_title',
+            'living_media_merch_intro',
+            'living_media_merch_card1_title',
+            'living_media_merch_card1_body',
+            'living_media_merch_card1_cta_label',
+            'living_media_merch_card1_cta_url',
+            'living_media_merch_card2_title',
+            'living_media_merch_card2_body',
+            'living_media_merch_card2_cta_label',
+            'living_media_merch_card2_cta_url',
+            'living_qr_title',
+            'living_qr_intro',
+            'living_qr_cta_label',
+            'living_qr_cta_url',
+            'living_contact_title',
+            'living_contact_intro',
+            'living_contact_training_title',
+            'living_contact_training_body',
+            'living_contact_training_cta_label',
+            'living_contact_training_cta_url',
+            'living_contact_events_title',
+            'living_contact_events_body',
+            'living_contact_events_cta_label',
+            'living_contact_events_cta_url',
+            'living_contact_general_title',
+            'living_contact_general_body',
+            'living_contact_general_cta_label',
+            'living_contact_general_cta_url',
+            'living_contact_support_cta_label',
+            'living_contact_support_cta_url',
+            'living_certification_title',
+            'living_certification_intro',
+            'living_certification_text',
             'living_phases_intro',
             'living_contact_phone',
             'living_contact_email',
@@ -157,6 +225,17 @@ class HomeController extends Controller
             return Str::startsWith($path, ['http://', 'https://', '//'])
                 ? $path
                 : asset($path);
+        };
+
+        $resolveMedia = function (?string $path, string $fallback) use ($mediaUrl) {
+            if (!$path) {
+                return $fallback;
+            }
+            if (Str::startsWith($path, ['http://', 'https://', '//'])) {
+                return $path;
+            }
+            $localPath = public_path($path);
+            return file_exists($localPath) ? asset($path) : $fallback;
         };
 
         $phaseKeys = collect([
@@ -227,6 +306,33 @@ class HomeController extends Controller
             ];
         })->values();
 
+        $primaryCrestImage = $mediaUrl(
+            optional($settings)->living_crest_primary_image,
+            asset('frontend/living-archive/Dreamcatcher-style crest.jpeg')
+        );
+        $secondaryCrestImage = $mediaUrl(
+            optional($settings)->living_crest_secondary_image,
+            asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg')
+        );
+
+        $youthDefaultPath = 'frontend/living-archive/crests/youth-crest.jpg';
+        $keeperDefaultPath = 'frontend/living-archive/crests/eagle.jpg';
+        $witnessDefaultPath = 'frontend/living-archive/crests/elder-crest.jpg';
+        $qrDefaultPath = 'frontend/living-archive/crests/qr-crest.jpg';
+
+        $youthDefaultImage = file_exists(public_path($youthDefaultPath))
+            ? asset($youthDefaultPath)
+            : $secondaryCrestImage;
+        $keeperDefaultImage = file_exists(public_path($keeperDefaultPath))
+            ? asset($keeperDefaultPath)
+            : $secondaryCrestImage;
+        $witnessDefaultImage = file_exists(public_path($witnessDefaultPath))
+            ? asset($witnessDefaultPath)
+            : $secondaryCrestImage;
+        $qrDefaultImage = file_exists(public_path($qrDefaultPath))
+            ? asset($qrDefaultPath)
+            : $secondaryCrestImage;
+
         $page = [
             'header' => [
                 'title'    => optional($settings)->living_archive_title
@@ -238,6 +344,18 @@ class HomeController extends Controller
             'intro' => optional($settings)->living_archive_intro
                 ?? optional($settings)->living_handoff_intro
                 ?? 'Welcome to The Yamassee Rising - Living Archive, the ceremonial hub where the Living Crest anchors our covenant. This archive is also known as Thomas Alexander\'s Living Crest of the Breath-line, a testimony to ancestral memory and the continuity of our heritage. Here, supporters become carriers of the Breathline, woven into the covenant through crest, music, and ceremony.',
+            'hero' => [
+                'affirmation' => optional($settings)->living_archive_affirmation
+                    ?? 'We Were Never Erased. We Were Replanted.',
+                'primary_cta_label' => optional($settings)->living_archive_primary_cta_label
+                    ?? 'Explore the Five Feathers Lineage',
+                'primary_cta_url' => optional($settings)->living_archive_primary_cta_url
+                    ?? '#lineage-story',
+                'secondary_cta_label' => optional($settings)->living_archive_secondary_cta_label
+                    ?? 'Begin the Carrier Pathway',
+                'secondary_cta_url' => optional($settings)->living_archive_secondary_cta_url
+                    ?? '#carrier-pathway',
+            ],
             'media' => [
                 'logo' => $mediaUrl(
                     optional($settings)->living_archive_logo_image
@@ -258,6 +376,22 @@ class HomeController extends Controller
             ],
             'phases_intro' => optional($settings)->living_phases_intro
                 ?? 'Move through each phase to reveal artefacts, apparel, and recordings inscribed with their own affirmation.',
+            'lineage' => [
+                'title' => optional($settings)->living_lineage_title
+                    ?? 'About the Lineage',
+                'intro' => optional($settings)->living_lineage_intro
+                    ?? 'The Living Archive is a ceremonial record -- an ancestral ledger where memory, symbol, and song return to their rightful lineage.',
+                'tree' => optional($settings)->living_lineage_tree_text
+                    ?? 'Root and canopy unite the Breath-line, keeping the living memory in motion.',
+                'clan' => optional($settings)->living_lineage_clan_text
+                    ?? 'Guardians of medicine, each one marking protection, vow, and teaching.',
+                'shields' => optional($settings)->living_lineage_shields_text
+                    ?? 'Three shields hold sovereignty, continuity, and ceremonial protection.',
+                'feathers' => optional($settings)->living_lineage_feathers_text
+                    ?? 'The five tribes honored; the Ghost Feather holds the ancestor still returning.',
+                'endline' => optional($settings)->living_lineage_endline
+                    ?? 'We Were Never Erased. We Were Replanted.',
+            ],
             'crest' => [
                 'title' => optional($settings)->living_crest_title ?? 'Ceremonial Crest',
                 'body_one' => optional($settings)->living_crest_body_one
@@ -270,8 +404,157 @@ class HomeController extends Controller
                     ?? 'Texas Yamassee: Thomas Alexander (The Voice) - Every note is a thread in the ancestral tapestry. Mission: Yamassee Rising exists to inscribe survival, memory, and chosen legacy through ceremonial music, crest symbolism, and ritual garments. This archive honours the breath.',
                 'secondary_caption' => optional($settings)->living_crest_secondary_caption
                     ?? 'Secondary crest: Five Feather Lineage',
-                'primary_image' => $mediaUrl(optional($settings)->living_crest_primary_image, asset('frontend/living-archive/Dreamcatcher-style crest.jpeg')),
-                'secondary_image' => $mediaUrl(optional($settings)->living_crest_secondary_image, asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg')),
+                'primary_image' => $primaryCrestImage,
+                'secondary_image' => $secondaryCrestImage,
+            ],
+            'crests' => [
+                'title' => optional($settings)->living_crests_title
+                    ?? 'The Three Crests',
+                'intro' => optional($settings)->living_crests_intro
+                    ?? 'These are sacred displays -- static and enduring, held as testimony for the youth, the keepers, and the elders of the lineage.',
+                'youth' => [
+                    'title' => optional($settings)->living_youth_crest_title
+                        ?? 'Youth Crest - The Listener',
+                    'declaration' => optional($settings)->living_youth_crest_declaration
+                        ?? 'We perch where the roof gave way.',
+                    'body' => optional($settings)->living_youth_crest_body
+                        ?? "The Listener enters by listening first -- observing, gathering, and holding the earliest teachings.\nThey are welcomed into the lineage as the first witnesses, carrying the hush of beginnings.",
+                    'image' => $resolveMedia(optional($settings)->living_youth_crest_image, $youthDefaultImage),
+                ],
+                'keeper' => [
+                    'title' => optional($settings)->living_keeper_crest_title
+                        ?? 'Keeper Crest - The Bearer',
+                    'declaration' => optional($settings)->living_keeper_crest_declaration
+                        ?? 'As the eagle, I did not blink, for I saw and see it all.',
+                    'body' => optional($settings)->living_keeper_crest_body
+                        ?? "The Bearer holds responsibility for the crest, the teachings, and the living record.\nThey rise into sight through service, courage, and the clear gaze of stewardship.",
+                    'image' => $resolveMedia(optional($settings)->living_keeper_crest_image, $keeperDefaultImage),
+                ],
+                'witness' => [
+                    'title' => optional($settings)->living_witness_crest_title
+                        ?? 'Witness Crest - The Elder',
+                    'declaration' => optional($settings)->living_witness_crest_declaration
+                        ?? 'We kept the fire when the world went dark.',
+                    'body' => optional($settings)->living_witness_crest_body
+                        ?? "The Elder carries memory as ceremony, protecting the line when silence falls.\nThey are continuity itself -- the living archive made flesh and breath.",
+                    'image' => $resolveMedia(optional($settings)->living_witness_crest_image, $witnessDefaultImage),
+                ],
+            ],
+            'pathway' => [
+                'title' => optional($settings)->living_pathway_title
+                    ?? 'Carrier Pathway',
+                'intro' => optional($settings)->living_pathway_intro
+                    ?? 'The lineage moves with intention -- Youth to Keeper to Witness -- each step recognized through ceremony, accountability, and protection.',
+                'steps' => [
+                    [
+                        'icon' => 'fa-owl',
+                        'title' => optional($settings)->living_pathway_step1_title
+                            ?? 'Youth -> Keeper',
+                        'body' => optional($settings)->living_pathway_step1_body
+                            ?? "Requirements: attentive listening, ceremonial training, and commitment to the Breath-line.\nRecognition: named by elders through witness and documented in the archive.",
+                    ],
+                    [
+                        'icon' => 'fa-feather',
+                        'title' => optional($settings)->living_pathway_step2_title
+                            ?? 'Keeper -> Witness',
+                        'body' => optional($settings)->living_pathway_step2_body
+                            ?? "Requirements: stewardship of rituals, protection of crest teachings, and community responsibility.\nRecognition: rises into sight through service, guarded by the shields.",
+                    ],
+                    [
+                        'icon' => 'fa-shield-alt',
+                        'title' => optional($settings)->living_pathway_step3_title
+                            ?? 'Protection of Lineage',
+                        'body' => optional($settings)->living_pathway_step3_body
+                            ?? "The lineage is protected by ceremony, council, and the living record held within the crest.\nEach carrier is acknowledged and affirmed in the archive.",
+                    ],
+                ],
+            ],
+            'media_merch' => [
+                'title' => optional($settings)->living_media_merch_title
+                    ?? 'Media & Merch as Ceremonial Artifacts',
+                'intro' => optional($settings)->living_media_merch_intro
+                    ?? 'Music scores, apparel, and recordings are extensions of the Breath-line -- artifacts that carry ceremony into the everyday.',
+                'merch' => [
+                    'title' => optional($settings)->living_media_merch_card1_title
+                        ?? 'Merch Crest',
+                    'body' => optional($settings)->living_media_merch_card1_body
+                        ?? 'Apparel, scores, and ceremonial items are lineage extensions -- worn and shared to keep the crest visible.',
+                    'cta_label' => optional($settings)->living_media_merch_card1_cta_label
+                        ?? 'Enter the Artifact Hall',
+                    'cta_url' => optional($settings)->living_media_merch_card1_cta_url
+                        ?? route('front.shop'),
+                    'image' => $secondaryCrestImage,
+                ],
+                'qr' => [
+                    'title' => optional($settings)->living_media_merch_card2_title
+                        ?? 'QR Crest',
+                    'body' => optional($settings)->living_media_merch_card2_body
+                        ?? 'The QR Crest is a digital gateway -- a quiet entry into the archive\'s living record.',
+                    'cta_label' => optional($settings)->living_media_merch_card2_cta_label
+                        ?? 'Open the QR Gateway',
+                    'cta_url' => optional($settings)->living_media_merch_card2_cta_url
+                        ?? '#qr-access',
+                    'image' => $resolveMedia(optional($settings)->living_qr_crest_image, $qrDefaultImage),
+                ],
+            ],
+            'qr' => [
+                'title' => optional($settings)->living_qr_title
+                    ?? 'QR Access',
+                'intro' => optional($settings)->living_qr_intro
+                    ?? 'The QR Crest offers a direct ceremonial passage -- a digital doorway into the lineage archive.',
+                'cta_label' => optional($settings)->living_qr_cta_label
+                    ?? 'Open the QR Gateway',
+                'cta_url' => optional($settings)->living_qr_cta_url
+                    ?? route('living-archive.donate'),
+                'image' => $resolveMedia(optional($settings)->living_qr_crest_image, $qrDefaultImage),
+            ],
+            'contact_section' => [
+                'title' => optional($settings)->living_contact_title
+                    ?? 'Contact & Invitations',
+                'intro' => optional($settings)->living_contact_intro
+                    ?? 'Enter the circle through training, ceremony, and direct invitation.',
+                'training' => [
+                    'title' => optional($settings)->living_contact_training_title
+                        ?? 'Training Invitation',
+                    'body' => optional($settings)->living_contact_training_body
+                        ?? 'Receive training in the Five Feathers lineage and learn the responsibilities of ceremonial care.',
+                    'cta_label' => optional($settings)->living_contact_training_cta_label
+                        ?? 'Request Training',
+                    'cta_url' => optional($settings)->living_contact_training_cta_url
+                        ?? 'mailto:' . (optional($settings)->living_contact_email ?? 'info@thomasalexanderthevoice.com'),
+                ],
+                'events' => [
+                    'title' => optional($settings)->living_contact_events_title
+                        ?? 'Ceremonial Events',
+                    'body' => optional($settings)->living_contact_events_body
+                        ?? 'Join ceremonial gatherings that affirm the Breath-line and honor the crest as living memory.',
+                    'cta_label' => optional($settings)->living_contact_events_cta_label
+                        ?? 'See Ceremonial Calendar',
+                    'cta_url' => optional($settings)->living_contact_events_cta_url
+                        ?? route('living-archive.donate'),
+                ],
+                'general' => [
+                    'title' => optional($settings)->living_contact_general_title
+                        ?? 'Contact',
+                    'body' => optional($settings)->living_contact_general_body
+                        ?? '',
+                    'cta_label' => optional($settings)->living_contact_general_cta_label
+                        ?? 'Email the Archive',
+                    'cta_url' => optional($settings)->living_contact_general_cta_url
+                        ?? 'mailto:' . (optional($settings)->living_contact_email ?? 'info@thomasalexanderthevoice.com'),
+                    'support_label' => optional($settings)->living_contact_support_cta_label
+                        ?? 'Offer Support',
+                    'support_url' => optional($settings)->living_contact_support_cta_url
+                        ?? route('living-archive.donate'),
+                ],
+            ],
+            'certification' => [
+                'title' => optional($settings)->living_certification_title
+                    ?? 'Printable Certification',
+                'intro' => optional($settings)->living_certification_intro
+                    ?? 'Static ceremonial document for carriers within the Five Feathers lineage.',
+                'text' => optional($settings)->living_certification_text
+                    ?? "THE FIVE FEATHERS LINEAGE\nCARRIER CERTIFICATION DOCUMENT\nCARRIER NAME: ____________________________\nCREST ROLE: _______________________________\nFEATHER DESIGNATION: ______________________\nDATE RECEIVED: ____________________________\nWITNESS SIGNATURE: ________________________\nSEAL OF THE LIVING ARCHIVE: _______________",
             ],
             'ritual_flow' => [
                 'before' => $this->formatRitualList(
