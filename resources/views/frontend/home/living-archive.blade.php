@@ -98,7 +98,7 @@
         z-index: 0;
     }
     .living-section {
-        padding: 56px 0;
+        padding: 64px 0;
         position: relative;
         z-index: 1;
     }
@@ -200,12 +200,15 @@
     .crest-nav-links a:hover {
         color: var(--living-gold);
     }
-    .living-card .living-card {
-        background: rgba(10, 14, 22, 0.7);
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+    .living-card.soft {
         box-shadow: none;
-        padding: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 18px;
+        border-radius: 16px;
+    }
+    .living-card.soft .living-pill {
+        margin-bottom: 10px;
     }
     .living-hero {
         padding: 60px 0 40px;
@@ -213,7 +216,7 @@
     .living-hero-card {
         position: relative;
         border-radius: 26px;
-        padding: 42px;
+        padding: 48px 44px;
         background: linear-gradient(120deg, rgba(12, 16, 24, 0.96), rgba(12, 16, 24, 0.72));
         border: 1px solid rgba(255, 255, 255, 0.08);
         overflow: hidden;
@@ -243,17 +246,17 @@
         margin: 0 auto;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
         align-items: center;
     }
     .living-hero-kicker {
         font-size: 11px;
         text-transform: uppercase;
-        letter-spacing: 0.24em;
+        letter-spacing: 0.22em;
         color: rgba(244, 239, 227, 0.7);
     }
     .living-hero-crest img {
-        max-width: 300px;
+        max-width: 260px;
         width: 100%;
         filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.45));
     }
@@ -269,13 +272,6 @@
         color: rgba(244, 239, 227, 0.8);
         line-height: 1.7;
         margin: 0;
-    }
-    .living-hero-subtitle {
-        font-size: 13px;
-        color: rgba(244, 239, 227, 0.7);
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        margin: -4px 0 0;
     }
     .living-primary-btn {
         display: inline-flex;
@@ -382,9 +378,13 @@
         color: var(--living-gold);
     }
     .crest-declaration {
+        padding: 12px 14px;
+        border-left: 3px solid rgba(240, 180, 40, 0.65);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
         font-style: italic;
-        color: rgba(244, 239, 227, 0.85);
-        margin-bottom: 10px;
+        color: rgba(244, 239, 227, 0.9);
+        margin: 12px 0 14px;
     }
     .pathway-flow {
         position: relative;
@@ -404,8 +404,22 @@
     }
     .pathway-step {
         text-align: center;
-        padding: 18px;
+        padding: 22px 18px 18px;
         position: relative;
+    }
+    .pathway-step .step-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(240, 180, 40, 0.35);
+        background: rgba(240, 180, 40, 0.1);
+        color: var(--living-gold);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
     }
     .pathway-step::before {
         content: "";
@@ -445,6 +459,40 @@
         text-decoration: none;
         font-weight: 600;
     }
+    .section-cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+    }
+    .section-cta-row a {
+        flex: 1 1 auto;
+    }
+    .qr-bullets {
+        margin: 12px auto 0;
+        padding: 0;
+        list-style: none;
+        max-width: 520px;
+        text-align: left;
+    }
+    .qr-bullets li {
+        position: relative;
+        padding-left: 18px;
+        margin: 8px 0;
+        color: rgba(244, 239, 227, 0.82);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    .qr-bullets li::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--living-gold);
+        position: absolute;
+        left: 0;
+        top: 10px;
+    }
     .certification-block {
         background: #f6f1e7;
         border-radius: 18px;
@@ -468,7 +516,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 12px;
+        margin-top: 14px;
     }
     .contact-actions a {
         display: inline-flex;
@@ -484,6 +532,27 @@
         letter-spacing: 0.06em;
         text-transform: uppercase;
         font-size: 11px;
+        min-height: 42px;
+    }
+    @media print {
+        body {
+            background: #fff !important;
+            color: #111 !important;
+        }
+        .living-crest-nav,
+        .living-hero,
+        #media-merch,
+        #qr-access,
+        #contact-invitations {
+            display: none !important;
+        }
+        .living-section {
+            padding: 0 !important;
+        }
+        .certification-block {
+            box-shadow: none !important;
+            border: 1px solid #999 !important;
+        }
     }
     @media (max-width: 991px) {
         .living-crest-nav .nav-inner {
@@ -502,6 +571,9 @@
         }
     }
     @media (max-width: 768px) {
+        .living-section {
+            padding: 44px 0;
+        }
         .living-crest-nav .nav-inner {
             padding: 8px 0;
             gap: 10px;
@@ -534,7 +606,7 @@
             padding: 36px 0 24px;
         }
         .living-hero-card {
-            padding: 24px 18px;
+            padding: 26px 18px;
         }
         .living-hero-crest img {
             max-width: 210px;
@@ -679,7 +751,7 @@
                         <img src="{{ $primaryCrestImage }}" alt="Main Ceremonial Crest">
                     </div>
                     <p class="living-affirmation">{{ data_get($hero, 'affirmation', 'We Were Never Erased. We Were Replanted.') }}</p>
-                    <p class="living-hero-subtitle">{{ data_get($page, 'header.subtitle', 'This is not a store. This is ceremony.') }}</p>
+                    <span class="living-pill">{{ data_get($page, 'header.subtitle', 'This is not a store. This is ceremony.') }}</span>
                     <p class="living-hero-intro">{{ $introText }}</p>
                     <div class="living-cta-row">
                         <a href="{{ data_get($hero, 'primary_cta_url', '#lineage-story') }}" class="living-primary-btn">
@@ -723,19 +795,19 @@
                     </div>
                 @endif
                 <div class="lineage-grid">
-                    <div class="living-card">
+                    <div class="living-card soft">
                         <span class="living-pill">Tree of Life</span>
                         <p>{{ data_get($lineage, 'tree', 'Root and canopy unite the Breath-line, keeping the living memory in motion.') }}</p>
                     </div>
-                    <div class="living-card">
+                    <div class="living-card soft">
                         <span class="living-pill">Ten Yamassee Clan Animals</span>
                         <p>{{ data_get($lineage, 'clan', 'Guardians of medicine, each one marking protection, vow, and teaching.') }}</p>
                     </div>
-                    <div class="living-card">
+                    <div class="living-card soft">
                         <span class="living-pill">Three Ancestral Shields</span>
                         <p>{{ data_get($lineage, 'shields', 'Three shields hold sovereignty, continuity, and ceremonial protection.') }}</p>
                     </div>
-                    <div class="living-card">
+                    <div class="living-card soft">
                         <span class="living-pill">Five Feathers + Ghost Feather</span>
                         <p>{{ data_get($lineage, 'feathers', 'The five tribes honored; the Ghost Feather holds the ancestor still returning.') }}</p>
                     </div>
@@ -787,8 +859,9 @@
                 <p>{{ data_get($pathway, 'intro', 'The lineage moves with intention -- Youth to Keeper to Witness -- each step recognized through ceremony, accountability, and protection.') }}</p>
             </div>
             <div class="pathway-flow">
-                @foreach(data_get($pathway, 'steps', []) as $step)
+                @foreach(data_get($pathway, 'steps', []) as $index => $step)
                     <div class="living-card pathway-step">
+                        <div class="step-badge">Step {{ $index + 1 }}</div>
                         <i class="fa {{ data_get($step, 'icon', 'fa-circle') }}"></i>
                         <h4>{{ data_get($step, 'title') }}</h4>
                         @foreach($splitParagraphs(data_get($step, 'body')) as $line)
@@ -808,24 +881,32 @@
             </div>
             <div class="media-merch-grid">
                 <div class="living-card">
+                    <span class="living-pill">{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}</span>
                     <img src="{{ data_get($mediaMerch, 'merch.image', $secondaryCrestImage) }}" alt="{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}">
                     <h3>{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}</h3>
                     <p>{{ data_get($mediaMerch, 'merch.body', 'Apparel, scores, and ceremonial items are lineage extensions -- worn and shared to keep the crest visible.') }}</p>
-                    <p class="mb-0">
-                        <a href="{{ data_get($mediaMerch, 'merch.cta_url', route('front.shop')) }}" class="subtle-link">
-                            {{ data_get($mediaMerch, 'merch.cta_label', 'Enter the Artifact Hall') }}
+                    <div class="section-cta-row">
+                        <a href="{{ data_get($mediaMerch, 'merch.cta_url', route('front.shop')) }}" class="living-primary-btn">
+                            {{ data_get($mediaMerch, 'merch.cta_label', 'Shop Ceremonial Artifacts') }}
                         </a>
-                    </p>
+                        <a href="{{ data_get($mediaMerch, 'merch.secondary_cta_url', data_get($mediaMerch, 'merch.cta_url', route('front.shop'))) }}" class="living-secondary-btn">
+                            {{ data_get($mediaMerch, 'merch.secondary_cta_label', 'View Scores & Items') }}
+                        </a>
+                    </div>
                 </div>
                 <div class="living-card">
+                    <span class="living-pill">{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}</span>
                     <img src="{{ data_get($mediaMerch, 'qr.image', $qrCrestImage) }}" alt="{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}">
                     <h3>{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}</h3>
                     <p>{{ data_get($mediaMerch, 'qr.body', "The QR Crest is a digital gateway -- a quiet entry into the archive's living record.") }}</p>
-                    <p class="mb-0">
-                        <a href="{{ data_get($mediaMerch, 'qr.cta_url', '#qr-access') }}" class="subtle-link">
+                    <div class="section-cta-row">
+                        <a href="{{ data_get($mediaMerch, 'qr.cta_url', '#qr-access') }}" class="living-primary-btn">
                             {{ data_get($mediaMerch, 'qr.cta_label', 'Open the QR Gateway') }}
                         </a>
-                    </p>
+                        <a href="{{ data_get($mediaMerch, 'qr.secondary_cta_url', route('living-archive.donate')) }}" class="living-secondary-btn">
+                            {{ data_get($mediaMerch, 'qr.secondary_cta_label', 'Donate') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -840,6 +921,11 @@
             <div class="living-card text-center">
                 <img src="{{ data_get($qr, 'image', $qrCrestImage) }}" alt="QR Crest" style="max-width: 320px; margin: 0 auto 18px;">
                 <p style="font-size: 16px;">{{ data_get($page, 'header.qr_intro', 'Scan to enter the Living Archive.') }}</p>
+                <ul class="qr-bullets">
+                    <li>Direct entry to ceremonial materials and lineage references.</li>
+                    <li>Mobile-friendly access point for supporters and carriers.</li>
+                    <li>Gateway experience that preserves the Breath-line in digital form.</li>
+                </ul>
                 <a href="{{ data_get($qr, 'cta_url', route('living-archive.donate')) }}" class="living-primary-btn" style="margin-top: 10px;">
                     {{ data_get($qr, 'cta_label', 'Open the QR Gateway') }}
                 </a>
@@ -915,8 +1001,8 @@
             var target = $(this.getAttribute('href'));
             if (target.length) {
                 e.preventDefault();
-                var navHeight = $('.living-crest-nav').outerHeight() || 0;
-                $('html, body').stop().animate({ scrollTop: target.offset().top - navHeight }, 700);
+                var navHeight = $('.living-crest-nav').outerHeight() || 80;
+                $('html, body').stop().animate({ scrollTop: target.offset().top - navHeight - 10 }, 650);
             }
         });
     })(jQuery);
