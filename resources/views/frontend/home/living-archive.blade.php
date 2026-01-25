@@ -534,6 +534,22 @@
         font-size: 11px;
         min-height: 42px;
     }
+    .living-footer {
+        padding: 24px 0 40px;
+        text-align: center;
+        color: rgba(244, 239, 227, 0.7);
+        font-size: 13px;
+        position: relative;
+        z-index: 1;
+    }
+    .living-footer a {
+        color: var(--living-gold);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .living-footer a:hover {
+        color: var(--living-gold-soft);
+    }
     @media print {
         body {
             background: #fff !important;
@@ -990,6 +1006,11 @@
             </div>
         </div>
     </section>
+
+    <footer class="living-footer">
+        @copyright Thomas Alexander. Develop by
+        <a href="https://nirjonroy.com" target="_blank" rel="noopener">Nirjon roy</a>.
+    </footer>
 </div>
 @endsection
 
