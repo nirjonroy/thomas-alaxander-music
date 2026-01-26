@@ -101,7 +101,29 @@
   <!--main div-->
 </div> --}}
 
+<div class="site-footer-credit">
+    @copyright Thomas Alexander. Develop by
+    <a href="https://nirjonroy.com" target="_blank" rel="noopener">Nirjon roy</a>.
 </div>
+
+</div>
+
+<style>
+    .site-footer-credit {
+        text-align: center;
+        padding: 20px 0 28px;
+        color: rgba(244, 239, 227, 0.7);
+        font-size: 13px;
+    }
+    .site-footer-credit a {
+        color: #f0b428;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .site-footer-credit a:hover {
+        color: #c9871f;
+    }
+</style>
 
 <!-- bootstrap 5 cdn js  -->
 

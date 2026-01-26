@@ -877,6 +877,9 @@ class ContentController extends Controller
             'living_phase3_affirmation' => 'nullable|string',
             'living_phase4_title' => 'nullable|string|max:255',
             'living_phase4_affirmation' => 'nullable|string',
+        ];
+
+        $seoRules = [
             'living_seo_title' => 'nullable|string|max:255',
             'living_seo_description' => 'nullable|string',
             'living_seo_keywords' => 'nullable|string|max:255',
@@ -886,7 +889,7 @@ class ContentController extends Controller
             'living_seo_meta_image' => 'nullable|string|max:255',
         ];
 
-        $this->validate($request, $rules);
+        $this->validate($request, array_merge($rules, $seoRules));
 
         $setting = Setting::first();
         if (!$setting) {

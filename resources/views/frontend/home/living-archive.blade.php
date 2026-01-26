@@ -172,9 +172,13 @@
     }
     .crest-nav-links {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 14px;
         justify-content: flex-end;
+        align-items: center;
+        min-width: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     .crest-nav-links a {
         color: rgba(244, 239, 227, 0.78);
@@ -192,6 +196,8 @@
         min-width: 44px;
         min-height: 44px;
         justify-content: center;
+        white-space: nowrap;
+        flex: 0 0 auto;
     }
     .crest-nav-links a i {
         font-size: 16px;

@@ -306,13 +306,33 @@ class HomeController extends Controller
             ];
         })->values();
 
-        $primaryCrestImage = $mediaUrl(
+        $primaryFallbackCandidates = [
+            'frontend/Side_by_side_comparison_crest.png',
+            'frontend/Side by side comparison crest  1 .png',
+        ];
+        $secondaryFallbackCandidates = [
+            'frontend/Final Triad crest Eagle, Owl, Buffalo.png',
+        ];
+
+        $primaryFallbackPath = collect($primaryFallbackCandidates)
+            ->first(fn ($path) => file_exists(public_path($path)));
+        $secondaryFallbackPath = collect($secondaryFallbackCandidates)
+            ->first(fn ($path) => file_exists(public_path($path)));
+
+        $primaryFallbackImage = $primaryFallbackPath
+            ? asset($primaryFallbackPath)
+            : asset('frontend/living-archive/Dreamcatcher-style crest.jpeg');
+        $secondaryFallbackImage = $secondaryFallbackPath
+            ? asset($secondaryFallbackPath)
+            : asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg');
+
+        $primaryCrestImage = $resolveMedia(
             optional($settings)->living_crest_primary_image,
-            asset('frontend/living-archive/Dreamcatcher-style crest.jpeg')
+            $primaryFallbackImage
         );
-        $secondaryCrestImage = $mediaUrl(
+        $secondaryCrestImage = $resolveMedia(
             optional($settings)->living_crest_secondary_image,
-            asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg')
+            $secondaryFallbackImage
         );
 
         $youthDefaultPath = 'frontend/living-archive/crests/youth-crest.jpg';
