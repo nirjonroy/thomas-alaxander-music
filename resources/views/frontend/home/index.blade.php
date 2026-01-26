@@ -91,6 +91,104 @@
         border-radius: 50%;
         padding: 10px;
     }
+
+    .home-blog-section {
+        margin: 32px auto 20px;
+        color: #f7f1e6;
+    }
+    .home-blog-title {
+        margin: 0 0 18px;
+        font-size: 22px;
+        text-align: center;
+        color: #ff4b2b;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 6px;
+    }
+    .home-blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+    }
+    .home-blog-card {
+        background: rgba(12, 18, 30, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 16px 28px rgba(6, 10, 18, 0.4);
+        height: 100%;
+    }
+    .home-blog-media {
+        position: relative;
+        background-image: var(--card-image);
+        background-size: cover;
+        background-position: center;
+        padding-top: 60%;
+        display: block;
+    }
+    .home-blog-tag {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(12, 18, 30, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 11px;
+        color: #f7f1e6;
+    }
+    .home-blog-body {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+    }
+    .home-blog-card-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+    .home-blog-card-title a {
+        color: #ff4b2b;
+        text-decoration: none;
+    }
+    .home-blog-excerpt {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(245, 235, 220, 0.75);
+        line-height: 1.5;
+    }
+    .home-blog-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        font-size: 12px;
+        color: rgba(245, 235, 220, 0.7);
+    }
+    .home-blog-cta {
+        color: #ff9b60;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .home-blog-empty {
+        padding: 24px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.04);
+        text-align: center;
+        color: rgba(245, 235, 220, 0.75);
+    }
+    @media (max-width: 576px) {
+        .home-blog-title {
+            font-size: 20px;
+        }
+        .home-blog-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 
 @if($sliders->count())
@@ -507,35 +605,37 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
 </div>
 
 
-<div class="container" style="margin: 20px">
-    <h1 class="text-center mb-4" style="text-align: center; margin-bottom: 10px; font-size: 25px"><u>Latest Blogs</u></h1>
+<div class="container home-blog-section">
+    <h2 class="home-blog-title">Latest Blogs</h2>
 
-    <div class="row">
-        @foreach ($blogs as $blog)
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" >
-                <div class="card h-100" style="border-radius: 5% ">
-                    <a href="{{ route('front.blog_details', [$blog->slug]) }}">
-                        <img src="{{ asset($blog->image) }}"
-                             class="card-img-top img-fluid"
-                             alt="{{ $blog->title }}"
-                             style="height: auto; max-height: 200px; object-fit: contain; border-radius: 5%;">
-                    </a>
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h5 class="card-title font-16 text-center" style="font-size: 14px">
-                            <a href="{{ route('front.blog_details', [$blog->slug]) }}"
-                               class="text-dark text-decoration-none">
-                                {{ Str::limit($blog->title, 90, ' ...') }}
-                            </a>
-                        </h5>
-                        <p class="card-text text-muted text-center">{{ date('m/d/Y', strtotime($blog->created_at)) }}</p>
-                        <a href="{{ route('front.blog_details', [$blog->slug]) }}"
-                           class="btn btn-danger btn-sm w-100 mt-auto" style="height: 20px; font-size: 14px; border-radius: 15%;">
-                            Details
+    <div class="home-blog-grid">
+        @forelse ($blogs as $blog)
+            @php
+                $cardImage = $blog->image ? asset($blog->image) : asset(siteInfo()->logo);
+                $tag = optional($blog->category)->name ?? 'Blog';
+            @endphp
+            <article class="home-blog-card">
+                <a class="home-blog-media" href="{{ route('front.blog_details', [$blog->slug]) }}" style="--card-image: url('{{ $cardImage }}');">
+                    <span class="home-blog-tag">{{ $tag }}</span>
+                </a>
+                <div class="home-blog-body">
+                    <h3 class="home-blog-card-title">
+                        <a href="{{ route('front.blog_details', [$blog->slug]) }}">
+                            {{ Str::limit($blog->title, 70) }}
                         </a>
+                    </h3>
+                    <p class="home-blog-excerpt">{{ Str::limit(strip_tags($blog->description), 90) }}</p>
+                    <div class="home-blog-footer">
+                        <span>{{ date('F j, Y', strtotime($blog->created_at)) }}</span>
+                        <a class="home-blog-cta" href="{{ route('front.blog_details', [$blog->slug]) }}">Read More</a>
                     </div>
                 </div>
+            </article>
+        @empty
+            <div class="home-blog-empty">
+                No blog posts are available yet.
             </div>
-        @endforeach
+        @endforelse
     </div>
 </div>
                     
