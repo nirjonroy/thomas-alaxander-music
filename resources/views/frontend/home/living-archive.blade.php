@@ -150,7 +150,7 @@
     .living-crest-nav .nav-inner {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 18px;
         padding: 16px 0;
     }
@@ -174,11 +174,13 @@
         display: flex;
         flex-wrap: nowrap;
         gap: 14px;
-        justify-content: flex-end;
+        justify-content: flex-start;
         align-items: center;
         min-width: 0;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        flex: 1 1 auto;
+        margin-left: 24px;
     }
     .crest-nav-links a {
         color: rgba(244, 239, 227, 0.78);
