@@ -36,7 +36,7 @@
                 </li>
               
                  <li>
-                    <a href="{{ route('front.product.all.product') }}" title="Albums">
+                    <a href="{{ route('front.shop') }}" title="Albums">
                         <span class="nav_icon">
                             <span class="icon icon_albums"></span>
                         </span>

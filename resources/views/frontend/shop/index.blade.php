@@ -6,7 +6,7 @@
  <section class="popular-foods py-8 pt-32 lg:pt-48 bg-white">
     <div class="max-w-7xl mx-auto px-4">
       <h2 class="text-3xl lg:text-4xl font-bold text-center text-white bg-gradient-to-r from-orange-500 to-red-500 py-3 mb-8 rounded-md">
-        {{$data->name}}
+        {{ optional($data)->name ?? 'Shop Product List' }}
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

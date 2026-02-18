@@ -273,7 +273,10 @@
         font-weight: 700;
         color: var(--living-gold);
         letter-spacing: 0.02em;
-        margin: 0;
+        line-height: 1.2;
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto;
     }
     .living-hero-intro {
         font-size: 16px;
@@ -637,6 +640,7 @@
         }
         .living-affirmation {
             font-size: 22px;
+            line-height: 1.25;
         }
         .living-hero-intro {
             font-size: 14px;

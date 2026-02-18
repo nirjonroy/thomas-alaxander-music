@@ -705,6 +705,14 @@ class HomeController extends Controller
 
 public function shop(Request $request, $slug = null)
 {
+    if (empty($slug) && !$request->hasAny(['min_price', 'max_price', 'in_stock', 'out_of_stock'])) {
+        $products = Product::with(['category', 'subCategory', 'childCategory'])
+            ->latest()
+            ->paginate(30);
+
+        return view('frontend.shop.all_product', compact('products'));
+    }
+
     $data = null;
 
     if (!empty($slug)) {

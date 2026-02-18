@@ -163,10 +163,7 @@ class ProductController extends Controller
     }
 
     public function all_product(Request $request){
-        $products = Product::with('category', 'subCategory', 'childCategory')
-        ->latest()
-        ->paginate(30);
-        return view('frontend.shop.all_product', compact('products'));
+        return redirect()->route('front.shop');
     }
 
     public function single_product(Request $request, $slug) {
