@@ -1,2 +1,17 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Disallow: /vendor/
+Disallow: /storage/
+Disallow: /bootstrap/
+Disallow: /config/
+Disallow: /database/
+Disallow: /resources/
+Disallow: /routes/
+Disallow: /tests/
+Disallow: /admin/
+Disallow: /public/
+Disallow: /*?
+Disallow: /password/
+Disallow: /logout/
+Sitemap: https://thomasalexanderthevoice.com/sitemap.xml
