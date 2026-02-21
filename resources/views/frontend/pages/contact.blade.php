@@ -39,7 +39,7 @@
             </span>
         </div>
         <div class="md:w-2/3 w-full  mt-10 md:mt-0 ml-0 ">
-            <h1 class="text-4xl  sm:text-4xl font-bold title-font mb-4">Contact Form</h1>
+            <h2 class="text-4xl  sm:text-4xl font-bold title-font mb-4">Contact Form</h2>
           <form action="https://fabform.io/f/{form-id}" method="post">
                 <div class="p-2 w-full">
                     <div class="relative">

@@ -60,9 +60,9 @@
                     @endif
                 </div>
                 <div class="product_content " style="border-top:3px solid #EDEDEF; ">
-                    <h4 class="ps-1" style="height: 35px;">
+                    <p class="ps-1" style="height: 35px;">
                         <a href="{{ route('front.product.show', $product->slug ) }}" class="font-14" style="font-size:14px"> {{ \Illuminate\Support\Str::limit($product->name, 40)}}</a>
-                    </h4>
+                    </p>
                     <div class="subText" data-reactid=".1n7kkwy0qp6.b.2.0.0.0.0.2.5.1.0:$14822_Grocery.0.2.3">
                         
                     </div>

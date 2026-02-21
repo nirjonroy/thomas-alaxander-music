@@ -77,7 +77,7 @@
                     <div class="notification-panel-container">
                         <div class="notification-panel">
                             <div class="notification-header">
-                                <h1>Notifications</h1>
+                                <p class="notification-title">Notifications</p>
                                 <button class="mark-read ">Mark Read</button>
                             </div>
                             <div class="filter-buttons">

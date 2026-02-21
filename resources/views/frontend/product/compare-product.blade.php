@@ -15,7 +15,7 @@
       <tr>
           
       <td colspan="4">
-         <h3 class="bold" style="text-align: center;">Product Comparison</h3> 
+         <p class="bold" style="text-align: center;">Product Comparison</p>
          <h6 style="text-align: center;">Find and select products to see the differences and similarities between them</h6>
 
       </td>

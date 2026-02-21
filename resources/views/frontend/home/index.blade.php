@@ -281,7 +281,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                             <div class="ms_songslist_inner">
                                                 <div class="ms_songslist_left">
                                                     <div class="songslist_number">
-                                                        <h4 class="songslist_sn">{{++$key}}</h4>
+                                                        <span class="songslist_sn">{{++$key}}</span>
                                                         <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
                                                         <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                     </div>
@@ -294,7 +294,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                                         </div>
                                                         <div class="songslist_name">
     
-                                                            <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
+                                                            <p class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></p>
                                                             <p class="song_artist">{{$product->artist_name}}</p>
                                                         </div>
                                                     </div>
@@ -336,7 +336,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                             <div class="ms_songslist_inner">
                                                 <div class="ms_songslist_left">
                                                     <div class="songslist_number">
-                                                        <h4 class="songslist_sn">{{++$key}}</h4>
+                                                        <span class="songslist_sn">{{++$key}}</span>
                                                         <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
                                                         <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                     </div>
@@ -349,7 +349,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                                         </div>
                                                         <div class="songslist_name">
     
-                                                            <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
+                                                            <p class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></p>
                                                             <p class="song_artist">{{$product->artist_name}}</p>
                                                         </div>
                                                     </div>
@@ -391,7 +391,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                         <div class="ms_songslist_inner">
                                             <div class="ms_songslist_left">
                                                 <div class="songslist_number">
-                                                    <h4 class="songslist_sn">{{++$key}}</h4>
+                                                    <span class="songslist_sn">{{++$key}}</span>
                                                     <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
                                                     <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                 </div>
@@ -404,7 +404,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                                     </div>
                                                     <div class="songslist_name">
 
-                                                        <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
+                                                        <p class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></p>
                                                         <p class="song_artist">{{$product->artist_name}}</p>
                                                     </div>
                                                 </div>
@@ -448,7 +448,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                         <div class="ms_songslist_inner">
                                             <div class="ms_songslist_left">
                                                 <div class="songslist_number">
-                                                    <h4 class="songslist_sn">{{$key++}}</h4>
+                                                    <span class="songslist_sn">{{$key++}}</span>
                                                     <span class="songslist_play" onclick="playAudio({{$product->id}})"><img src="{{('frontend/assets/images/svg/play_songlist.svg')}}" alt="Play" class="img-fluid"/></span>
                                                     <audio id="audio-{{$product->id}}" src="{{ asset($product->demo_song) }}" preload="none"></audio>
                                                 </div>
@@ -461,7 +461,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                                                     </div>
                                                     <div class="songslist_name">
 
-                                                        <h3 class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></h3>
+                                                        <p class="song_name"><a href="{{ route('front.product.show', $product->slug ) }}">{{$product->name}}</a></p>
                                                         <p class="song_artist">{{$product->artist_name}}</p>
                                                     </div>
                                                 </div>
@@ -564,7 +564,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
 
 <div class="container my-4 event-content">
     <div class="row">
-        <h1 class="song_name" style="text-align: center; margin-bottom: 10px; font-size: 25px"><u>Recent Event's</u></h1>
+        <h2 class="song_name" style="text-align: center; margin-bottom: 10px; font-size: 25px"><u>Recent Event's</u></h2>
            @forelse($events as $product)
     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
         <div class="event-card">
@@ -619,11 +619,11 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                     <span class="home-blog-tag">{{ $tag }}</span>
                 </a>
                 <div class="home-blog-body">
-                    <h3 class="home-blog-card-title">
+                    <p class="home-blog-card-title">
                         <a href="{{ route('front.blog_details', [$blog->slug]) }}">
                             {{ Str::limit($blog->title, 70) }}
                         </a>
-                    </h3>
+                    </p>
                     <p class="home-blog-excerpt">{{ Str::limit(strip_tags($blog->description), 90) }}</p>
                     <div class="home-blog-footer">
                         <span>{{ date('F j, Y', strtotime($blog->created_at)) }}</span>

@@ -86,10 +86,10 @@
                                     <!--</div>-->
                                 </div>
                                 <div class="product_content ">
-                                    <h4 class="ps-1" style="height: 40px;">
+                                    <p class="ps-1" style="height: 40px;">
                                          
                                         <a href="{{ route('front.product.show', $product->slug ) }}" class="font-16" style="font-size: 14px">{{ \Illuminate\Support\Str::limit($product->name, 30)}}</a>
-                                    </h4>
+                                    </p>
                                    
                                     <div class="price_box ps-1" style="padding-bottom: 0px;">
                                         @if(empty($product->offer_price))

@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="ms_nav_wrapper">
-            <h4 class="nav_heading">Browse Music</h4>
+            <p class="nav_heading">Browse Music</p>
             <ul>
                 <li>
                     <a href="{{route('front.home')}}" class="active" title="Discover">
@@ -104,7 +104,7 @@
             @endforeach
         </div>
            {{--  </ul>
-            <h4 class="nav_heading">Your Music</h4>
+            <p class="nav_heading">Your Music</p>
             <ul class="nav_downloads">
                 <li><a href="download.html" title="Downloads">
                 <span class="nav_icon">

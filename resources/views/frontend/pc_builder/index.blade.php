@@ -13,7 +13,7 @@ $totalAmount = 0;
     <div class="bg-gradient container-fluid" style="background: linear-gradient(120deg, #053cff 0%, #000000 100%) !important;">
     <div class="col-12 product-header">
         <div class="section_title text-light">
-           <a href="" style="color: #218A41;"> <h4 class="semi p-1 m-0 prodCatcus" style="text-align:center">Build Your PC </h4> </a>
+           <a href="" style="color: #218A41;"> <span class="semi p-1 m-0 prodCatcus" style="text-align:center; display:block;">Build Your PC </span> </a>
         </div>
     </div>
 </div>

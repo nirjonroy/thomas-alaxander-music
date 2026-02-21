@@ -51,7 +51,7 @@
                             <div class="p-4 flex items-center">
                                 <img src="{{asset('uploads/custom-images/'.$product->thumb_image)}}" alt="{{ $product->name }}" class="w-20 h-20 object-cover rounded-full mr-4" />
                                 <div>
-                                    <h3 class="text-xl font-semibold text-gray-800">{{ $product->name }}</h3>
+                                    <p class="text-xl font-semibold text-gray-800">{{ $product->name }}</p>
                                     <p class="text-gray-600 mt-2">${{ $product->price }}</p>
                                 </div>
                             </div>

@@ -153,11 +153,11 @@
     color: rgba(245, 235, 220, 0.6);
     margin-bottom: 8px;
   }
-  .blog-side-card h3 {
+  .blog-side-title {
     margin: 0 0 8px;
     font-size: 18px;
   }
-  .blog-side-card p {
+  .blog-side-text {
     margin: 0 0 12px;
     font-size: 14px;
     color: rgba(245, 235, 220, 0.75);
@@ -339,14 +339,14 @@
                 <aside class="blog-side">
                     <div class="blog-side-card">
                         <span class="blog-side-kicker">Donate</span>
-                        <h3>Support My Work</h3>
-                        <p>If you enjoy this content, consider supporting me with a donation.</p>
+                        <p class="blog-side-title">Support My Work</p>
+                        <p class="blog-side-text">If you enjoy this content, consider supporting me with a donation.</p>
                         <a class="blog-action-btn" href="{{ route('living-archive.donate') }}">Donate</a>
                     </div>
 
                     <div class="blog-side-card">
                         <span class="blog-side-kicker">Subscribe</span>
-                        <h3>Subscribe to My Blog</h3>
+                        <p class="blog-side-title">Subscribe to My Blog</p>
                         <div class="blog-subscribe">
                             <input type="text" placeholder="Name">
                             <input type="email" placeholder="Email address">

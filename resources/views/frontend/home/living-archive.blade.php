@@ -383,7 +383,7 @@
         border-radius: 16px;
         margin-bottom: 16px;
     }
-    .crest-card h3 {
+    .crest-card .crest-title {
         margin: 0 0 8px;
         font-size: 20px;
         color: var(--living-gold);
@@ -449,8 +449,13 @@
         color: var(--living-gold);
         margin-bottom: 10px;
     }
-    .pathway-step h4 {
+    .pathway-step .pathway-title {
         margin: 0 0 10px;
+        color: var(--living-gold);
+    }
+    .media-merch-title {
+        margin: 6px 0 10px;
+        font-size: 18px;
         color: var(--living-gold);
     }
     .media-merch-grid,
@@ -854,7 +859,7 @@
             <div class="crest-grid">
                 <div class="living-card crest-card" id="youth-crest">
                     <img src="{{ $youthCrestImage }}" alt="{{ data_get($crests, 'youth.title', 'Youth Crest - The Listener') }}">
-                    <h3>{{ data_get($crests, 'youth.title', 'Youth Crest - The Listener') }}</h3>
+                    <p class="crest-title">{{ data_get($crests, 'youth.title', 'Youth Crest - The Listener') }}</p>
                     <p class="crest-declaration">{{ data_get($crests, 'youth.declaration', 'We perch where the roof gave way.') }}</p>
                     @foreach($splitParagraphs(data_get($crests, 'youth.body')) as $line)
                         <p>{{ $line }}</p>
@@ -862,7 +867,7 @@
                 </div>
                 <div class="living-card crest-card" id="keeper-crest">
                     <img src="{{ $keeperCrestImage }}" alt="{{ data_get($crests, 'keeper.title', 'Keeper Crest - The Bearer') }}">
-                    <h3>{{ data_get($crests, 'keeper.title', 'Keeper Crest - The Bearer') }}</h3>
+                    <p class="crest-title">{{ data_get($crests, 'keeper.title', 'Keeper Crest - The Bearer') }}</p>
                     <p class="crest-declaration">{{ data_get($crests, 'keeper.declaration', 'As the eagle, I did not blink, for I saw and see it all.') }}</p>
                     @foreach($splitParagraphs(data_get($crests, 'keeper.body')) as $line)
                         <p>{{ $line }}</p>
@@ -870,7 +875,7 @@
                 </div>
                 <div class="living-card crest-card" id="witness-crest">
                     <img src="{{ $witnessCrestImage }}" alt="{{ data_get($crests, 'witness.title', 'Witness Crest - The Elder') }}">
-                    <h3>{{ data_get($crests, 'witness.title', 'Witness Crest - The Elder') }}</h3>
+                    <p class="crest-title">{{ data_get($crests, 'witness.title', 'Witness Crest - The Elder') }}</p>
                     <p class="crest-declaration">{{ data_get($crests, 'witness.declaration', 'We kept the fire when the world went dark.') }}</p>
                     @foreach($splitParagraphs(data_get($crests, 'witness.body')) as $line)
                         <p>{{ $line }}</p>
@@ -891,7 +896,7 @@
                     <div class="living-card pathway-step">
                         <div class="step-badge">Step {{ $index + 1 }}</div>
                         <i class="fa {{ data_get($step, 'icon', 'fa-circle') }}"></i>
-                        <h4>{{ data_get($step, 'title') }}</h4>
+                        <p class="pathway-title">{{ data_get($step, 'title') }}</p>
                         @foreach($splitParagraphs(data_get($step, 'body')) as $line)
                             <p>{{ $line }}</p>
                         @endforeach
@@ -911,7 +916,7 @@
                 <div class="living-card">
                     <span class="living-pill">{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}</span>
                     <img src="{{ data_get($mediaMerch, 'merch.image', $secondaryCrestImage) }}" alt="{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}">
-                    <h3>{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}</h3>
+                    <p class="media-merch-title">{{ data_get($mediaMerch, 'merch.title', 'Merch Crest') }}</p>
                     <p>{{ data_get($mediaMerch, 'merch.body', 'Apparel, scores, and ceremonial items are lineage extensions -- worn and shared to keep the crest visible.') }}</p>
                     <div class="section-cta-row">
                         <a href="{{ data_get($mediaMerch, 'merch.cta_url', route('front.shop')) }}" class="living-primary-btn">
@@ -925,7 +930,7 @@
                 <div class="living-card">
                     <span class="living-pill">{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}</span>
                     <img src="{{ data_get($mediaMerch, 'qr.image', $qrCrestImage) }}" alt="{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}">
-                    <h3>{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}</h3>
+                    <p class="media-merch-title">{{ data_get($mediaMerch, 'qr.title', 'QR Crest') }}</p>
                     <p>{{ data_get($mediaMerch, 'qr.body', "The QR Crest is a digital gateway -- a quiet entry into the archive's living record.") }}</p>
                     <div class="section-cta-row">
                         <a href="{{ data_get($mediaMerch, 'qr.cta_url', '#qr-access') }}" class="living-primary-btn">

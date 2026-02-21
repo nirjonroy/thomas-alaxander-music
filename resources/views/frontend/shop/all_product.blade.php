@@ -180,13 +180,13 @@
         gap: 8px;
         flex: 1;
     }
-    .song-card-body h3 {
+    .song-card-title {
         font-size: 14px;
         margin: 0;
         color: #f7f1e6;
         line-height: 1.4;
     }
-    .song-card-body h3 a {
+    .song-card-title a {
         color: inherit;
     }
     .song-card-price {
@@ -302,11 +302,11 @@
                         <img src="{{ asset('uploads/custom-images2/'.$product->thumb_image) }}" alt="{{ $product->name }}">
                     </a>
                     <div class="song-card-body">
-                        <h3>
+                        <p class="song-card-title">
                             <a href="{{ route('front.product.show', $product->slug ) }}">
                                 {{ \Illuminate\Support\Str::limit($product->name, 30) }}
                             </a>
-                        </h3>
+                        </p>
                         <div class="song-card-price">
                             @if(empty($product->offer_price))
                                 <span class="current_price">${{ $product->price }}</span>

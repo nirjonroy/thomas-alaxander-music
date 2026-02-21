@@ -337,11 +337,11 @@
                         @endif
                     </div>
                     <div class="video-card-body">
-                        <h3 class="video-card-title">
+                        <p class="video-card-title">
                             <a href="{{ $video->url }}" target="_blank" rel="noopener">
                                 {{ Str::limit($video->title, 40) }}
                             </a>
-                        </h3>
+                        </p>
                         <a href="{{ $video->url }}" target="_blank" rel="noopener" class="video-card-cta">
                             <i class="fa fa-play"></i> Watch Now
                         </a>

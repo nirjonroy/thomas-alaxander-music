@@ -22,7 +22,7 @@
               alt="Appetizers"
               class="w-full h-48 object-fill mb-4 rounded-lg"
             />
-            <h3 class="text-xl font-bold text-black mb-2">{{ $product->name}} </h3>
+            <p class="text-xl font-bold text-black mb-2">{{ $product->name}} </p>
             <p class="text-gray-600">
                 {!! \Illuminate\Support\Str::limit($product->long_description, 120) !!}
             </p>

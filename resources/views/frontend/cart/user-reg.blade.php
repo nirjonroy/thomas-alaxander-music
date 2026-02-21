@@ -70,7 +70,7 @@
 
 
 <div id="message" style="background: #f86b1e; margin-bottom:10px">
-  <h3>Password must contain the following:</h3>
+  <p>Password must contain the following:</p>
   <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
   <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
   <p id="number" class="invalid">A <b>number</b></p>

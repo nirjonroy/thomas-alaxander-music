@@ -524,10 +524,10 @@
                                     <!--</div>-->
                                 </div>
                                 <div class="product_content " style="border-top:3px solid #EDEDEF; margin-top: 10%; ">
-                                    <h4 class="ps-1" style="height: 40px;">
+                                    <p class="ps-1" style="height: 40px;">
                                          
                                         <a href="{{ route('front.product.show', $product->product->slug ) }}" class="font-16" style="font-size:14px">{{ \Illuminate\Support\Str::limit($product->product->name, 50)}}</a>
-                                    </h4>
+                                    </p>
                                    
                                     <div class="price_box ps-1" style="padding-bottom: 0px; margin-top:13%;">
                                         @if(empty($product->product->offer_price))

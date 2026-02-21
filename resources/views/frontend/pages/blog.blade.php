@@ -326,7 +326,7 @@
                             <span class="blog-tag">{{ $tag }}</span>
                         </a>
                         <div class="blog-card-body">
-                            <h3 class="blog-card-title">{{ \Illuminate\Support\Str::limit($blog->title, 60) }}</h3>
+                            <p class="blog-card-title">{{ \Illuminate\Support\Str::limit($blog->title, 60) }}</p>
                             <p class="blog-card-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 90) }}</p>
                             <div class="blog-card-footer">
                                 <span>{{ date('F j, Y', strtotime($blog->created_at)) }}</span>
