@@ -229,7 +229,14 @@
 @endpush
 @section('seos')
     @php
-        $seoSetting = \App\Models\SeoSetting::where('page_name', 'Blog')->first();
+        $seoSetting = \App\Models\SeoSetting::forPage([
+            'Blog',
+            'Blogs',
+            'Thomas Alexander Blog',
+            'Thomas Alexander Blogs',
+            'THOMAS ALEXANDER Blogs',
+            'Blog Page',
+        ], '%Blog%', '%Detail%');
         $pageTitle = optional($seoSetting)->seo_title ?? 'Thomas Alexander | Blog';
         $pageDesc = optional($seoSetting)->seo_description ?? 'Stories, ceremonies, and updates from the Living Archive.';
         $pageUrl = url()->current();

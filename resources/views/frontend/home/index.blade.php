@@ -1,13 +1,20 @@
-@extends('frontend.app')
+﻿@extends('frontend.app')
 @push('css')
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 @endpush
 @section('seos')
     @php
-        $seoSetting = \App\Models\SeoSetting::where('page_name', 'Home Page')->first();
+        $seoSetting = \App\Models\SeoSetting::forPage([
+            'Home Page',
+            'Home',
+            'Thomas Alexander | Home',
+            'THOMAS ALEXANDER|Home',
+            'THOMAS ALEXANDER| Home',
+            'Thomas Alexander|Home',
+        ], '%Home%');
         $pageTitle = optional($seoSetting)->seo_title ?? 'Thomas Alexander | Home';
-        $pageDesc = optional($seoSetting)->seo_description ?? 'Official home of Thomas Alexander — explore music, events, and ceremonial merchandise.';
+        $pageDesc = optional($seoSetting)->seo_description ?? 'Official home of Thomas Alexander - explore music, events, and ceremonial merchandise.';
         $pageUrl = url()->current();
         $canonical = optional($seoSetting)->canonical_url ?: $pageUrl;
         $keywords = optional($seoSetting)->seo_keywords ?? 'Thomas Alexander, music, Living Archive';

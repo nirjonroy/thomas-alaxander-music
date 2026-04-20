@@ -3,7 +3,11 @@
 @section('seos')
     @php
         $seoSettings = $seoSettings
-            ?? \App\Models\SeoSetting::where('page_name', 'Living Archive')->first()
+            ?? \App\Models\SeoSetting::forPage([
+                'Living Archive',
+                'The Living Archive',
+                'Living Archive Page',
+            ], '%Living Archive%')
             ?? DB::table('seo_settings')->where('id', 1)->first();
 
         $siteName = $seoSettings->site_name ?? config('app.name', 'Living Archive');

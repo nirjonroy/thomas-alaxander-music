@@ -2,7 +2,13 @@
 
 @section('seos')
     @php
-        $SeoSettings = \App\Models\SeoSetting::where('page_name', 'About Us')->first();
+        $SeoSettings = \App\Models\SeoSetting::forPage([
+            'About Us',
+            'About',
+            'About Thomas Alexander',
+            'About Us: Thomas Alexander',
+            'About Us Thomas Alexander',
+        ], '%About%');
         $pageTitle = optional($SeoSettings)->seo_title ?? 'About Thomas Alexander';
         $pageDesc = optional($SeoSettings)->seo_description ?? "Learn about Thomas Alexander's musical legacy.";
         $pageUrl = url()->current();

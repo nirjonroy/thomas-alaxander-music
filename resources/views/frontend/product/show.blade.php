@@ -8,7 +8,12 @@
         $imageUrl = $product->thumb_image
             ? asset('uploads/custom-images2/' . ltrim($product->thumb_image, '/'))
             : asset(siteInfo()->logo);
-        $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Product Details')->first();
+        $seoDefaults = \App\Models\SeoSetting::forPage([
+            'Product Details',
+            'Product Detail',
+            'Product Page',
+            'Product',
+        ], '%Product%Detail%');
         $canonical = optional($seoDefaults)->canonical_url ?: $pageUrl;
         $keywords = optional($seoDefaults)->seo_keywords ?? ($product->name . ', Thomas Alexander merchandise');
         $authorMeta = optional($seoDefaults)->seo_author ?? 'Thomas Alexander';

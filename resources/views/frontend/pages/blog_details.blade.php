@@ -239,7 +239,12 @@
         $pageTitle = $blog->meta_title ?? $blog->seo_title ?? $blog->title;
         $pageUrl   = url()->current();
         $imageUrl  = $blog->image ? asset($blog->image) : null;
-        $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Blog Details')->first();
+        $seoDefaults = \App\Models\SeoSetting::forPage([
+            'Blog Details',
+            'Blog Detail',
+            'Blog Post',
+            'Blog Post Details',
+        ], '%Blog%Detail%');
         $siteName = $blog->site_name ?: (optional($seoDefaults)->site_name ?? config('app.name', 'Thomas Alexander'));
         $pageTitle = $pageTitle ?: (optional($seoDefaults)->meta_title ?? $siteName);
         $rawDesc = $blog->meta_description ?: ($blog->seo_description ?: $blog->description);
