@@ -26,6 +26,8 @@
                                 <tr>
                                     <th>{{__('admin.SN')}}</th>
                                     <th>{{__('admin.Name')}}</th>
+                                    <th>{{__('admin.Slug')}}</th>
+                                    <th>{{__('admin.Image')}}</th>
                                     <th>Date</th>
                                   	<th>Time</th>
                                     <th>{{__('admin.Status')}}</th>
@@ -37,10 +39,14 @@
                                     <tr>
                                         <td>{{ ++$index }}</td>
                                         <td>{{ $event->name }}</td>
+                                        <td>{{ $event->slug }}</td>
                                         <td>
-                                            <img src="{{ asset('uploads/custom-images2/'.$event->image) }}" alt="" class="category_image">
+                                            @if($event->image)
+                                                <img src="{{ asset('uploads/custom-images2/'.$event->image) }}" alt="" class="category_image">
+                                            @endif
                                         </td>
-                                        <td> {{$event->serial}}</td>
+                                        <td>{{ $event->date }}</td>
+                                        <td>{{ $event->time }}</td>
                                         <td>
                                             @if($event->status == 1)
                                             <a href="javascript:;" onclick="changeProductCategoryStatus({{ $event->id }})">

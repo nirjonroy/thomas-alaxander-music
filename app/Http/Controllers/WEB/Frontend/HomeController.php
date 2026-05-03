@@ -844,8 +844,10 @@ public function shop(Request $request, $slug = null)
       	//dd($contact);
     }
     
-    public function event_review(Request $r, Event $event) // resolved by ID
+    public function event_review(Request $r, string $eventSlug)
     {
+        $event = $this->findEventForUrl($eventSlug);
+
         if (!optional($event->starts_at)->isPast()) {
             return back()->withErrors(['review' => 'Reviews open after the event ends.']);
         }
@@ -870,14 +872,43 @@ public function shop(Request $request, $slug = null)
         );
     }
 
-    public function event_show(Event $event)
+    public function event_review_legacy(Request $request, string $eventSlug)
     {
+        return $this->event_review($request, $eventSlug);
+    }
+
+    public function event_show(string $eventSlug)
+    {
+        $event = $this->findEventForUrl($eventSlug);
+
+        if (ctype_digit($eventSlug) && $event->slug) {
+            return redirect()->route('front.events.show', $event, 301);
+        }
+
         $reviews  = $event->reviews()->latest()->paginate(10);
     
         $startsAt = \Carbon\Carbon::parse(trim(($event->date ?? '').' '.($event->time ?? '')));
         $hasEnded = $startsAt ? $startsAt->isPast() : false;
     
         return view('frontend.pages.show_event', compact('event','reviews','hasEnded','startsAt'));
+    }
+
+    public function event_show_legacy(string $eventSlug)
+    {
+        $event = $this->findEventForUrl($eventSlug);
+
+        return redirect()->route('front.events.show', $event, 301);
+    }
+
+    private function findEventForUrl(string $eventSlug): Event
+    {
+        $query = Event::where('slug', $eventSlug);
+
+        if (ctype_digit($eventSlug)) {
+            $query->orWhere('id', $eventSlug);
+        }
+
+        return $query->firstOrFail();
     }
 
     

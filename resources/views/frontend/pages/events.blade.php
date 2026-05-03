@@ -119,7 +119,7 @@
         <div class="event-card">
             <div class="event-map">
                 @if(!empty($product->image))
-                <a href="{{ route('front.events.show', $product->id) }}">
+                <a href="{{ route('front.events.show', $product) }}">
                     <img src="{{ asset('uploads/custom-images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid w-100" style="height: auto; max-height: 200px; object-fit: contain;"
                     onclick="showEventImage('{{ asset('uploads/custom-images/' . $product->image) }}')"
                     >
@@ -136,7 +136,7 @@
                 @endif
             </div>
             <div class="event-content">
-                <a href="{{ route('front.events.show', $product->id) }}">
+                <a href="{{ route('front.events.show', $product) }}">
                 <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
                 <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
                 <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>

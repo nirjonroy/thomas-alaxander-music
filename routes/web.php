@@ -352,7 +352,10 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::resource('product-category', ProductCategoryController::class);
     Route::put('product-category-status/{id}', [ProductCategoryController::class,'changeStatus'])->name('product.category.status');
 
-    Route::get('all-events', [EventController::class, 'index'])->name('event.index');
+    Route::get('event', [EventController::class, 'index'])->name('event.index');
+    Route::get('all-events', function () {
+        return redirect()->route('admin.event.index', [], 301);
+    })->name('event.legacy');
     Route::get('create-events', [EventController::class, 'create'])->name('event.create');
     Route::get('edit-events/{id}', [EventController::class, 'edit'])->name('event.edit');
     Route::post('event-delete/{id}', [EventController::class, 'destroy'])->name('event.destroy');
@@ -803,9 +806,14 @@ Route::group(['as' => 'front.'], function(){
         Route::get('all-category', 'all_category')->name('category.all');
         Route::get('/contact-us', 'contact_us')->name('contact_us');
         Route::get('/blog', 'blog')->name('blog');
-        Route::get('/all-events', 'event')->name('events');
-         Route::get('/events/{event}','event_show')->name('events.show');
-        Route::post('/events/{event}/reviews', 'event_review')->name('events.reviews.store');
+        Route::get('/event', 'event')->name('events');
+        Route::get('/all-events', function () {
+            return redirect()->route('front.events', [], 301);
+        })->name('events.legacy');
+        Route::get('/event/{eventSlug}', 'event_show')->name('events.show');
+        Route::post('/event/{eventSlug}/reviews', 'event_review')->name('events.reviews.store');
+        Route::get('/events/{eventSlug}', 'event_show_legacy')->name('events.show.legacy');
+        Route::post('/events/{eventSlug}/reviews', 'event_review_legacy')->name('events.reviews.store.legacy');
         Route::get('/blog/{slug}', 'blog_details')->name('blog_details');
         Route::get('/blog-details/{slug}', function ($slug) {
             return redirect()->route('front.blog_details', $slug);
@@ -910,8 +918,5 @@ Route::controller(stripePaymentController::class)->group(function(){
 });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-
-
-
 
 

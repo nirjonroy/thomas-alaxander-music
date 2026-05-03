@@ -576,7 +576,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
         <div class="event-card">
             <div class="event-map">
-                 <a href="{{ route('front.events.show', $product->id) }}">
+                 <a href="{{ route('front.events.show', $product) }}">
                 @if(!empty($product->image))
                     <img src="{{ asset('uploads/custom-images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid w-100" style="height: auto; max-height: 200px; object-fit: contain;"
                     onclick="showEventImage('{{ asset('uploads/custom-images/' . $product->image) }}')"
@@ -594,7 +594,7 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
                 </a>
             </div>
             <div class="event-content">
-                 <a href="{{ route('front.events.show', $product->id) }}">
+                 <a href="{{ route('front.events.show', $product) }}">
                 <div class="event-title">{{ \Illuminate\Support\Str::limit($product->name, 50) }}</div>
                 <div class="event-price">${{ $product->ticket_price ?? 0 }}</div>
                 <div class="event-info"><i class="fa fa-map-marker-alt"></i> {{ \Illuminate\Support\Str::limit($product->location, 35) }}</div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Event;
 use App\Models\Product;
 use Illuminate\Http\Response;
 
@@ -30,6 +31,12 @@ class SitemapController extends Controller
                 'priority' => '0.7',
             ],
             [
+                'loc' => route('front.events'),
+                'lastmod' => now()->toAtomString(),
+                'changefreq' => 'weekly',
+                'priority' => '0.7',
+            ],
+            [
                 'loc' => route('front.home.living-archive'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'weekly',
@@ -49,6 +56,21 @@ class SitemapController extends Controller
                 ];
             })->toArray();
 
+        $eventUrls = Event::query()
+            ->where('status', 1)
+            ->whereNotNull('slug')
+            ->where('slug', '!=', '')
+            ->latest('updated_at')
+            ->get(['slug','updated_at','created_at'])
+            ->map(function ($event) {
+                return [
+                    'loc' => route('front.events.show', $event->slug),
+                    'lastmod' => optional($event->updated_at ?? $event->created_at)->toAtomString() ?? now()->toAtomString(),
+                    'changefreq' => 'weekly',
+                    'priority' => '0.6',
+                ];
+            })->toArray();
+
         $productUrls = Product::query()
             ->where('status', 1)
             ->latest('updated_at')
@@ -62,7 +84,7 @@ class SitemapController extends Controller
                 ];
             })->toArray();
 
-        $urls = array_merge($staticUrls, $blogUrls, $productUrls);
+        $urls = array_merge($staticUrls, $blogUrls, $eventUrls, $productUrls);
 
         return response()
             ->view('frontend.sitemap', compact('urls'))

@@ -1,46 +1,48 @@
 @extends('frontend.app')
 
-@section('title', $event->name)
+@section('title', $event->meta_title ?: ($event->seo_title ?: $event->name))
 @section('seos')
 @php
     use Illuminate\Support\Str;
 
     $eventName = $event->name;
     $pageUrl   = url()->current();
-    $desc      = Str::limit(strip_tags($event->description ?? ''), 180);
     $seoDefaults = \App\Models\SeoSetting::where('page_name', 'Events')->first();
-    $siteName = optional($seoDefaults)->site_name ?? (siteInfo()->site_name ?? 'Website');
-    $keywords = optional($seoDefaults)->seo_keywords ?? $eventName;
-    $author = optional($seoDefaults)->seo_author ?? $siteName;
-    $publisher = optional($seoDefaults)->seo_publisher ?? $siteName;
-    $copyright = optional($seoDefaults)->meta_copyright;
+    $siteName = $event->site_name ?: (optional($seoDefaults)->site_name ?? (siteInfo()->site_name ?? 'Website'));
+    $pageTitle = $event->meta_title ?: ($event->seo_title ?: $eventName);
+    $rawDesc = $event->meta_description ?: ($event->seo_description ?: ($event->description ?: $eventName));
+    $desc = Str::limit(strip_tags($rawDesc), 180);
+    $canonical = $event->canonical_url ?: $pageUrl;
+    $keywords = $event->seo_keywords ?: (optional($seoDefaults)->seo_keywords ?? $eventName);
+    $author = $event->seo_author ?: (optional($seoDefaults)->seo_author ?? $siteName);
+    $publisher = $event->seo_publisher ?: (optional($seoDefaults)->seo_publisher ?? $siteName);
+    $copyright = $event->meta_copyright ?: optional($seoDefaults)->meta_copyright;
 
-    // Resolve image to an absolute URL
     $imgRaw = $event->image;
     $eventImage = null;
     if ($imgRaw) {
         if (preg_match('#^(https?:)?//#', $imgRaw)) {
-            $eventImage = $imgRaw;                     // already absolute (CDN/S3)
+            $eventImage = $imgRaw;
         } elseif (strpos($imgRaw, '/') !== false) {
-            $eventImage = asset($imgRaw);              // e.g. 'uploads/.../file.jpg'
+            $eventImage = asset($imgRaw);
         } else {
             $eventImage = asset('uploads/custom-images/'.$imgRaw);
         }
     }
-    $metaImageValue = optional($seoDefaults)->meta_image;
+    $metaImageValue = $event->meta_image ?: optional($seoDefaults)->meta_image;
     $metaImage = $eventImage ?: ($metaImageValue
         ? (str_starts_with($metaImageValue, 'http') ? $metaImageValue : asset($metaImageValue))
         : asset(siteInfo()->logo));
 
-    // Dates for structured data
     $start = \Carbon\Carbon::parse(trim(($event->date ?? '').' '.($event->time ?? '')));
     $end   = $start ? (clone $start)->addHours(3) : null;
 @endphp
 
-<title>{{ $eventName }}</title>
-<link rel="canonical" href="{{ $pageUrl }}"/>
+<title>{{ $pageTitle }}</title>
+<link rel="canonical" href="{{ $canonical }}"/>
 
 <meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="title" content="{{ $pageTitle }}">
 <meta name="keywords" content="{{ $keywords }}">
 <meta name="author" content="{{ $author }}">
 <meta name="publisher" content="{{ $publisher }}">
@@ -51,18 +53,19 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{{ $siteName }}">
-<meta property="og:title" content="{{ $eventName }}">
+<meta property="og:title" content="{{ $pageTitle }}">
 <meta property="og:description" content="{{ $desc }}">
-<meta property="og:url" content="{{ $pageUrl }}">
+<meta property="og:url" content="{{ $canonical }}">
 <meta property="og:image" content="{{ $metaImage }}">
 <meta property="og:image:secure_url" content="{{ $metaImage }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{{ $eventName }}">
+<meta property="og:image:alt" content="{{ $pageTitle }}">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ $eventName }}">
+<meta name="twitter:title" content="{{ $pageTitle }}">
 <meta name="twitter:description" content="{{ $desc }}">
+<meta name="twitter:url" content="{{ $canonical }}">
 <meta name="twitter:image" content="{{ $metaImage }}">
 
 <script type="application/ld+json">
@@ -86,7 +89,7 @@
     "price": {{ json_encode((string)($event->ticket_price ?? 0)) }},
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
-    "url": {{ json_encode($pageUrl) }}
+    "url": {{ json_encode($canonical) }}
   },
   "organizer": {
     "@type": "Organization",
@@ -97,263 +100,516 @@
 </script>
 @endsection
 
-
 @section('content')
-<div class="ms_content_wrapper padder_top8">
-  <div class="ms_index_wrapper common_pages_space">
+@php
+  $eventImageSrc = null;
+  if (!empty($event->image)) {
+      $img = $event->image;
+      if (preg_match('#^(https?:)?//#', $img)) {
+          $eventImageSrc = $img;
+      } elseif (strpos($img, '/') !== false) {
+          $eventImageSrc = asset($img);
+      } else {
+          $eventImageSrc = asset('uploads/custom-images/'.$img);
+      }
+  }
 
-    <div class="container event-page">
-      <div class="event-grid"><!-- GRID instead of bootstrap row -->
+  $eventImageSrc = $eventImageSrc ?: asset(siteInfo()->logo);
+  $eventPageTitle = $event->meta_title ?: ($event->seo_title ?: $event->name);
+  $eventPageUrl = $event->canonical_url ?: url()->current();
+  $displayDate = optional($startsAt)->format('F j, Y');
+  $displayTime = optional($startsAt)->format('h:i A');
+  $ticketPrice = is_numeric($event->ticket_price)
+      ? ((float) $event->ticket_price > 0 ? '$'.number_format((float) $event->ticket_price, 2) : 'Free')
+      : ($event->ticket_price ?: 'Free');
+  $shareUrl = urlencode($eventPageUrl);
+  $shareTitle = urlencode($eventPageTitle);
+@endphp
 
-        {{-- LEFT: poster + meta + description --}}
-        <div class="ep-left">
-          <div class="card ep-card shadow-sm border-0">
-            @php
-              // Resolve event image to a valid URL
-              $src = null;
-              if (!empty($event->image)) {
-                  $img = $event->image;
-                  if (preg_match('#^(https?:)?//#', $img)) {
-                      $src = $img;                       // full URL / CDN
-                  } elseif (strpos($img, '/') !== false) {
-                      $src = asset($img);                // relative like uploads/...
-                  } else {
-                      $src = asset('uploads/custom-images/'.$img); // filename only
-                  }
-              }
-            @endphp
+<div class="ms_index_wrapper common_pages_space event-detail-page">
+  <div class="event-detail-shell" style="--detail-bg: url('{{ $eventImageSrc }}');">
+    <div class="event-detail-content">
+      <div class="event-detail-hero">
+        <div class="event-detail-hero-content">
+          <div class="event-share">
+            <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}" target="_blank" rel="noopener">
+              <i class="fa-brands fa-x-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $shareUrl }}&title={{ $shareTitle }}" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+          </div>
+          <span class="event-detail-date">{{ $displayDate }} @if($displayTime) at {{ $displayTime }} @endif</span>
+          <h1 class="event-detail-title">{{ $event->name }}</h1>
+          <div class="event-detail-meta">
+            @if(!empty($event->location))
+              <span><i class="fa fa-map-marker-alt"></i> {{ $event->location }}</span>
+            @endif
+            @if($displayDate)
+              <span><i class="fa fa-calendar-alt"></i> {{ $displayDate }}</span>
+            @endif
+            @if($displayTime)
+              <span><i class="fa fa-clock"></i> {{ $displayTime }}</span>
+            @endif
+            <span><i class="fa fa-ticket-alt"></i> {{ $ticketPrice }}</span>
+          </div>
+        </div>
+        <div class="event-detail-hero-media" style="--hero-image: url('{{ $eventImageSrc }}');"></div>
+      </div>
 
-            @if ($src)
-              <img src="{{ $src }}" class="card-img-top ep-img" alt="{{ $event->name }}">
-            @elseif (!empty($event->location))
-              <div class="ratio ratio-16x9">
+      <div class="event-detail-body">
+        <main class="event-article">
+          <h2>{{ $event->name }}</h2>
+          <div class="event-article-meta">
+            {{ $displayDate }} @if($displayTime) - {{ $displayTime }} @endif
+          </div>
+          <div class="event-article-content">
+            @if(!empty($event->description))
+              {!! $event->description !!}
+            @else
+              <p>Event details will be updated soon.</p>
+            @endif
+          </div>
+
+          <section class="event-review-section">
+            <h2>Reviews</h2>
+            @forelse($reviews as $rev)
+              <div class="event-review-item">
+                <div class="event-review-head">
+                  <strong>{{ $rev->user->name ?? $rev->name ?? 'Anonymous' }}</strong>
+                  @if($rev->rating)
+                    <span class="event-rating" aria-label="Rating {{ $rev->rating }} of 5">
+                      @for($i=1; $i<=5; $i++)
+                        <i class="fa{{ $i <= $rev->rating ? 's' : 'r' }} fa-star"></i>
+                      @endfor
+                      <small>{{ $rev->rating }}/5</small>
+                    </span>
+                  @endif
+                </div>
+                <div class="event-review-date">{{ $rev->created_at->format('F j, Y') }}</div>
+                <p>{{ $rev->comment }}</p>
+              </div>
+            @empty
+              <p class="event-muted">No reviews yet.</p>
+            @endforelse
+
+            <div class="event-pagination">{{ $reviews->links() }}</div>
+          </section>
+
+          <section class="event-review-section">
+            <h2>Leave a Review</h2>
+            @if (!$hasEnded)
+              <div class="event-alert">Reviews will open after the event ends.</div>
+            @else
+              @if (session('ok'))
+                <div class="event-alert event-alert-success">{{ session('ok') }}</div>
+              @endif
+
+              @if ($errors->any())
+                <div class="event-alert event-alert-error">
+                  <ul>
+                    @foreach ($errors->all() as $e)
+                      <li>{{ $e }}</li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endif
+
+              <form method="POST" action="{{ route('front.events.reviews.store', $event) }}" class="event-form">
+                @csrf
+
+                @guest
+                  <div class="event-form-grid">
+                    <label>
+                      <span>Name (optional)</span>
+                      <input type="text" name="name" value="{{ old('name') }}">
+                    </label>
+                    <label>
+                      <span>Email (optional)</span>
+                      <input type="email" name="email" value="{{ old('email') }}">
+                    </label>
+                  </div>
+                @endguest
+
+                <label>
+                  <span>Rating (optional)</span>
+                  <select name="rating">
+                    <option value="">No rating</option>
+                    @for ($i = 5; $i >= 1; $i--)
+                      <option value="{{ $i }}" @selected(old('rating') == $i)>{{ $i }} star{{ $i>1 ? 's' : '' }}</option>
+                    @endfor
+                  </select>
+                </label>
+
+                <label>
+                  <span>Comment</span>
+                  <textarea name="comment" rows="4" required>{{ old('comment') }}</textarea>
+                </label>
+
+                <button type="submit" class="event-action-btn">Submit Review</button>
+              </form>
+            @endif
+          </section>
+        </main>
+
+        <aside class="event-side">
+          @if(!empty($event->location))
+            <div class="event-side-card event-map-card">
+              <span class="event-side-kicker">Location</span>
+              <p class="event-side-title">{{ $event->location }}</p>
+              <div class="event-map">
                 <iframe
                   src="https://www.google.com/maps?q={{ urlencode($event->location) }}&output=embed"
-                  allowfullscreen loading="lazy"></iframe>
+                  allowfullscreen
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
-            @else
-              <img src="{{ asset(siteInfo()->logo) }}" class="card-img-top ep-img" alt="{{ $event->name }}">
-            @endif
-
-            <div class="card-body ep-meta">
-              <h1 class="ep-title mb-2">{{ $event->name }}</h1>
-
-              @if(!empty($event->location))
-                <div class="small ep-muted mb-2">
-                  <i class="fa fa-map-marker-alt me-1"></i> {{ $event->location }}
-                </div>
-              @endif
-
-              @php
-                $startsAt = \Carbon\Carbon::parse(trim(($event->date ?? '').' '.($event->time ?? '')));
-              @endphp
-              @if($startsAt)
-                <div class="small ep-muted mb-2">
-                  <i class="fa fa-calendar-alt me-1"></i> {{ $startsAt->format('M d, Y h:i A') }}
-                </div>
-              @endif
-
-              @if(!is_null($event->ticket_price))
-                <div class="ep-price">
-                  <strong>Price:</strong>
-                  {{ $event->ticket_price > 0 ? '$'.number_format($event->ticket_price,2) : 'Free' }}
-                </div>
-              @endif
-            </div>
-          </div>
-
-          @if(!empty($event->description))
-            <div class="card ep-card shadow-sm border-0 mt-3">
-              <div class="card-body">{!! $event->description !!}</div>
             </div>
           @endif
-        </div>
 
-        {{-- RIGHT: reviews + form --}}
-        <div class="ep-right">
-
-          {{-- Reviews list --}}
-          <div class="card ep-card shadow-sm border-0 mb-3">
-            <div class="card-body">
-              <h2 class="ep-subtitle mb-3">Reviews</h2>
-
-              @forelse($reviews as $rev)
-                <div class="ep-item border rounded p-3 mb-3">
-                  <div class="d-flex justify-content-between flex-wrap gap-2">
-                    <strong>{{ $rev->user->name ?? $rev->name ?? 'Anonymous' }}</strong>
-
-                    @if($rev->rating)
-                      <span class="text-warning" aria-label="Rating {{ $rev->rating }} of 5">
-                        @for($i=1; $i<=5; $i++)
-                          <i class="fa{{ $i <= $rev->rating ? 's' : 'r' }} fa-star"></i>
-                        @endfor
-                        <small class="ep-muted">{{ $rev->rating }}/5</small>
-                      </span>
-                    @endif
-                  </div>
-                  <div class="small ep-muted">{{ $rev->created_at->format('M d, Y') }}</div>
-                  <p class="mb-0 mt-2">{{ $rev->comment }}</p>
+          <div class="event-side-card">
+            <span class="event-side-kicker">Event</span>
+            <p class="event-side-title">Details</p>
+            <dl class="event-detail-list">
+              @if($displayDate)
+                <div>
+                  <dt>Date</dt>
+                  <dd>{{ $displayDate }}</dd>
                 </div>
-              @empty
-                <p class="ep-muted mb-0">No reviews yet.</p>
-              @endforelse
-
-              <div class="mt-3">{{ $reviews->links() }}</div>
-            </div>
-          </div>
-
-          {{-- Review form (opens only after event ends) --}}
-          <div class="card ep-card shadow-sm border-0">
-            <div class="card-body">
-              <h2 class="ep-subtitle mb-3">Leave a review</h2>
-
-              @if (!$hasEnded)
-                <div class="alert alert-info mb-0">Reviews will open after the event ends.</div>
-              @else
-                @if (session('ok'))
-                  <div class="alert alert-success">{{ session('ok') }}</div>
-                @endif
-
-                @if ($errors->any())
-                  <div class="alert alert-danger">
-                    <ul class="mb-0">
-                      @foreach ($errors->all() as $e)
-                        <li>{{ $e }}</li>
-                      @endforeach
-                    </ul>
-                  </div>
-                @endif
-
-                <form method="POST" action="{{ route('front.events.reviews.store', $event->id) }}" class="ep-form">
-                  @csrf
-
-                  @guest
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <label class="form-label">Name (optional)</label>
-                      <input type="text" name="name" class="form-control ep-control" value="{{ old('name') }}">
-                    </div>
-                    <div class="col-md-6">
-                      <label class="form-label">Email (optional)</label>
-                      <input type="email" name="email" class="form-control ep-control" value="{{ old('email') }}">
-                    </div>
-                  </div>
-                  @endguest
-
-                  <div class="mt-3">
-                    <label class="form-label">Rating (optional)</label>
-                    <select name="rating" class="form-select ep-control">
-                      <option value="">No rating</option>
-                      @for ($i = 5; $i >= 1; $i--)
-                        <option value="{{ $i }}" @selected(old('rating') == $i)>{{ $i }} star{{ $i>1 ? 's' : '' }}</option>
-                      @endfor
-                    </select>
-                  </div>
-
-                  <div class="mt-3">
-                    <label class="form-label">Comment</label>
-                    <textarea name="comment" rows="4" required class="form-control ep-control">{{ old('comment') }}</textarea>
-                  </div>
-
-                  <button class="btn btn-danger ep-submit mt-3">Submit review</button>
-                </form>
               @endif
-            </div>
+              @if($displayTime)
+                <div>
+                  <dt>Time</dt>
+                  <dd>{{ $displayTime }}</dd>
+                </div>
+              @endif
+              <div>
+                <dt>Price</dt>
+                <dd>{{ $ticketPrice }}</dd>
+              </div>
+            </dl>
           </div>
 
-        </div><!-- /ep-right -->
-
-      </div><!-- /event-grid -->
-    </div><!-- /container -->
-
+          <div class="event-side-card">
+            <span class="event-side-kicker">Browse</span>
+            <p class="event-side-title">More Events</p>
+            <a class="event-action-btn" href="{{ route('front.events') }}">Back to Events</a>
+          </div>
+        </aside>
+      </div>
+    </div>
   </div>
 </div>
 
 <style>
-  /* ===== Layout: use a robust CSS grid just for this page ===== */
-  .event-page{ max-width:1200px; margin:16px auto; }
-  .event-grid{
-    display:grid;
-    grid-template-columns: minmax(0,5fr) minmax(0,7fr); /* poster / reviews */
-    gap:24px;
-    align-items:start;
+  .event-detail-page {
+    padding: 36px 24px 40px;
   }
-
-  /* Stack on tablets/phones */
-  @media (max-width: 991.98px){
-    .event-grid{ grid-template-columns: 1fr; }
+  .event-detail-shell {
+    position: relative;
+    width: 100%;
+    border-radius: 26px;
+    padding: 28px;
+    background: linear-gradient(140deg, #0c1424 0%, #0b1626 52%, #0a111f 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 70px rgba(6, 10, 18, 0.55);
+    overflow: hidden;
   }
-
-  /* Make sure any bootstrap floats/widths don’t interfere */
-  .event-grid > *{ min-width:0; }
-  .event-grid > [class*="col"]{ float:none !important; width:auto !important; max-width:none !important; padding:0 !important; }
-
-  /* ===== Theme-matching visuals ===== */
-  .event-page .card.ep-card{
-    background:#0e1b2d !important;
-    border:1px solid rgba(255,255,255,.08) !important;
-    border-radius:12px;
-    color:#e6eef7;
+  .event-detail-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--detail-bg);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
   }
-  .event-page .ep-item{
-    background:#0c1b2e !important;
-    border:1px solid #22334a !important;
-    color:#e6eef7;
+  .event-detail-content {
+    position: relative;
+    z-index: 1;
+    color: #f7f1e6;
   }
-  .event-page .ep-muted{ color:#9fb2c8 !important; }
-
-  /* Titles (no tiny headings) */
-  .event-page .ep-title{ font-size:22px; line-height:1.3; font-weight:700; }
-  .event-page .ep-subtitle{ font-size:18px; line-height:1.35; font-weight:700; }
-
-  /* Poster image scales nicely at all widths */
-  .event-page .ep-img{
-    display:block;
-    width:100%;
-    height:auto;           /* natural aspect */
-    max-height: 620px;     /* comfortable cap on large screens */
-    object-fit:contain;    /* keep the whole poster visible */
-    background:#0b1b2f;    /* letterbox bands look intentional */
-    border-radius:12px;
+  .event-detail-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgba(12, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
-  @media (max-width: 575.98px){
-    .event-page .ep-img{ max-height:70vh; }
+  .event-detail-hero-content {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-
-  /* Meta text sizing (fix “tiny red text”) */
-  .event-page .ep-meta{ font-size:15px; line-height:1.6; }
-  .event-page .ep-meta .small,
-  .event-page .ep-meta small{ font-size:15px !important; }
-  .event-page .text-danger{ color:#ff5176 !important; }
-
-  /* Form controls readable & consistent */
-  .event-page .ep-control,
-  .event-page .form-control,
-  .event-page .form-select{
-    background:#0c1b2e !important;
-    color:#e6eef7 !important;
-    border:1px solid #22334a !important;
-    font-size:16px !important;   /* prevents mobile auto-zoom */
-    line-height:1.45;
-    min-height:46px;
-    padding:10px 12px;
-    width:100%;
-    border-radius:10px;
+  .event-share {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
   }
-  .event-page .form-control:focus,
-  .event-page .form-select:focus{
-    border-color:#3b82f6 !important;
-    box-shadow:none !important;
-    outline:0;
+  .event-share a {
+    color: rgba(245, 235, 220, 0.8);
+    text-decoration: none;
   }
-  .event-page .ep-form .form-select option{ color:#0f223a; }
-  .event-page .ep-form label{ font-size:15px; color:#cdd8e6; }
-
-  /* Submit button */
-  .event-page .ep-submit{
-    font-size:16px;
-    padding:.65rem 1.2rem;
-    border-radius:10px;
+  .event-share a:hover {
+    color: #ff9b60;
+  }
+  .event-detail-date {
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.72);
+  }
+  .event-detail-title {
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.2;
+    color: #f7f1e6;
+  }
+  .event-detail-meta {
+    display: flex;
+    gap: 10px 14px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: rgba(245, 235, 220, 0.78);
+  }
+  .event-detail-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .event-detail-hero-media {
+    background-image: var(--hero-image);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(10, 16, 28, 0.68);
+    min-height: 360px;
+  }
+  .event-detail-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 20px;
+    margin-top: 22px;
+  }
+  .event-article,
+  .event-side-card {
+    background: rgba(12, 18, 30, 0.75);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(245, 235, 220, 0.86);
+  }
+  .event-article {
+    padding: 24px;
+  }
+  .event-article h2,
+  .event-review-section h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    color: #f7f1e6;
+  }
+  .event-article-meta,
+  .event-muted,
+  .event-review-date {
+    font-size: 13px;
+    color: rgba(245, 235, 220, 0.7);
+  }
+  .event-article-meta {
+    margin-bottom: 16px;
+  }
+  .event-article-content {
+    line-height: 1.7;
+  }
+  .event-article-content p,
+  .event-article-content li {
+    font-size: 15px;
+  }
+  .event-review-section {
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .event-review-item {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 12px;
+    background: rgba(10, 16, 28, 0.55);
+  }
+  .event-review-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .event-rating {
+    color: #ffc857;
+    font-size: 13px;
+  }
+  .event-review-item p {
+    margin: 8px 0 0;
+  }
+  .event-pagination {
+    margin-top: 16px;
+  }
+  .event-alert {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(125, 211, 252, 0.18);
+    border: 1px solid rgba(125, 211, 252, 0.28);
+    color: #d9f4ff;
+  }
+  .event-alert-success {
+    background: rgba(34, 197, 94, 0.16);
+    border-color: rgba(34, 197, 94, 0.28);
+  }
+  .event-alert-error {
+    background: rgba(239, 68, 68, 0.16);
+    border-color: rgba(239, 68, 68, 0.28);
+  }
+  .event-alert ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .event-form {
+    display: grid;
+    gap: 14px;
+  }
+  .event-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .event-form label {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+    font-size: 14px;
+    color: rgba(245, 235, 220, 0.82);
+  }
+  .event-form input,
+  .event-form select,
+  .event-form textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(10, 16, 28, 0.65);
+    color: #f7f1e6;
+    font-size: 16px;
+    line-height: 1.45;
+    padding: 10px 12px;
+  }
+  .event-form select option {
+    color: #0f172a;
+  }
+  .event-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(120deg, #ff7a2c, #ff4b2b);
+    color: #1b0d05;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .event-action-btn:hover {
+    color: #1b0d05;
+  }
+  .event-side {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .event-side-card {
+    padding: 18px;
+  }
+  .event-side-kicker {
+    display: inline-flex;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(245, 235, 220, 0.6);
+    margin-bottom: 8px;
+  }
+  .event-side-title {
+    margin: 0 0 12px;
+    font-size: 18px;
+    line-height: 1.35;
+    color: #f7f1e6;
+  }
+  .event-map {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    min-height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(10, 16, 28, 0.65);
+  }
+  .event-map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .event-detail-list {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+  }
+  .event-detail-list div {
+    display: grid;
+    gap: 2px;
+  }
+  .event-detail-list dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(245, 235, 220, 0.55);
+  }
+  .event-detail-list dd {
+    margin: 0;
+    color: rgba(245, 235, 220, 0.88);
+  }
+  @media (max-width: 991px) {
+    .event-detail-page {
+      padding: 28px 18px 36px;
+    }
+    .event-detail-hero,
+    .event-detail-body,
+    .event-form-grid {
+      grid-template-columns: 1fr;
+    }
+    .event-detail-hero-media {
+      min-height: 280px;
+    }
+    .event-map {
+      aspect-ratio: 16 / 10;
+      min-height: 240px;
+    }
+  }
+  @media (max-width: 576px) {
+    .event-detail-page {
+      padding: 22px 14px 32px;
+    }
+    .event-detail-shell {
+      padding: 18px;
+      border-radius: 20px;
+    }
+    .event-detail-hero-content,
+    .event-article,
+    .event-side-card {
+      padding: 18px;
+    }
+    .event-detail-title {
+      font-size: 25px;
+    }
   }
 </style>
 @endsection
