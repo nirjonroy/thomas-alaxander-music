@@ -8,8 +8,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
+    @hasSection('seos')
+    @else
     <meta name="keywords" content="thomas, alexander, music, t-shirt">
     <meta name="author" content="Thomas Alexander">
+    @endif
     <meta name="MobileOptimized" content="320">
     <!--Start Style -->
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/fonts.css') }}">
