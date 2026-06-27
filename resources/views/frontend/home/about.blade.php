@@ -232,4 +232,6 @@
         </div>
     </div>
 </div>
+
+@include('frontend.partials.closing_identity_bar')
 @endsection

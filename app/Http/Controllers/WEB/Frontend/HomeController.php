@@ -102,6 +102,22 @@ class HomeController extends Controller
             'living_archive_qr_text',
             'living_archive_logo_image',
             'living_archive_hero_image',
+            'dual_identity_enabled',
+            'dual_identity_kicker',
+            'dual_identity_title',
+            'dual_identity_intro',
+            'ceremonial_identity_image',
+            'ceremonial_identity_label',
+            'ceremonial_identity_title',
+            'ceremonial_identity_subtitle',
+            'ceremonial_identity_text',
+            'dual_identity_divider_color',
+            'executive_identity_image',
+            'executive_identity_label',
+            'executive_identity_title',
+            'executive_identity_subtitle',
+            'executive_identity_text',
+            'dual_identity_summary_bar',
             'living_phase1_title',
             'living_phase1_affirmation',
             'living_phase2_title',
@@ -383,6 +399,39 @@ class HomeController extends Controller
                     asset('frontend/living-archive/images/logo.png')
                 ),
                 'hero' => $mediaUrl(optional($settings)->living_archive_hero_image, asset('frontend/living-archive/banner3.jpg')),
+            ],
+            'dual_identity' => [
+                'enabled' => is_null(optional($settings)->dual_identity_enabled)
+                    ? true
+                    : (bool) optional($settings)->dual_identity_enabled,
+                'kicker' => optional($settings)->dual_identity_kicker ?? 'Dual Identity',
+                'title' => optional($settings)->dual_identity_title ?? 'Chief, Elder, Executive Artist',
+                'intro' => optional($settings)->dual_identity_intro
+                    ?? 'A unified presentation of ceremonial stewardship and executive creative leadership.',
+                'divider_color' => optional($settings)->dual_identity_divider_color ?? '#C9A227',
+                'summary_bar' => optional($settings)->dual_identity_summary_bar
+                    ?? 'Chief & Elder • Executive Artist • Founder & Director • The Voice',
+                'ceremonial' => [
+                    'image' => optional($settings)->ceremonial_identity_image
+                        ? $mediaUrl(optional($settings)->ceremonial_identity_image, '')
+                        : '',
+                    'label' => optional($settings)->ceremonial_identity_label ?? 'Ceremonial Identity',
+                    'title' => optional($settings)->ceremonial_identity_title
+                        ?? 'Chief & Elder - Five Feathers Lineage Society',
+                    'subtitle' => optional($settings)->ceremonial_identity_subtitle
+                        ?? 'Lineage Stewardship | Cultural Continuity | Living Archive Leadership',
+                    'text' => optional($settings)->ceremonial_identity_text,
+                ],
+                'executive' => [
+                    'image' => optional($settings)->executive_identity_image
+                        ? $mediaUrl(optional($settings)->executive_identity_image, '')
+                        : '',
+                    'label' => optional($settings)->executive_identity_label ?? 'Executive Identity',
+                    'title' => optional($settings)->executive_identity_title ?? 'Business & Executive Profile',
+                    'subtitle' => optional($settings)->executive_identity_subtitle
+                        ?? 'Founder & Executive Director, The Five Feathers Publishing Company',
+                    'text' => optional($settings)->executive_identity_text,
+                ],
             ],
             'contact' => [
                 'phone' => optional($settings)->living_contact_phone

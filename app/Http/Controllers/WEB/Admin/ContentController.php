@@ -698,6 +698,22 @@ class ContentController extends Controller
             'living_certification_text',
             'living_archive_logo_image',
             'living_archive_hero_image',
+            'dual_identity_enabled',
+            'dual_identity_kicker',
+            'dual_identity_title',
+            'dual_identity_intro',
+            'ceremonial_identity_image',
+            'ceremonial_identity_label',
+            'ceremonial_identity_title',
+            'ceremonial_identity_subtitle',
+            'ceremonial_identity_text',
+            'dual_identity_divider_color',
+            'executive_identity_image',
+            'executive_identity_label',
+            'executive_identity_title',
+            'executive_identity_subtitle',
+            'executive_identity_text',
+            'dual_identity_summary_bar',
             'living_contact_phone',
             'living_contact_email',
             'living_phases_intro',
@@ -831,6 +847,22 @@ class ContentController extends Controller
             'living_certification_text' => 'nullable|string',
             'living_archive_logo_image' => 'nullable|string|max:255',
             'living_archive_hero_image' => 'nullable|string|max:255',
+            'dual_identity_enabled' => 'nullable|boolean',
+            'dual_identity_kicker' => 'nullable|string|max:255',
+            'dual_identity_title' => 'nullable|string|max:255',
+            'dual_identity_intro' => 'nullable|string',
+            'ceremonial_identity_image' => 'nullable|string|max:255',
+            'ceremonial_identity_label' => 'nullable|string|max:255',
+            'ceremonial_identity_title' => 'nullable|string|max:255',
+            'ceremonial_identity_subtitle' => 'nullable|string|max:255',
+            'ceremonial_identity_text' => 'nullable|string',
+            'dual_identity_divider_color' => 'nullable|string|max:40',
+            'executive_identity_image' => 'nullable|string|max:255',
+            'executive_identity_label' => 'nullable|string|max:255',
+            'executive_identity_title' => 'nullable|string|max:255',
+            'executive_identity_subtitle' => 'nullable|string|max:255',
+            'executive_identity_text' => 'nullable|string',
+            'dual_identity_summary_bar' => 'nullable|string|max:255',
             'living_contact_phone' => 'nullable|string|max:120',
             'living_contact_email' => 'nullable|string|max:120',
             'living_phases_intro' => 'nullable|string',
@@ -863,6 +895,8 @@ class ContentController extends Controller
             'living_handoff_footer_line' => 'nullable|string|max:255',
             'living_archive_logo_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             'living_archive_hero_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:6144',
+            'ceremonial_identity_image_upload' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'executive_identity_image_upload' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             'living_crest_primary_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             'living_crest_secondary_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             'living_youth_crest_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
@@ -901,6 +935,9 @@ class ContentController extends Controller
             if (str_contains($field, '_file')) {
                 continue;
             }
+            if (str_contains($field, '_upload')) {
+                continue;
+            }
             if ($request->exists($field)) {
                 $setting->{$field} = $request->input($field, $setting->{$field});
             }
@@ -909,6 +946,8 @@ class ContentController extends Controller
         $uploadMap = [
             'living_archive_logo_image_file' => 'living_archive_logo_image',
             'living_archive_hero_image_file' => 'living_archive_hero_image',
+            'ceremonial_identity_image_upload' => 'ceremonial_identity_image',
+            'executive_identity_image_upload' => 'executive_identity_image',
             'living_crest_primary_image_file' => 'living_crest_primary_image',
             'living_crest_secondary_image_file' => 'living_crest_secondary_image',
             'living_youth_crest_image_file' => 'living_youth_crest_image',

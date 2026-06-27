@@ -69,6 +69,105 @@
 
                         <div class="row">
                             <div class="col-md-12">
+                                <h5 class="mb-3">Dual Identity Section</h5>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Show Dual Identity Section</label>
+                                <input type="hidden" name="dual_identity_enabled" value="0">
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="dualIdentityEnabled" name="dual_identity_enabled" value="1" {{ old('dual_identity_enabled', is_null(optional($setting)->dual_identity_enabled) ? 1 : optional($setting)->dual_identity_enabled) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dualIdentityEnabled">Enabled</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Section Kicker</label>
+                                <input type="text" class="form-control" name="dual_identity_kicker" value="{{ old('dual_identity_kicker', optional($setting)->dual_identity_kicker) }}" placeholder="Dual Identity">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Section Title</label>
+                                <input type="text" class="form-control" name="dual_identity_title" value="{{ old('dual_identity_title', optional($setting)->dual_identity_title) }}" placeholder="Chief, Elder, Executive Artist">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Section Intro</label>
+                                <textarea name="dual_identity_intro" class="form-control" rows="3" placeholder="A unified presentation of ceremonial stewardship and executive creative leadership.">{{ old('dual_identity_intro', optional($setting)->dual_identity_intro) }}</textarea>
+                            </div>
+
+                            <div class="col-md-12">
+                                <h6 class="mb-3">Ceremonial Identity Fields</h6>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ceremonial Portrait Upload</label>
+                                <input type="file" class="form-control" name="ceremonial_identity_image_upload" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                @if(optional($setting)->ceremonial_identity_image)
+                                    <small class="text-muted d-block mt-1">Current: {{ optional($setting)->ceremonial_identity_image }}</small>
+                                @endif
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ceremonial Portrait Path / URL</label>
+                                <input type="text" class="form-control" name="ceremonial_identity_image" value="{{ old('ceremonial_identity_image', optional($setting)->ceremonial_identity_image) }}" placeholder="uploads/living-archive/ceremonial.jpg or https://...">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ceremonial Label</label>
+                                <input type="text" class="form-control" name="ceremonial_identity_label" value="{{ old('ceremonial_identity_label', optional($setting)->ceremonial_identity_label) }}" placeholder="Ceremonial Identity">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ceremonial Title</label>
+                                <input type="text" class="form-control" name="ceremonial_identity_title" value="{{ old('ceremonial_identity_title', optional($setting)->ceremonial_identity_title) }}" placeholder="Chief & Elder - Five Feathers Lineage Society">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ceremonial Subtitle</label>
+                                <input type="text" class="form-control" name="ceremonial_identity_subtitle" value="{{ old('ceremonial_identity_subtitle', optional($setting)->ceremonial_identity_subtitle) }}" placeholder="Lineage Stewardship | Cultural Continuity | Living Archive Leadership">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Full Ceremonial Text Block</label>
+                                <textarea name="ceremonial_identity_text" class="form-control" rows="7">{{ old('ceremonial_identity_text', optional($setting)->ceremonial_identity_text) }}</textarea>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Divider Color</label>
+                                <input type="text" class="form-control" name="dual_identity_divider_color" value="{{ old('dual_identity_divider_color', optional($setting)->dual_identity_divider_color) }}" placeholder="#C9A227">
+                            </div>
+
+                            <div class="col-md-12">
+                                <h6 class="mb-3">Executive Identity Fields</h6>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Executive Portrait Upload</label>
+                                <input type="file" class="form-control" name="executive_identity_image_upload" accept=".jpg,.jpeg,.png,.webp,.svg">
+                                @if(optional($setting)->executive_identity_image)
+                                    <small class="text-muted d-block mt-1">Current: {{ optional($setting)->executive_identity_image }}</small>
+                                @endif
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Executive Portrait Path / URL</label>
+                                <input type="text" class="form-control" name="executive_identity_image" value="{{ old('executive_identity_image', optional($setting)->executive_identity_image) }}" placeholder="uploads/living-archive/executive.jpg or https://...">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Executive Label</label>
+                                <input type="text" class="form-control" name="executive_identity_label" value="{{ old('executive_identity_label', optional($setting)->executive_identity_label) }}" placeholder="Executive Identity">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Executive Title</label>
+                                <input type="text" class="form-control" name="executive_identity_title" value="{{ old('executive_identity_title', optional($setting)->executive_identity_title) }}" placeholder="Business & Executive Profile">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Executive Subtitle</label>
+                                <input type="text" class="form-control" name="executive_identity_subtitle" value="{{ old('executive_identity_subtitle', optional($setting)->executive_identity_subtitle) }}" placeholder="Founder & Executive Director, The Five Feathers Publishing Company">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Full Executive Artist Text Block</label>
+                                <textarea name="executive_identity_text" class="form-control" rows="7">{{ old('executive_identity_text', optional($setting)->executive_identity_text) }}</textarea>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Bottom Signature Bar</label>
+                                <textarea name="dual_identity_summary_bar" class="form-control" rows="2" placeholder="Chief & Elder • Executive Artist • Founder & Director • The Voice">{{ old('dual_identity_summary_bar', optional($setting)->dual_identity_summary_bar) }}</textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
                                 <h5 class="mb-3">Ceremonial Hero</h5>
                             </div>
                             <div class="col-md-6 mb-3">

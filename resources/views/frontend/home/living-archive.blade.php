@@ -634,12 +634,128 @@
             background: var(--living-gold);
             color: #18140d;
         }
+        .dual-identity-section {
+            position: relative;
+            padding: 6rem 0;
+            background: rgba(7, 8, 10, 0.32);
+        }
+        .dual-identity-shell {
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: var(--living-radius);
+            background: linear-gradient(180deg, rgba(16, 16, 18, 0.9), rgba(10, 11, 14, 0.82));
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+            padding: clamp(1.75rem, 4vw, 4rem);
+        }
+        .dual-identity-heading {
+            max-width: 820px;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+        .dual-identity-title {
+            font-family: 'Cinzel', serif;
+            color: #f6edd0;
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            letter-spacing: 0.04em;
+            margin-bottom: 1rem;
+        }
+        .dual-identity-intro,
+        .dual-identity-text {
+            color: rgba(246, 237, 208, 0.72);
+            line-height: 1.85;
+        }
+        .dual-identity-row {
+            display: grid;
+            grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+            gap: clamp(1.75rem, 4vw, 3.5rem);
+            align-items: center;
+        }
+        .dual-identity-row--executive {
+            grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+        }
+        .dual-identity-media {
+            display: flex;
+            justify-content: center;
+        }
+        .dual-identity-portrait {
+            width: min(100%, 340px);
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            border-radius: 18px;
+            border: 1px solid rgba(201, 162, 39, 0.42);
+            box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.08), 0 22px 42px rgba(0, 0, 0, 0.4);
+            background: #050506;
+        }
+        .dual-identity-label {
+            display: inline-block;
+            color: #c9a227;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            margin-bottom: 0.85rem;
+        }
+        .dual-identity-name {
+            font-family: 'Cinzel', serif;
+            color: #f6edd0;
+            font-size: clamp(1.55rem, 2.5vw, 2.35rem);
+            letter-spacing: 0.03em;
+            margin-bottom: 0.7rem;
+        }
+        .dual-identity-subtitle {
+            color: rgba(201, 162, 39, 0.9);
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 1.35rem;
+        }
+        .dual-identity-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: clamp(2.5rem, 5vw, 4rem) auto;
+            color: #c9a227;
+        }
+        .dual-identity-divider::before,
+        .dual-identity-divider::after {
+            content: "";
+            width: min(32vw, 220px);
+            height: 1px;
+            background: currentColor;
+            opacity: 0.6;
+        }
+        .dual-identity-divider-mark {
+            width: 0.65rem;
+            height: 0.65rem;
+            border: 1px solid currentColor;
+            transform: rotate(45deg);
+            background: rgba(201, 162, 39, 0.18);
+        }
+        .dual-identity-summary {
+            margin-top: clamp(2.5rem, 5vw, 4rem);
+            border-top: 1px solid rgba(201, 162, 39, 0.24);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.24);
+            padding: 1.15rem;
+            text-align: center;
+            color: #f6edd0;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.08em;
+        }
         @media (max-width: 991.98px) {
             .living-dark-section {
                 padding: 4.75rem 0;
             }
             .about-three__content {
                 padding: 56px 24px;
+            }
+            .dual-identity-row,
+            .dual-identity-row--executive {
+                grid-template-columns: 1fr;
+            }
+            .dual-identity-row--executive .dual-identity-media {
+                order: -1;
+            }
+            .dual-identity-content {
+                text-align: center;
             }
         }
         @media (max-width: 767.98px) {
@@ -680,6 +796,13 @@
                 margin-left: 0;
                 margin-top: 10px;
             }
+            .dual-identity-section {
+                padding: 4.75rem 0;
+            }
+            .dual-identity-summary {
+                font-size: 0.9rem;
+                letter-spacing: 0.04em;
+            }
         }
     </style>
 @endpush
@@ -696,6 +819,7 @@
     $contactSection = data_get($page, 'contact_section', []);
     $contact = data_get($page, 'contact', []);
     $certification = data_get($page, 'certification', []);
+    $dualIdentity = data_get($page, 'dual_identity', []);
 
     $primaryCrestImage = $crest['primary_image'] ?? asset('frontend/living-archive/Dreamcatcher-style crest.jpeg');
     $secondaryCrestImage = $crest['secondary_image'] ?? asset('frontend/living-archive/crest represents the Five Civilized Tribes.jpeg');
@@ -715,6 +839,13 @@
         $lines = array_map('trim', $lines);
         return array_values(array_filter($lines, fn ($line) => $line !== ''));
     };
+
+    $dualCeremonialText = $splitParagraphs(data_get($dualIdentity, 'ceremonial.text'));
+    $dualExecutiveText = $splitParagraphs(data_get($dualIdentity, 'executive.text'));
+    $dualDividerColor = trim((string) data_get($dualIdentity, 'divider_color', '#C9A227'));
+    if (!preg_match('/^(#[0-9a-fA-F]{3,8}|rgba?\([0-9.,\s%]+\)|[a-zA-Z]+)$/', $dualDividerColor)) {
+        $dualDividerColor = '#C9A227';
+    }
 
     $iconSvg = function ($name, $classes = '') {
         $normalized = trim((string) $name);
@@ -966,6 +1097,60 @@
             </div>
         </div>
     </section>
+
+    @if (data_get($dualIdentity, 'enabled', true))
+        <section id="dual-identity" class="dual-identity-section">
+            <div class="container living-section-shell">
+                <div class="dual-identity-shell">
+                    <div class="dual-identity-heading">
+                        <span class="living-section-eyebrow">{{ data_get($dualIdentity, 'kicker', 'Dual Identity') }}</span>
+                        <h2 class="dual-identity-title">{{ data_get($dualIdentity, 'title', 'Chief, Elder, Executive Artist') }}</h2>
+                        <p class="dual-identity-intro">{{ data_get($dualIdentity, 'intro', 'A unified presentation of ceremonial stewardship and executive creative leadership.') }}</p>
+                    </div>
+
+                    <div class="dual-identity-row dual-identity-row--ceremonial">
+                        <div class="dual-identity-media">
+                            @if (data_get($dualIdentity, 'ceremonial.image'))
+                                <img class="dual-identity-portrait" src="{{ data_get($dualIdentity, 'ceremonial.image') }}" alt="Ceremonial portrait of Thomas Alexander">
+                            @endif
+                        </div>
+                        <div class="dual-identity-content">
+                            <span class="dual-identity-label">{{ data_get($dualIdentity, 'ceremonial.label', 'Ceremonial Identity') }}</span>
+                            <h3 class="dual-identity-name">{{ data_get($dualIdentity, 'ceremonial.title', 'Chief & Elder - Five Feathers Lineage Society') }}</h3>
+                            <p class="dual-identity-subtitle">{{ data_get($dualIdentity, 'ceremonial.subtitle', 'Lineage Stewardship | Cultural Continuity | Living Archive Leadership') }}</p>
+                            @foreach ($dualCeremonialText as $paragraph)
+                                <p class="dual-identity-text">{{ $paragraph }}</p>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="dual-identity-divider" style="color: {{ $dualDividerColor }};">
+                        <span class="dual-identity-divider-mark"></span>
+                    </div>
+
+                    <div class="dual-identity-row dual-identity-row--executive">
+                        <div class="dual-identity-content">
+                            <span class="dual-identity-label">{{ data_get($dualIdentity, 'executive.label', 'Executive Identity') }}</span>
+                            <h3 class="dual-identity-name">{{ data_get($dualIdentity, 'executive.title', 'Business & Executive Profile') }}</h3>
+                            <p class="dual-identity-subtitle">{{ data_get($dualIdentity, 'executive.subtitle', 'Founder & Executive Director, The Five Feathers Publishing Company') }}</p>
+                            @foreach ($dualExecutiveText as $paragraph)
+                                <p class="dual-identity-text">{{ $paragraph }}</p>
+                            @endforeach
+                        </div>
+                        <div class="dual-identity-media">
+                            @if (data_get($dualIdentity, 'executive.image'))
+                                <img class="dual-identity-portrait" src="{{ data_get($dualIdentity, 'executive.image') }}" alt="Executive portrait of Thomas Alexander">
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="dual-identity-summary">
+                        {{ data_get($dualIdentity, 'summary_bar', 'Chief & Elder • Executive Artist • Founder & Director • The Voice') }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 
     <section class="living-dark-section" id="three-crests">
         <div class="container living-section-shell">
