@@ -740,6 +740,59 @@
             font-family: 'Cinzel', serif;
             letter-spacing: 0.08em;
         }
+        .living-connected-pages {
+            padding: 0 0 6rem;
+            background: rgba(7, 8, 10, 0.22);
+        }
+        .living-connected-pages__grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.35rem;
+        }
+        .living-connected-pages__card {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            padding: clamp(1.5rem, 3vw, 2.25rem);
+            border-radius: var(--living-radius);
+            border: 1px solid rgba(201, 162, 39, 0.24);
+            background:
+                linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(10, 10, 12, 0.78)),
+                rgba(12, 14, 18, 0.86);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+        .living-connected-pages__label {
+            color: #c9a227;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            margin-bottom: 0.85rem;
+        }
+        .living-connected-pages__title {
+            color: #f6edd0;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.35rem, 2.4vw, 2rem);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.85rem;
+        }
+        .living-connected-pages__copy {
+            color: rgba(246, 237, 208, 0.72);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .living-connected-pages__link {
+            align-self: flex-start;
+            margin-top: auto;
+            color: #f6edd0;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .living-connected-pages__link:hover {
+            color: #c9a227;
+        }
         @media (max-width: 991.98px) {
             .living-dark-section {
                 padding: 4.75rem 0;
@@ -756,6 +809,9 @@
             }
             .dual-identity-content {
                 text-align: center;
+            }
+            .living-connected-pages__grid {
+                grid-template-columns: 1fr;
             }
         }
         @media (max-width: 767.98px) {
@@ -802,6 +858,9 @@
             .dual-identity-summary {
                 font-size: 0.9rem;
                 letter-spacing: 0.04em;
+            }
+            .living-connected-pages {
+                padding-bottom: 4.75rem;
             }
         }
     </style>
@@ -1151,6 +1210,29 @@
             </div>
         </section>
     @endif
+
+    <section class="living-connected-pages" aria-label="Connected Living Archive pages">
+        <div class="container living-section-shell">
+            <div class="living-connected-pages__grid">
+                <article class="living-connected-pages__card">
+                    <span class="living-connected-pages__label">Connected Page</span>
+                    <h2 class="living-connected-pages__title">Identity</h2>
+                    <p class="living-connected-pages__copy">
+                        Explore the ceremonial and executive identities carried through Thomas Alexander’s public and cultural work.
+                    </p>
+                    <a class="living-connected-pages__link" href="{{ url('/identity') }}">Open Identity</a>
+                </article>
+                <article class="living-connected-pages__card">
+                    <span class="living-connected-pages__label">Connected Page</span>
+                    <h2 class="living-connected-pages__title">Five Feathers Lineage Society</h2>
+                    <p class="living-connected-pages__copy">
+                        Learn about the lineage-rooted cultural society preserving ancestral memory, stewardship, and continuity.
+                    </p>
+                    <a class="living-connected-pages__link" href="{{ url('/five-feathers-lineage-society') }}">Open Lineage Society</a>
+                </article>
+            </div>
+        </div>
+    </section>
 
     <section class="living-dark-section" id="three-crests">
         <div class="container living-section-shell">

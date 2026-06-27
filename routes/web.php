@@ -794,6 +794,17 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
 Auth::routes();
 
 Route::group(['as' => 'front.'], function(){
+    Route::redirect('/five-feathers-lineage', '/five-feathers-lineage-society', 301)->name('five-feathers-lineage.redirect');
+    Route::redirect('/five-feathers', '/five-feathers-lineage-society', 301)->name('five-feathers.redirect');
+    Route::redirect('/lineage-society', '/five-feathers-lineage-society', 301)->name('lineage-society.redirect');
+
+    Route::get('/identity', [FrontHomeController::class, 'customPages'])
+        ->defaults('slug', 'identity')
+        ->name('identity');
+    Route::get('/five-feathers-lineage-society', [FrontHomeController::class, 'customPages'])
+        ->defaults('slug', 'five-feathers-lineage-society')
+        ->name('five-feathers-lineage-society');
+
     Route::controller(FrontHomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
         Route::get('/living-archive', 'livingArchive')->name('home.living-archive');
@@ -918,5 +929,4 @@ Route::controller(stripePaymentController::class)->group(function(){
 });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-
 

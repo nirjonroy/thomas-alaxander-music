@@ -861,7 +861,7 @@ public function shop(Request $request, $slug = null)
         return view('frontend.shop.flash-sell', compact('flashSell', 'filteredProducts', 'minPrice', 'maxPrice'));
     }
     public function customPages($slug){
-        $customPage=CustomPage::where('slug', $slug)->first();
+        $customPage=CustomPage::where('slug', $slug)->where('status', 1)->firstOrFail();
 
         // dd($customPage);
         return view('frontend.pages', compact('customPage'));
