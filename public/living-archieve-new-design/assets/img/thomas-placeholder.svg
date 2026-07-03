@@ -1,0 +1,15 @@
+<svg width="560" height="720" viewBox="0 0 560 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Thomas Alexander image placeholder</title>
+  <desc id="desc">Premium portrait placeholder for replacing with real Thomas Alexander image.</desc>
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="520" y2="720" gradientUnits="userSpaceOnUse"><stop stop-color="#2B1A10"/><stop offset="1" stop-color="#0E6F66"/></linearGradient>
+    <linearGradient id="body" x1="140" y1="310" x2="420" y2="630" gradientUnits="userSpaceOnUse"><stop stop-color="#12100D"/><stop offset="1" stop-color="#070706"/></linearGradient>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(280 210) rotate(90) scale(210)"><stop stop-color="#F1C76B" stop-opacity=".30"/><stop offset="1" stop-color="#F1C76B" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="560" height="720" rx="34" fill="url(#bg)"/>
+  <circle cx="280" cy="210" r="220" fill="url(#halo)"/>
+  <circle cx="280" cy="188" r="86" fill="#F8EED9"/>
+  <rect x="130" y="330" width="300" height="270" rx="64" fill="url(#body)"/>
+  <path d="M140 580C194 532 369 532 424 580V638H140V580Z" fill="#D9A441" fill-opacity=".40"/>
+  <text x="280" y="646" text-anchor="middle" fill="#FFF7E8" font-family="Manrope, Arial, sans-serif" font-size="24" font-weight="700">Replace with real image</text>
+</svg>
