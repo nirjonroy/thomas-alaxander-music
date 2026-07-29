@@ -188,12 +188,94 @@
         text-align: center;
         color: rgba(245, 235, 220, 0.75);
     }
+    .home-cta-strip {
+        width: min(100% - 28px, 1120px);
+        min-height: clamp(70px, 7vw, 96px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin: 22px auto;
+        padding: 14px clamp(16px, 4vw, 34px);
+        border: 1px solid rgba(255, 155, 96, 0.26);
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at 10% 50%, rgba(255, 75, 43, 0.16), transparent 32%),
+            linear-gradient(135deg, rgba(9, 16, 30, 0.95), rgba(24, 27, 48, 0.94));
+        box-shadow: 0 20px 44px rgba(4, 9, 18, 0.34);
+        color: #f7f1e6;
+        overflow: hidden;
+    }
+    .home-cta-strip__eyebrow {
+        display: block;
+        margin-bottom: 4px;
+        color: #ff9b60;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+    .home-cta-strip__title {
+        margin: 0;
+        color: #fff;
+        font-size: clamp(17px, 2vw, 24px);
+        font-weight: 800;
+        line-height: 1.2;
+    }
+    .home-cta-strip__actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        flex: 0 0 auto;
+    }
+    .home-cta-strip__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 10px 18px;
+        border: 1px solid rgba(255, 155, 96, 0.42);
+        border-radius: 999px;
+        color: #f7f1e6;
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .home-cta-strip__btn--primary,
+    .home-cta-strip__btn:hover {
+        color: #160f06;
+        background: linear-gradient(135deg, #ff4b2b, #ffb347);
+        border-color: transparent;
+    }
+    .home-cta-strip__btn:hover {
+        transform: translateY(-1px);
+    }
     @media (max-width: 576px) {
         .home-blog-title {
             font-size: 20px;
         }
         .home-blog-grid {
             grid-template-columns: 1fr;
+        }
+        .home-cta-strip {
+            width: calc(100% - 22px);
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            text-align: center;
+        }
+        .home-cta-strip__actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .home-cta-strip__btn {
+            width: 100%;
         }
     }
 </style>
@@ -241,6 +323,17 @@
 </section>
 @endif
 
+<section class="home-cta-strip" aria-label="Explore Thomas Alexander">
+    <div>
+        <span class="home-cta-strip__eyebrow">Start Here</span>
+        <p class="home-cta-strip__title">Enter the music, lineage, and Living Archive.</p>
+    </div>
+    <div class="home-cta-strip__actions">
+        <a href="{{ route('front.home.living-archive') }}" class="home-cta-strip__btn home-cta-strip__btn--primary">Living Archive</a>
+        <a href="{{ route('living-archive.donate') }}" class="home-cta-strip__btn">Donate</a>
+    </div>
+</section>
+
 <div class="container" style="margin:20px">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-lg-12">
@@ -254,6 +347,17 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
         </div>
     </div>
 </div>
+
+<section class="home-cta-strip" aria-label="Listen to Thomas Alexander music">
+    <div>
+        <span class="home-cta-strip__eyebrow">The Voice</span>
+        <p class="home-cta-strip__title">Listen, collect, and support the next chapter.</p>
+    </div>
+    <div class="home-cta-strip__actions">
+        <a href="{{ route('front.shop') }}" class="home-cta-strip__btn home-cta-strip__btn--primary">Browse Music</a>
+        <a href="{{ route('front.home.about') }}" class="home-cta-strip__btn">About Thomas</a>
+    </div>
+</section>
 
 <div class="ms_content_wrapper padder_top8" >
     <!---Header--->
@@ -517,6 +621,17 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
 </div>
 <!---Main Content end--->
 
+<section class="home-cta-strip" aria-label="Shop and support">
+    <div>
+        <span class="home-cta-strip__eyebrow">Music & Merch</span>
+        <p class="home-cta-strip__title">Find songs, products, and ceremonial archive items.</p>
+    </div>
+    <div class="home-cta-strip__actions">
+        <a href="{{ route('front.shop') }}" class="home-cta-strip__btn home-cta-strip__btn--primary">Shop Products</a>
+        <a href="{{ route('living-archive.donate') }}" class="home-cta-strip__btn">Donate</a>
+    </div>
+</section>
+
 <style>
     .event-card {
         background: #ffffff;
@@ -611,6 +726,17 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
     </div>
 </div>
 
+<section class="home-cta-strip" aria-label="Attend and connect">
+    <div>
+        <span class="home-cta-strip__eyebrow">Live Moments</span>
+        <p class="home-cta-strip__title">Follow upcoming events and stay connected to the work.</p>
+    </div>
+    <div class="home-cta-strip__actions">
+        <a href="{{ route('front.events') }}" class="home-cta-strip__btn home-cta-strip__btn--primary">View Events</a>
+        <a href="{{ route('front.contact_us') }}" class="home-cta-strip__btn">Contact</a>
+    </div>
+</section>
+
 
 <div class="container home-blog-section">
     <h2 class="home-blog-title">Latest Blogs</h2>
@@ -645,6 +771,17 @@ With roots tracing back to Alberta's first Black pioneers, Thomas continues to c
         @endforelse
     </div>
 </div>
+
+<section class="home-cta-strip" aria-label="Continue reading and supporting">
+    <div>
+        <span class="home-cta-strip__eyebrow">Keep Exploring</span>
+        <p class="home-cta-strip__title">Read the latest stories or return to the Living Archive.</p>
+    </div>
+    <div class="home-cta-strip__actions">
+        <a href="{{ route('front.blog') }}" class="home-cta-strip__btn home-cta-strip__btn--primary">Read Blogs</a>
+        <a href="{{ route('front.home.living-archive') }}" class="home-cta-strip__btn">Living Archive</a>
+    </div>
+</section>
                     
                     <!-- Image Modal -->
 <div class="modal fade" id="eventImageModal" tabindex="-1" aria-labelledby="eventImageModalLabel" aria-hidden="true">

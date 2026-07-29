@@ -11,15 +11,15 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('orderProducts')->where('user_id', Auth::id())->latest()->get();
+        $orders = Order::with('orderProducts.product')->where('user_id', Auth::id())->latest()->get();
 // dd($orders);
         return view('frontend.order.index', compact('orders'));
     }
     
     public function order_list($phone)
     {
-        $orders = Order::with('orderProducts')->where('order_phone', $phone)->latest()->get();
-      	$order_inv = Order::with('orderProducts')->where('order_phone', $phone)->first();
+        $orders = Order::with('orderProducts.product')->where('order_phone', $phone)->latest()->get();
+      	$order_inv = Order::with('orderProducts.product')->where('order_phone', $phone)->first();
       			  
         return view('frontend.order.index', compact('orders', 'order_inv'));
     }
@@ -32,7 +32,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::with('user', 'orderProducts')->findOrFail($id);
+        $order = Order::with('user', 'orderProducts.product')->findOrFail($id);
       //dd($order);
 
         // $view = view('frontend.order.show', compact('order'))->render();

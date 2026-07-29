@@ -74,195 +74,86 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('muzex/assets/images/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('muzex/assets/images/favicon/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('muzex/assets/images/favicon/site.webmanifest') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/bootstrap-datepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/bootstrap-select.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/jquery.mCustomScrollbar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/magnific-popup.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/owl.theme.default.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/hover-min.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('muzex/assets/css/responsive.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('living-archieve-new-design/assets/css/style.css') }}">
     <style>
-        :root {
-            --living-bg: #0b0f17;
-            --living-bg-soft: #121923;
-            --living-text: #f4efe3;
-            --living-text-soft: rgba(244, 239, 227, 0.76);
-            --living-gold: #d4af37;
-            --living-gold-soft: rgba(212, 175, 55, 0.2);
-            --living-glass: rgba(20, 20, 22, 0.7);
-            --living-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
-            --living-radius: 1.5rem;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
         body {
-            font-family: 'Work Sans', sans-serif;
-            background:
-                radial-gradient(circle at top, rgba(212, 175, 55, 0.08), transparent 30%),
-                linear-gradient(180deg, #0a0e15 0%, #101723 100%);
-            color: var(--living-text);
+            --la-ink: #070706;
+            --la-deep: #12100d;
+            --la-brown: #2b1a10;
+            --la-cream: #fff7e8;
+            --la-paper: #f8eed9;
+            --la-soft: #fdfbf4;
+            --la-sand: #dfc89e;
+            --la-gold: #d9a441;
+            --la-gold-bright: #f1c76b;
+            --la-copper: #b96f37;
+            --la-teal: #0e6f66;
+            --la-teal-bright: #18a398;
+            --la-text: #211a14;
+            --la-muted: #756b5c;
+            --la-shadow: 0 28px 70px rgba(7, 7, 6, 0.16);
+            --la-shadow-soft: 0 18px 45px rgba(7, 7, 6, 0.1);
+            background: #f8eed9;
+            color: #211a14;
+            font-family: "Manrope", "Work Sans", Arial, sans-serif;
+            overflow-x: hidden;
         }
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .block-title h3,
-        .block-title-two h3,
-        .footer-widget__title,
-        .side-content__block__title,
-        .living-section-heading__title,
-        .living-card-title,
-        .living-paper-title {
-            font-family: 'Cinzel', serif;
-            color: var(--living-text);
-            letter-spacing: 0.04em;
+        .living-archive-page {
+            --la-ink: #070706;
+            --la-deep: #12100d;
+            --la-brown: #2b1a10;
+            --la-cream: #fff7e8;
+            --la-paper: #f8eed9;
+            --la-soft: #fdfbf4;
+            --la-sand: #dfc89e;
+            --la-gold: #d9a441;
+            --la-gold-bright: #f1c76b;
+            --la-copper: #b96f37;
+            --la-teal: #0e6f66;
+            --la-teal-bright: #18a398;
+            --la-text: #211a14;
+            --la-muted: #756b5c;
+            --la-shadow: 0 28px 70px rgba(7, 7, 6, 0.16);
+            --la-shadow-soft: 0 18px 45px rgba(7, 7, 6, 0.1);
+            background: var(--la-paper);
+            color: var(--la-text);
+            font-family: "Manrope", "Work Sans", Arial, sans-serif;
         }
-        section[id] {
-            scroll-margin-top: 110px;
+        .living-archive-page h1,
+        .living-archive-page h2,
+        .living-archive-page h3,
+        .living-archive-page h4,
+        .living-archive-page h5,
+        .living-archive-page h6,
+        .living-archive-page .block-title h3,
+        .living-archive-page .living-section-heading__title,
+        .living-archive-page .living-card-title,
+        .living-archive-page .dual-identity-title,
+        .living-archive-page .dual-identity-name {
+            font-family: "Cormorant Garamond", Georgia, serif;
+            letter-spacing: -0.015em;
         }
-        a {
-            transition: all 0.25s ease;
+        .living-archive-page .container {
+            max-width: 1248px;
         }
-        .preloader {
-            background-color: var(--living-bg);
+        .living-archive-page section[id] {
+            scroll-margin-top: 108px;
         }
-        .main-nav-one__home-three {
-            background: rgba(9, 12, 18, 0.88);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.12);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
-        }
-        .main-nav-one .logo-box img {
-            width: auto;
-            max-height: 62px;
-        }
-        .main-nav__navigation-box > li > a {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-        .banner-section,
-        .collection-two,
-        .about-three,
-        .cta-two,
-        .collection-three,
-        .event-one,
-        .blog-one,
-        .site-footer,
-        .living-dark-section {
-            background: transparent;
-        }
-        .living-dark-section {
-            position: relative;
-            padding: 6rem 0;
+        .living-archive-page img {
+            max-width: 100%;
+            height: auto;
         }
         .living-section-shell {
             padding-left: 1rem;
             padding-right: 1rem;
         }
-        .living-section-heading {
-            max-width: 820px;
-            margin: 0 auto 3rem;
-            text-align: center;
+        .living-grid > [class*="col-"] {
+            display: flex;
         }
-        .living-section-eyebrow {
-            display: inline-block;
-            margin-bottom: 1rem;
-            color: rgba(212, 175, 55, 0.9);
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-        }
-        .living-section-heading__title {
-            font-size: clamp(2rem, 4vw, 3.4rem);
-            margin-bottom: 1rem;
-        }
-        .living-section-heading__copy,
-        .living-section-copy {
-            color: var(--living-text-soft);
-            line-height: 1.85;
-            max-width: 760px;
-            margin: 0 auto;
-        }
-        .living-glass-card,
-        .collection-two__single,
-        .collection-three__block,
-        .event-one__single,
-        .blog-one__single,
-        .cta-two__box {
-            background: var(--living-glass);
-            border: 1px solid var(--living-gold-soft);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: var(--living-shadow);
-            border-radius: var(--living-radius);
-        }
-        .living-glass-card.is-interactive,
-        .living-crest-card {
-            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-        }
-        .living-glass-card.is-interactive:hover,
-        .living-crest-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(212, 175, 55, 0.35);
-            box-shadow: 0 32px 65px rgba(0, 0, 0, 0.4);
-        }
-        .living-card-media {
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            border-radius: 1rem;
-        }
-        .living-card-media img {
+        .living-grid > [class*="col-"] > * {
             width: 100%;
-            aspect-ratio: 4 / 3;
-            object-fit: cover;
-        }
-        .living-card-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0.55rem 1rem;
-            border-radius: 999px;
-            background: rgba(212, 175, 55, 0.12);
-            border: 1px solid rgba(212, 175, 55, 0.18);
-            color: rgba(244, 239, 227, 0.92);
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-        .living-card-title {
-            font-size: clamp(1.35rem, 2vw, 1.75rem);
-            margin: 1.25rem 0 0.9rem;
-            line-height: 1.35;
-        }
-        .living-card-declaration {
-            color: var(--living-gold);
-            font-weight: 600;
-            line-height: 1.8;
-            margin-bottom: 0.85rem;
-        }
-        .living-card-text {
-            color: var(--living-text-soft);
-            line-height: 1.85;
-            margin-bottom: 0.9rem;
-        }
-        .living-card-text:last-child {
-            margin-bottom: 0;
         }
         .living-svg-icon {
             width: 1em;
@@ -277,590 +168,1371 @@
             width: 1.35rem;
             height: 1.35rem;
         }
-        .living-side-icon,
-        .living-scroll-icon {
-            width: 1rem;
-            height: 1rem;
-        }
-        .living-hero-section {
-            position: relative;
-            min-height: 100vh;
-            background-position: center;
-            background-size: cover;
-            overflow: hidden;
-        }
-        .living-hero-section::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(7, 10, 14, 0.84), rgba(7, 10, 14, 0.7)),
-                radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 42%);
-        }
-        .living-hero-section .container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 7rem;
-            padding-bottom: 5rem;
-        }
-        .living-hero-panel {
-            width: 100%;
-            max-width: 920px;
-            text-align: center;
-        }
-        .living-hero-crest img {
-            max-width: 220px;
-            width: 100%;
-            border-radius: 1.25rem;
-            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.32);
-        }
-        .living-hero-title {
-            font-size: clamp(2.8rem, 6vw, 5.75rem);
-            line-height: 1.08;
-            color: #f8f2e6;
-        }
-        .living-hero-intro {
-            max-width: 700px;
-            margin: 0 auto;
-            color: rgba(244, 239, 227, 0.82);
-            font-size: 1.08rem;
-            line-height: 1.95;
-        }
-        .living-hero-subtitle {
-            display: inline-block;
-            margin-top: 1.75rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 999px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.16);
-            color: rgba(244, 239, 227, 0.92);
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-        .btn.living-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.95rem 1.7rem;
-            border-radius: 999px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            min-height: 56px;
-        }
-        .btn.living-btn-primary {
-            background: linear-gradient(135deg, #d4af37, #f3d67b);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            color: #17120a;
-            box-shadow: 0 16px 28px rgba(212, 175, 55, 0.18);
-        }
-        .btn.living-btn-primary:hover {
-            color: #17120a;
-            transform: translateY(-2px);
-        }
-        .btn.living-btn-outline {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            color: var(--living-text);
-        }
-        .btn.living-btn-outline:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-        .living-grid > [class*="col-"] {
-            display: flex;
-        }
-        .living-grid > [class*="col-"] > * {
-            width: 100%;
-        }
-        .living-outfit {
-            font-family: 'Outfit', sans-serif;
-        }
-        .living-pathway-step {
-            width: 3.25rem;
-            height: 3.25rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(212, 175, 55, 0.14);
-            border: 1px solid rgba(212, 175, 55, 0.24);
-            color: var(--living-gold);
-            font-weight: 700;
-            letter-spacing: 0.08em;
-        }
-        .living-pathway-icon {
-            color: var(--living-gold);
-            font-size: 1.25rem;
-        }
-        .living-pathway-icon .living-svg-icon {
-            width: 1.3rem;
-            height: 1.3rem;
-        }
-        .living-ceremonial-intro {
-            background:
-                linear-gradient(180deg, rgba(8, 11, 16, 0.98), rgba(10, 15, 22, 0.94)),
-                radial-gradient(circle at top, rgba(212, 175, 55, 0.08), transparent 42%);
-        }
-        .living-ceremonial-intro__wrap {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .living-ceremonial-intro__media {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            background: rgba(20, 20, 22, 0.7);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 1.5rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 24px 56px rgba(212, 175, 55, 0.08);
-        }
-        .living-ceremonial-intro__media img {
-            max-width: 250px;
-            width: 100%;
-            border-radius: 1.25rem;
-            box-shadow: 0 18px 40px rgba(212, 175, 55, 0.12);
-        }
-        .living-ceremonial-intro__title {
-            color: var(--living-gold);
-            font-size: clamp(2rem, 4vw, 3.25rem);
-            line-height: 1.2;
-        }
-        .living-ceremonial-intro__copy {
-            max-width: 800px;
-            margin: 0 auto;
-            color: rgba(244, 239, 227, 0.84);
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.08rem;
-            line-height: 1.95;
-        }
-        .living-ceremonial-intro__copy + .living-ceremonial-intro__copy {
-            margin-top: 1.15rem;
-        }
-        .about-three__content {
-            padding: 80px 9vw 80px 70px;
-        }
-        .about-three .about-three__content,
-        .about-three .about-three__content > p {
-            color: var(--living-text-soft);
-        }
-        .about-three .about-three__content .about-three__highlight {
-            color: var(--living-gold);
-        }
-        .about-three .about-three__content .block-title p {
-            color: rgba(212, 175, 55, 0.9);
-        }
-        .about-three .about-three__content .block-title h3 {
-            color: var(--living-text);
-        }
-        .living-about-image {
-            min-height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 60px;
-            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.12), transparent 58%);
-        }
-        .living-about-image img {
-            max-width: 440px;
-            width: 100%;
-            border-radius: 22px;
-            box-shadow: 0 26px 60px rgba(0, 0, 0, 0.35);
-        }
-        .about-three__highlight {
-            color: var(--living-gold);
-            line-height: 1.9;
-            font-weight: 500;
-        }
-        .living-note-list {
-            list-style: none;
-            padding: 0;
-            margin: 26px 0 0;
-        }
-        .living-note-list li {
-            position: relative;
-            padding-left: 18px;
-            margin-bottom: 14px;
-            color: var(--living-text-soft);
-            line-height: 1.85;
-        }
-        .living-note-list li::before {
-            content: "";
-            position: absolute;
+        .living-archive-page .main-nav-one__home-three {
+            position: fixed;
+            top: 0;
             left: 0;
-            top: 12px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--living-gold);
+            right: 0;
+            z-index: 999;
+            padding: 18px 0 0;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
         }
-        .cta-two__home-two .inner-container {
-            background: linear-gradient(135deg, rgba(17, 22, 30, 0.96), rgba(10, 14, 19, 0.96));
-            border-radius: var(--living-radius);
-            border: 1px solid rgba(212, 175, 55, 0.12);
-            overflow: hidden;
+        .living-archive-page .main-nav-one__home-three .inner-container {
+            min-height: 74px;
+            padding: 10px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+            background: rgba(18, 16, 13, 0.74);
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
-        .cta-two__icon,
-        .living-endline {
-            color: var(--living-gold);
-        }
-        .cta-two__icon .living-svg-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-        .living-endline {
-            padding: 28px 32px 0;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
-        }
-        .event-one__content h3 a,
-        .blog-one__content h3 a,
-        .footer-widget__title,
-        .side-content__block__title,
-        .footer-widget__links-list a,
-        .site-footer__bottom-links a {
-            color: var(--living-text);
-        }
-        .event-one__content p,
-        .blog-one__content p,
-        .footer-widget p,
-        .side-content__block-about__text,
-        .side-content__block-contact__list-item,
-        .site-footer__bottom p,
-        .site-footer__copy-text {
-            color: var(--living-text-soft);
-        }
-        .blog-one__link {
-            color: var(--living-gold);
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-        .blog-one__link + .blog-one__link {
-            margin-left: 20px;
-        }
-        .living-contact-card .blog-one__content {
-            padding-top: 28px;
-        }
-        .side-content__block-contact__list-item .living-svg-icon,
-        .side-menu__social .living-svg-icon,
-        .scroll-to-top .living-svg-icon {
-            margin-right: 0.5rem;
-        }
-        .side-menu__social .living-svg-icon,
-        .scroll-to-top .living-svg-icon {
-            margin-right: 0;
-        }
-        .living-certification-section {
-            position: relative;
-            background-position: center;
-            background-size: cover;
-            overflow: hidden;
-        }
-        .living-certification-section::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(8, 10, 14, 0.9), rgba(12, 16, 22, 0.82));
-        }
-        .living-certification-section .container {
-            position: relative;
-            z-index: 1;
-        }
-        .living-certification-panel {
-            max-width: 920px;
-            margin: 0 auto;
-        }
-        .living-paper-card {
-            position: relative;
-            background: linear-gradient(180deg, rgba(252, 247, 235, 0.99), rgba(242, 233, 212, 0.96));
-            color: #23170d;
-            border-radius: 1.5rem;
-            border: 1px solid rgba(122, 95, 43, 0.4);
-            box-shadow:
-                0 36px 70px rgba(0, 0, 0, 0.36),
-                0 14px 28px rgba(0, 0, 0, 0.18);
-        }
-        .living-paper-card::before {
-            content: "";
-            position: absolute;
-            inset: 12px;
-            border: 1px solid rgba(122, 95, 43, 0.28);
-            border-radius: calc(1.5rem - 10px);
-            pointer-events: none;
-        }
-        .living-paper-title {
-            color: #8a621e;
-            font-size: 1.15rem;
-            letter-spacing: 0.1em;
-        }
-        .living-paper-body {
-            margin: 0;
-            white-space: pre-line;
-            line-height: 1.95;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 0.98rem;
-        }
-        .site-footer {
-            background: rgba(7, 10, 14, 0.92);
-        }
-        .site-footer__bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .site-footer__bottom-logo img,
-        .side-content__block-inner img,
-        .side-menu__logo img {
+        .living-archive-page .main-nav-one .logo-box img {
             max-height: 56px;
             width: auto;
         }
-        .side-content__block-inner,
-        .side-menu__block-inner {
-            background: #101316;
+        .living-archive-page .main-nav__navigation-box > li {
+            padding: 0;
         }
-        .scroll-to-top {
-            background: var(--living-gold);
-            color: #18140d;
-        }
-        .dual-identity-section {
+        .living-archive-page .main-nav__navigation-box > li > a {
             position: relative;
-            padding: 6rem 0;
-            background: rgba(7, 8, 10, 0.32);
+            padding: 0.8rem 0.7rem;
+            color: rgba(255, 247, 232, 0.84);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            text-transform: none;
+            transition: color 0.2s ease, transform 0.2s ease;
         }
-        .dual-identity-shell {
-            border: 1px solid rgba(201, 162, 39, 0.25);
-            border-radius: var(--living-radius);
-            background: linear-gradient(180deg, rgba(16, 16, 18, 0.9), rgba(10, 11, 14, 0.82));
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
-            padding: clamp(1.75rem, 4vw, 4rem);
-        }
-        .dual-identity-heading {
-            max-width: 820px;
-            margin: 0 auto 3rem;
-            text-align: center;
-        }
-        .dual-identity-title {
-            font-family: 'Cinzel', serif;
-            color: #f6edd0;
-            font-size: clamp(2rem, 4vw, 3.4rem);
-            letter-spacing: 0.04em;
-            margin-bottom: 1rem;
-        }
-        .dual-identity-intro,
-        .dual-identity-text {
-            color: rgba(246, 237, 208, 0.72);
-            line-height: 1.85;
-        }
-        .dual-identity-row {
-            display: grid;
-            grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
-            gap: clamp(1.75rem, 4vw, 3.5rem);
-            align-items: center;
-        }
-        .dual-identity-row--executive {
-            grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
-        }
-        .dual-identity-media {
-            display: flex;
-            justify-content: center;
-        }
-        .dual-identity-portrait {
-            width: min(100%, 340px);
-            aspect-ratio: 4 / 5;
-            object-fit: cover;
-            border-radius: 18px;
-            border: 1px solid rgba(201, 162, 39, 0.42);
-            box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.08), 0 22px 42px rgba(0, 0, 0, 0.4);
-            background: #050506;
-        }
-        .dual-identity-label {
-            display: inline-block;
-            color: #c9a227;
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            margin-bottom: 0.85rem;
-        }
-        .dual-identity-name {
-            font-family: 'Cinzel', serif;
-            color: #f6edd0;
-            font-size: clamp(1.55rem, 2.5vw, 2.35rem);
-            letter-spacing: 0.03em;
-            margin-bottom: 0.7rem;
-        }
-        .dual-identity-subtitle {
-            color: rgba(201, 162, 39, 0.9);
-            font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 1.35rem;
-        }
-        .dual-identity-divider {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin: clamp(2.5rem, 5vw, 4rem) auto;
-            color: #c9a227;
-        }
-        .dual-identity-divider::before,
-        .dual-identity-divider::after {
+        .living-archive-page .main-nav__navigation-box > li > a::after {
             content: "";
-            width: min(32vw, 220px);
-            height: 1px;
-            background: currentColor;
-            opacity: 0.6;
+            position: absolute;
+            left: 0.7rem;
+            right: 0.7rem;
+            bottom: 0.42rem;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--la-gold-bright), var(--la-copper));
+            opacity: 0;
+            transform: scaleX(0.45);
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
-        .dual-identity-divider-mark {
-            width: 0.65rem;
-            height: 0.65rem;
-            border: 1px solid currentColor;
-            transform: rotate(45deg);
-            background: rgba(201, 162, 39, 0.18);
+        .living-archive-page .main-nav__navigation-box > li > a:hover,
+        .living-archive-page .main-nav__navigation-box > li > a.active {
+            color: var(--la-gold-bright);
+            transform: translateY(-1px);
         }
-        .dual-identity-summary {
-            margin-top: clamp(2.5rem, 5vw, 4rem);
-            border-top: 1px solid rgba(201, 162, 39, 0.24);
-            border-bottom: 1px solid rgba(201, 162, 39, 0.24);
-            padding: 1.15rem;
-            text-align: center;
-            color: #f6edd0;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.08em;
+        .living-archive-page .main-nav__navigation-box > li > a:hover::after,
+        .living-archive-page .main-nav__navigation-box > li > a.active::after {
+            opacity: 1;
+            transform: scaleX(1);
         }
-        .living-connected-pages {
-            padding: 0 0 6rem;
-            background: rgba(7, 8, 10, 0.22);
+        .living-archive-page .sidemenu-icon,
+        .living-archive-page .side-menu__toggler {
+            color: var(--la-gold-bright);
         }
-        .living-connected-pages__grid {
+        .living-archive-page .main-nav-one__home-three .container {
+            max-width: 1248px;
+        }
+        .living-archive-page .main-nav-one__home-three .inner-container,
+        .living-archive-page .logo-box,
+        .living-archive-page .main-nav__main-navigation,
+        .living-archive-page .main-nav__right {
+            display: flex;
+            align-items: center;
+        }
+        .living-archive-page .main-nav-one__home-three .inner-container {
+            justify-content: space-between;
+            gap: 18px;
+        }
+        .living-archive-page .logo-box {
+            flex: 0 0 auto;
+            gap: 16px;
+        }
+        .living-archive-page .main-nav__main-navigation {
+            flex: 1 1 auto;
+            justify-content: center;
+        }
+        .living-archive-page .main-nav__navigation-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(12px, 2vw, 28px);
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .living-archive-page .main-nav__right {
+            flex: 0 0 auto;
+            justify-content: flex-end;
+        }
+        .living-archive-page .logo-box a,
+        .living-archive-page .main-nav__right a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .living-archive-page .side-menu__toggler {
+            text-decoration: none;
+        }
+        .living-archive-page .logo-box .side-menu__toggler {
+            display: none;
+        }
+        .living-archive-page .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: grid;
+            place-items: center;
+            background: var(--la-ink);
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .living-archive-page .preloader.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .living-archive-page .lds-ripple {
+            position: relative;
+            width: 76px;
+            height: 76px;
+        }
+        .living-archive-page .lds-ripple div {
+            position: absolute;
+            border: 2px solid var(--la-gold-bright);
+            border-radius: 50%;
+            animation: livingRipple 1.2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+        .living-archive-page .lds-ripple div:nth-child(2) {
+            animation-delay: -0.6s;
+        }
+        @keyframes livingRipple {
+            0% {
+                inset: 36px;
+                opacity: 1;
+            }
+            100% {
+                inset: 0;
+                opacity: 0;
+            }
+        }
+        .living-archive-page .living-hero-section {
+            min-height: auto;
+            padding: clamp(104px, 10vw, 126px) 0 clamp(62px, 7vw, 92px);
+            background-position: center;
+            background-size: cover;
+            color: var(--la-cream);
+        }
+        .living-archive-page .living-hero-section::before {
+            background:
+                radial-gradient(circle at 76% 0%, rgba(241, 199, 107, 0.2), transparent 35%),
+                radial-gradient(circle at 0% 82%, rgba(24, 163, 152, 0.18), transparent 33%),
+                linear-gradient(135deg, rgba(7, 7, 6, 0.92), rgba(43, 26, 16, 0.86));
+        }
+        .living-archive-page .living-hero-section .container {
+            min-height: auto;
+            justify-content: flex-start;
+        }
+        .living-archive-page .living-hero-panel {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: clamp(28px, 5vw, 58px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.24);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        .living-archive-page .living-section-eyebrow,
+        .living-archive-page .living-card-badge,
+        .living-archive-page .dual-identity-label,
+        .living-archive-page .living-connected-pages__label,
+        .living-archive-page .block-title p {
+            color: var(--la-copper);
+            font-family: "Manrope", Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .living-archive-page .living-hero-section .living-section-eyebrow {
+            color: var(--la-gold-bright);
+        }
+        .living-archive-page .living-hero-crest {
+            position: relative;
+            display: inline-block;
+        }
+        .living-archive-page .living-hero-crest::before {
+            content: "";
+            position: absolute;
+            inset: -28px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(241, 199, 107, 0.26), transparent 68%);
+            filter: blur(3px);
+        }
+        .living-archive-page .living-hero-crest img {
+            position: relative;
+            max-width: 260px;
+            border: 1px solid rgba(241, 199, 107, 0.45);
+            border-radius: 28px;
+            box-shadow: 0 24px 55px rgba(0, 0, 0, 0.24);
+        }
+        .living-archive-page .living-hero-title {
+            color: var(--la-cream);
+            font-size: clamp(3.4rem, 7vw, 6rem);
+            line-height: 0.95;
+        }
+        .living-archive-page .living-hero-intro {
+            max-width: 720px;
+            color: rgba(255, 247, 232, 0.82);
+            font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+            line-height: 1.6;
+        }
+        .living-archive-page .living-hero-subtitle {
+            color: var(--la-gold-bright);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(241, 199, 107, 0.35);
+        }
+        .living-archive-page .btn.living-btn,
+        .living-archive-page .thm-btn,
+        .living-archive-page .blog-one__link,
+        .living-archive-page .living-connected-pages__link {
+            border-radius: 999px;
+            font-family: "Manrope", Arial, sans-serif;
+            font-weight: 800;
+            letter-spacing: 0;
+            text-transform: none;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        }
+        .living-archive-page .btn.living-btn:hover,
+        .living-archive-page .thm-btn:hover,
+        .living-archive-page .living-connected-pages__link:hover {
+            transform: translateY(-3px);
+        }
+        .living-archive-page .living-btn-primary,
+        .living-archive-page .thm-btn {
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            border: 0;
+            box-shadow: 0 18px 38px rgba(185, 111, 55, 0.25);
+        }
+        .living-archive-page .living-btn-outline,
+        .living-archive-page .blog-one__link,
+        .living-archive-page .living-connected-pages__link {
+            color: var(--la-cream);
+            background: var(--la-deep);
+            border: 0;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+        }
+        .living-archive-page .living-ceremonial-intro {
+            position: relative;
+            z-index: 3;
+            margin-top: -110px;
+            padding: 0 0 80px;
+            background: transparent;
+        }
+        .living-archive-page .living-ceremonial-intro__wrap,
+        .living-archive-page .dual-identity-shell,
+        .living-archive-page .living-connected-pages__card,
+        .living-archive-page .about-three .row,
+        .living-archive-page .cta-two__home-two .inner-container,
+        .living-archive-page .contact-card-surface {
+            border: 1px solid rgba(223, 200, 158, 0.7);
+            border-radius: 34px;
+            background: var(--la-soft);
+            box-shadow: var(--la-shadow);
+        }
+        .living-archive-page .living-ceremonial-intro__wrap {
+            max-width: 1120px;
+            padding: clamp(28px, 5vw, 54px);
+        }
+        .living-archive-page .living-ceremonial-intro__title,
+        .living-archive-page .living-section-heading__title,
+        .living-archive-page .dual-identity-title {
+            color: var(--la-text);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.02;
+        }
+        .living-archive-page .living-ceremonial-intro__copy,
+        .living-archive-page .living-section-heading__copy,
+        .living-archive-page .living-section-copy,
+        .living-archive-page .dual-identity-intro,
+        .living-archive-page .dual-identity-text,
+        .living-archive-page .living-connected-pages__copy,
+        .living-archive-page .about-three .about-three__content,
+        .living-archive-page .about-three .about-three__content > p,
+        .living-archive-page .living-note-list li {
+            color: var(--la-muted);
+        }
+        .living-archive-page .living-ceremonial-intro__media {
+            border-color: rgba(223, 200, 158, 0.7);
+            background: #fffaf0;
+            box-shadow: var(--la-shadow-soft);
+        }
+        .living-archive-page .dual-identity-section,
+        .living-archive-page .living-connected-pages,
+        .living-archive-page .about-three,
+        .living-archive-page .cta-two,
+        .living-archive-page .blog-one {
+            padding: 108px 0;
+            background: var(--la-paper);
+        }
+        .living-archive-page .dual-identity-row {
+            align-items: stretch;
+        }
+        .living-archive-page .dual-identity-portrait,
+        .living-archive-page .living-card-media img,
+        .living-archive-page .blog-one__image img,
+        .living-archive-page .living-about-image img {
+            border-radius: 28px;
+            box-shadow: var(--la-shadow-soft);
+        }
+        .living-archive-page .dual-identity-name,
+        .living-archive-page .living-card-title,
+        .living-archive-page .living-connected-pages__title,
+        .living-archive-page .cta-two__content h3,
+        .living-archive-page .blog-one__content h3 a,
+        .living-archive-page .block-title h3 {
+            color: var(--la-text);
+        }
+        .living-archive-page .dual-identity-subtitle,
+        .living-archive-page .living-card-declaration,
+        .living-archive-page .about-three__highlight {
+            color: var(--la-copper);
+        }
+        .living-archive-page .dual-identity-summary {
+            color: var(--la-text);
+            border-color: rgba(217, 164, 65, 0.35);
+        }
+        .living-archive-page .living-connected-pages__grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.35rem;
+            gap: 28px;
         }
-        .living-connected-pages__card {
+        .living-archive-page .living-connected-pages {
+            position: relative;
+            overflow: hidden;
+            padding: 96px 0;
+            color: var(--la-cream);
+            background:
+                radial-gradient(circle at 14% 20%, rgba(217, 164, 65, 0.14), transparent 28%),
+                radial-gradient(circle at 86% 18%, rgba(24, 163, 152, 0.12), transparent 32%),
+                linear-gradient(135deg, #070706 0%, #11100d 52%, #07111b 100%);
+        }
+        .living-archive-page .living-connected-pages::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255, 247, 232, 0.04), transparent 34%);
+        }
+        .living-archive-page .living-connected-pages__card,
+        .living-archive-page .living-glass-card,
+        .living-archive-page .cta-two__box,
+        .living-archive-page .blog-one__single {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            border: 1px solid rgba(223, 200, 158, 0.68);
+            border-radius: 26px;
+            background: var(--la-soft);
+            box-shadow: var(--la-shadow-soft);
+            transition: transform 0.26s ease, box-shadow 0.26s ease, border-color 0.26s ease;
+        }
+        .living-archive-page .living-connected-pages__grid {
+            position: relative;
+            z-index: 1;
+        }
+        .living-archive-page .living-connected-pages__card {
+            min-height: 315px;
             display: flex;
             flex-direction: column;
-            min-height: 100%;
-            padding: clamp(1.5rem, 3vw, 2.25rem);
-            border-radius: var(--living-radius);
-            border: 1px solid rgba(201, 162, 39, 0.24);
+            justify-content: space-between;
+            padding: clamp(28px, 4vw, 42px);
+            border-color: rgba(217, 164, 65, 0.32);
             background:
-                linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(10, 10, 12, 0.78)),
-                rgba(12, 14, 18, 0.86);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+                linear-gradient(145deg, rgba(255, 247, 232, 0.07), rgba(255, 247, 232, 0.02)),
+                rgba(10, 10, 8, 0.88);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }
-        .living-connected-pages__label {
-            color: #c9a227;
-            font-size: 0.72rem;
+        .living-archive-page .living-connected-pages__card:nth-child(2)::before {
+            background: linear-gradient(90deg, var(--la-copper), var(--la-teal-bright));
+        }
+        .living-archive-page .living-connected-pages__label {
+            color: var(--la-gold-bright);
+        }
+        .living-archive-page .living-connected-pages__title {
+            color: var(--la-cream);
+            font-size: clamp(2.25rem, 4vw, 3.2rem);
+            line-height: 1;
+        }
+        .living-archive-page .living-connected-pages__copy {
+            max-width: 620px;
+            color: rgba(255, 247, 232, 0.78);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        .living-archive-page .living-connected-pages__link {
+            width: max-content;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            margin-top: 24px;
+            padding: 13px 22px;
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            box-shadow: 0 18px 38px rgba(185, 111, 55, 0.22);
+        }
+        .living-archive-page .living-connected-pages__card::before,
+        .living-archive-page .living-glass-card::before,
+        .living-archive-page .cta-two__box::before,
+        .living-archive-page .blog-one__single::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 28px;
+            right: 28px;
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--la-gold), var(--la-gold-bright));
+        }
+        .living-archive-page .living-connected-pages__card:hover,
+        .living-archive-page .living-glass-card:hover,
+        .living-archive-page .cta-two__box:hover,
+        .living-archive-page .blog-one__single:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 70px rgba(7, 7, 6, 0.18);
+        }
+        .living-archive-page .living-hero-panel.living-glass-card {
+            border-color: rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--la-cream);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.24);
+        }
+        .living-archive-page .living-hero-panel.living-glass-card::before {
+            display: none;
+        }
+        .living-archive-page .living-hero-panel.living-glass-card:hover {
+            transform: none;
+        }
+        .living-archive-page .living-dark-section,
+        .living-archive-page .living-certification-section,
+        .living-archive-page #media-merch {
+            position: relative;
+            overflow: hidden;
+            padding: 110px 0;
+            color: var(--la-cream);
+            background: radial-gradient(circle at 90% 20%, rgba(217, 164, 65, 0.18), transparent 30%), linear-gradient(135deg, var(--la-ink), var(--la-brown));
+        }
+        .living-archive-page .living-dark-section .living-section-heading__title,
+        .living-archive-page .living-dark-section .living-card-title,
+        .living-archive-page .living-dark-section .living-section-heading__copy,
+        .living-archive-page .living-dark-section .living-card-text,
+        .living-archive-page .living-dark-section .living-card-declaration {
+            color: var(--la-cream);
+        }
+        .living-archive-page .living-dark-section .living-glass-card,
+        .living-archive-page #media-merch .living-glass-card {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--la-cream);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .living-archive-page .living-dark-section .living-card-text,
+        .living-archive-page #media-merch .living-card-text {
+            color: rgba(255, 247, 232, 0.76);
+        }
+        .living-archive-page #carrier-pathway {
+            color: var(--la-text);
+            background: linear-gradient(180deg, var(--la-paper), #fff9ee);
+        }
+        .living-archive-page #carrier-pathway .living-section-heading__title,
+        .living-archive-page #carrier-pathway .living-section-heading__copy,
+        .living-archive-page #carrier-pathway .living-card-title,
+        .living-archive-page #carrier-pathway .living-card-text {
+            color: var(--la-text);
+        }
+        .living-archive-page .living-pathway-step {
+            width: 86px;
+            height: 86px;
+            color: var(--la-cream);
+            background: linear-gradient(135deg, var(--la-gold), var(--la-gold-bright));
+            border: 0;
+            box-shadow: 0 18px 35px rgba(217, 164, 65, 0.25);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: 30px;
+        }
+        .living-archive-page .about-three .row {
+            overflow: hidden;
+            margin: 0;
+        }
+        .living-archive-page .living-about-image {
+            background: linear-gradient(135deg, var(--la-brown), var(--la-teal));
+        }
+        .living-archive-page .cta-two__icon,
+        .living-archive-page .living-pathway-icon,
+        .living-archive-page .living-endline {
+            color: var(--la-copper);
+        }
+        .living-archive-page .blog-one__top {
+            margin-bottom: 14px;
+        }
+        .living-archive-page .blog-one .block-title {
+            max-width: 720px;
+            margin-bottom: 18px;
+        }
+        .living-archive-page .blog-one .living-section-copy {
+            max-width: 720px;
+            margin: 0 0 36px;
+            color: var(--la-muted);
+            line-height: 1.75;
+        }
+        .living-archive-page .blog-one__content p,
+        .living-archive-page .cta-two__content p {
+            color: var(--la-muted);
+        }
+        .living-archive-page .blog-one__image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            margin-bottom: 22px;
+        }
+        .living-archive-page .blog-one__image img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+        }
+        .living-archive-page .blog-one__date {
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            color: var(--la-ink);
+        }
+        .living-archive-page .living-paper-card {
+            border-color: rgba(223, 200, 158, 0.68);
+            border-radius: 34px;
+            background: var(--la-soft);
+            box-shadow: var(--la-shadow);
+        }
+        .living-archive-page .site-footer {
+            background: var(--la-ink);
+        }
+        .living-archive-page .site-footer__upper,
+        .living-archive-page .site-footer__bottom {
+            background: transparent;
+        }
+        .living-archive-page .site-footer p,
+        .living-archive-page .site-footer a,
+        .living-archive-page .footer-widget__title {
+            color: rgba(255, 247, 232, 0.78);
+        }
+        .living-archive-page .site-footer {
+            padding: 0;
+        }
+        .living-archive-page .site-footer__upper {
+            padding: 72px 0 42px;
+        }
+        .living-archive-page .site-footer__bottom {
+            border-top: 1px solid rgba(255, 247, 232, 0.1);
+            padding: 24px 0;
+        }
+        .living-archive-page .site-footer__bottom .inner-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .living-archive-page .footer-widget__links-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .living-archive-page .footer-widget__links-list li + li {
+            margin-top: 10px;
+        }
+        .living-archive-page .site-footer__bottom-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .side-content__block,
+        .side-menu__block {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .side-content__block.is-open,
+        .side-menu__block.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .side-content__block-overlay,
+        .side-menu__block-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(7, 7, 6, 0.72);
+        }
+        .side-content__block-inner,
+        .side-menu__block-inner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(92vw, 420px);
+            height: 100%;
+            overflow-y: auto;
+            padding: 34px;
+            color: var(--la-cream);
+            background: linear-gradient(180deg, #12100d, #070706);
+            box-shadow: -24px 0 70px rgba(0, 0, 0, 0.34);
+            transform: translateX(100%);
+            transition: transform 0.25s ease;
+        }
+        .side-menu__block-inner {
+            left: 0;
+            right: auto;
+            transform: translateX(-100%);
+        }
+        .side-content__block.is-open .side-content__block-inner,
+        .side-menu__block.is-open .side-menu__block-inner {
+            transform: translateX(0);
+        }
+        .side-menu__close-btn {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            z-index: 1;
+            color: var(--la-gold-bright);
+        }
+        .side-content__block a,
+        .side-menu__block a {
+            color: var(--la-gold-bright);
+            text-decoration: none;
+        }
+        .side-content__block__title,
+        .side-menu__block__copy {
+            color: var(--la-cream);
+        }
+        .side-content__block-contact__list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .side-content__block-contact__list-item {
+            display: flex;
+            gap: 10px;
+            margin: 12px 0;
+            color: rgba(255, 247, 232, 0.78);
+        }
+        .side-menu__social {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .mobile-nav__container {
+            margin-top: 24px;
+        }
+        .mobile-nav__container ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .mobile-nav__container li + li {
+            margin-top: 10px;
+        }
+        .mobile-nav__container a {
+            display: flex;
+            align-items: center;
+            min-height: 46px;
+            padding: 10px 0;
+            color: var(--la-cream);
+            border-bottom: 1px solid rgba(255, 247, 232, 0.12);
             font-weight: 800;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-            margin-bottom: 0.85rem;
         }
-        .living-connected-pages__title {
-            color: #f6edd0;
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.35rem, 2.4vw, 2rem);
-            letter-spacing: 0.04em;
-            margin-bottom: 0.85rem;
-        }
-        .living-connected-pages__copy {
-            color: rgba(246, 237, 208, 0.72);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-        .living-connected-pages__link {
-            align-self: flex-start;
-            margin-top: auto;
-            color: #f6edd0;
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-        .living-connected-pages__link:hover {
-            color: #c9a227;
+        .scroll-to-top {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 99;
+            width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.24);
         }
         @media (max-width: 991.98px) {
-            .living-dark-section {
-                padding: 4.75rem 0;
+            .living-archive-page .main-nav-one__home-three {
+                padding-top: 10px;
             }
-            .about-three__content {
-                padding: 56px 24px;
+            .living-archive-page .main-nav-one__home-three .inner-container {
+                border-radius: 28px;
+                background: rgba(18, 16, 13, 0.84);
             }
-            .dual-identity-row,
-            .dual-identity-row--executive {
-                grid-template-columns: 1fr;
+            .living-archive-page .main-nav__main-navigation {
+                display: none;
             }
-            .dual-identity-row--executive .dual-identity-media {
-                order: -1;
+            .living-archive-page .main-nav__right {
+                display: none;
             }
-            .dual-identity-content {
-                text-align: center;
+            .living-archive-page .logo-box .side-menu__toggler {
+                display: inline-flex;
             }
-            .living-connected-pages__grid {
+            .living-archive-page .living-hero-section {
+                min-height: auto;
+                padding-top: 94px;
+                padding-bottom: 72px;
+            }
+            .living-archive-page .living-hero-section .container {
+                min-height: auto;
+            }
+            .living-archive-page .living-connected-pages__grid {
                 grid-template-columns: 1fr;
             }
         }
         @media (max-width: 767.98px) {
-            .main-nav-one .logo-box img {
-                max-height: 48px;
+            .living-archive-page .main-nav-one__home-three .inner-container {
+                min-height: 64px;
+                padding: 8px 14px;
             }
-            .living-section-shell {
-                padding-left: 0.9rem;
-                padding-right: 0.9rem;
+            .living-archive-page .main-nav-one .logo-box img {
+                max-height: 46px;
             }
-            .living-hero-section .container {
-                padding-top: 6.5rem;
-                padding-bottom: 4rem;
+            .living-archive-page .living-hero-section {
+                padding-top: 86px;
+                padding-bottom: 58px;
             }
-            .living-hero-title {
-                font-size: clamp(2.35rem, 11vw, 3.5rem);
+            .living-archive-page .living-hero-panel {
+                border-radius: 32px;
+                padding: 28px 18px !important;
             }
-            .living-hero-intro {
-                font-size: 1rem;
+            .living-archive-page .living-hero-title {
+                font-size: clamp(3rem, 14vw, 4.2rem);
+                line-height: 0.96;
             }
-            .living-ceremonial-intro__copy {
-                font-size: 1rem;
+            .living-archive-page .living-hero-crest img {
+                max-width: min(72vw, 240px);
             }
-            .living-glass-card,
-            .collection-two__single,
-            .collection-three__block,
-            .event-one__single,
-            .blog-one__single,
-            .cta-two__box,
-            .living-paper-card {
-                padding: 1.5rem !important;
+            .living-archive-page .btn.living-btn,
+            .living-archive-page .thm-btn,
+            .living-archive-page .living-connected-pages__link {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
             }
-            .living-about-image {
-                padding: 40px 24px;
+            .living-archive-page .living-ceremonial-intro {
+                margin-top: -86px;
+                padding-bottom: 52px;
             }
-            .blog-one__link + .blog-one__link {
-                display: inline-block;
+            .living-archive-page .living-dark-section,
+            .living-archive-page .living-certification-section,
+            .living-archive-page #media-merch,
+            .living-archive-page .dual-identity-section,
+            .living-archive-page .living-connected-pages,
+            .living-archive-page .about-three,
+            .living-archive-page .cta-two,
+            .living-archive-page .blog-one {
+                padding: 72px 0;
+            }
+            .living-archive-page .living-pathway-step {
+                width: 70px;
+                height: 70px;
+                font-size: 26px;
+            }
+            .living-archive-page .living-connected-pages__card {
+                min-height: auto;
+            }
+            .living-archive-page .living-connected-pages__link {
+                width: 100%;
+            }
+            .living-archive-page .site-footer__bottom .inner-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Final page QC polish: section-specific layout corrections. */
+        .living-archive-page .living-ceremonial-intro {
+            margin-top: 0;
+            padding: clamp(82px, 8vw, 112px) 0;
+        }
+        .living-archive-page .living-ceremonial-intro__wrap {
+            width: min(100%, 1120px);
+            text-align: left;
+        }
+        .living-archive-page .living-ceremonial-intro__media {
+            width: 100%;
+            overflow: hidden;
+        }
+        .living-archive-page .living-ceremonial-intro__media img {
+            width: 100%;
+            max-height: 520px;
+            object-fit: contain;
+            object-position: center;
+            background: #000;
+        }
+        .living-archive-page .dual-identity-section {
+            color: var(--la-cream);
+            background:
+                radial-gradient(circle at 80% 18%, rgba(217, 164, 65, 0.12), transparent 30%),
+                linear-gradient(135deg, var(--la-ink), #11100d 52%, #07111b);
+        }
+        .living-archive-page .dual-identity-shell {
+            padding: clamp(30px, 5vw, 58px);
+            border-color: rgba(217, 164, 65, 0.28);
+            background:
+                linear-gradient(145deg, rgba(255, 247, 232, 0.07), rgba(255, 247, 232, 0.02)),
+                rgba(10, 10, 8, 0.9);
+            color: var(--la-cream);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+        }
+        .living-archive-page .dual-identity-heading {
+            max-width: 880px;
+            margin: 0 auto 44px;
+            text-align: center;
+        }
+        .living-archive-page .dual-identity-row {
+            display: grid;
+            grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+            gap: clamp(28px, 5vw, 56px);
+            align-items: center;
+        }
+        .living-archive-page .dual-identity-row--executive {
+            grid-template-columns: minmax(0, 1fr) minmax(220px, 340px);
+        }
+        .living-archive-page .dual-identity-media:empty {
+            display: none;
+        }
+        .living-archive-page .dual-identity-row:has(.dual-identity-media:empty) {
+            grid-template-columns: 1fr;
+        }
+        .living-archive-page .dual-identity-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin: clamp(34px, 5vw, 54px) 0;
+        }
+        .living-archive-page .dual-identity-divider::before,
+        .living-archive-page .dual-identity-divider::after {
+            content: "";
+            width: min(28vw, 220px);
+            height: 1px;
+            background: rgba(217, 164, 65, 0.42);
+        }
+        .living-archive-page .dual-identity-divider-mark {
+            width: 11px;
+            height: 11px;
+            border: 1px solid rgba(217, 164, 65, 0.8);
+            transform: rotate(45deg);
+            background: rgba(217, 164, 65, 0.18);
+        }
+        .living-archive-page .dual-identity-section .dual-identity-title,
+        .living-archive-page .dual-identity-section .dual-identity-name {
+            color: var(--la-cream);
+        }
+        .living-archive-page .dual-identity-section .dual-identity-intro,
+        .living-archive-page .dual-identity-section .dual-identity-text {
+            color: rgba(255, 247, 232, 0.74);
+            line-height: 1.75;
+        }
+        .living-archive-page .dual-identity-summary {
+            margin-top: 42px;
+            padding: 18px 20px;
+            color: var(--la-cream);
+            text-align: center;
+            border-top: 1px solid rgba(217, 164, 65, 0.35);
+            border-bottom: 1px solid rgba(217, 164, 65, 0.35);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+            letter-spacing: 0.04em;
+        }
+        .living-archive-page .about-three .row {
+            align-items: stretch;
+        }
+        .living-archive-page .living-about-image {
+            min-height: 560px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(28px, 5vw, 56px);
+        }
+        .living-archive-page .living-about-image img {
+            width: min(100%, 560px);
+            max-height: 560px;
+            object-fit: contain;
+            background: #000;
+        }
+        .living-archive-page .about-three__content {
+            padding: clamp(36px, 5vw, 68px);
+        }
+        .living-archive-page .living-note-list {
+            margin: 24px 0 0;
+            padding-left: 1.2rem;
+        }
+        .living-archive-page .living-note-list li + li {
+            margin-top: 10px;
+        }
+        .living-archive-page .cta-two__home-two .inner-container {
+            padding: clamp(24px, 3vw, 34px);
+        }
+        .living-archive-page .cta-two__box {
+            height: 100%;
+        }
+        .living-archive-page .living-endline {
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(217, 164, 65, 0.24);
+            text-align: center;
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(1.25rem, 2vw, 1.55rem);
+            line-height: 1.45;
+        }
+        .living-archive-page #carrier-pathway .living-section-heading {
+            max-width: 920px;
+            margin-bottom: 44px;
+        }
+        .living-archive-page .living-pathway-step {
+            width: 72px;
+            height: 72px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 28px;
+        }
+        .living-archive-page #carrier-pathway .living-card-media img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            background: #130802;
+        }
+        .living-archive-page .blog-one__date {
+            position: absolute;
+            left: 18px;
+            bottom: 18px;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 800;
+            line-height: 1;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
+        }
+        .living-archive-page .blog-one__content {
+            padding: 0;
+        }
+        .living-archive-page .blog-one__content h3 {
+            margin-bottom: 14px;
+        }
+        .living-archive-page .blog-one__link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            margin-top: 10px;
+            padding: 10px 16px;
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            box-shadow: 0 14px 30px rgba(185, 111, 55, 0.18);
+        }
+        .living-archive-page .blog-one__link + .blog-one__link {
+            margin-left: 8px;
+        }
+        .living-archive-page .living-certification-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(7, 7, 6, 0.76), rgba(7, 7, 6, 0.64)),
+                radial-gradient(circle at 18% 20%, rgba(217, 164, 65, 0.18), transparent 30%);
+        }
+        .living-archive-page .living-certification-section .container {
+            position: relative;
+            z-index: 1;
+        }
+        .living-archive-page .living-paper-card {
+            color: #23170d;
+        }
+        .living-archive-page .living-paper-title {
+            color: #8a621e;
+        }
+        .living-archive-page .living-paper-body {
+            margin: 0;
+            color: #2a2118;
+            white-space: pre-line;
+            line-height: 1.8;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.98rem;
+        }
+        @media (max-width: 991.98px) {
+            .living-archive-page .dual-identity-row,
+            .living-archive-page .dual-identity-row--executive {
+                grid-template-columns: 1fr;
+            }
+            .living-archive-page .dual-identity-row--executive .dual-identity-media {
+                order: -1;
+            }
+            .living-archive-page .living-about-image {
+                min-height: 360px;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .living-archive-page .living-ceremonial-intro {
+                margin-top: 0;
+            }
+            .living-archive-page .living-pathway-step {
+                width: 64px;
+                height: 64px;
+                font-size: 24px;
+            }
+            .living-archive-page .blog-one__link,
+            .living-archive-page .blog-one__link + .blog-one__link {
+                width: 100%;
                 margin-left: 0;
-                margin-top: 10px;
             }
-            .dual-identity-section {
-                padding: 4.75rem 0;
+        }
+        @media (max-width: 575.98px) {
+            .living-archive-page .living-hero-section {
+                padding-top: 82px;
+                padding-bottom: 48px;
             }
-            .dual-identity-summary {
-                font-size: 0.9rem;
-                letter-spacing: 0.04em;
+            .living-archive-page .living-ceremonial-intro__title,
+            .living-archive-page .dual-identity-title,
+            .living-archive-page .living-section-heading__title {
+                font-size: clamp(2.35rem, 12vw, 3.25rem);
             }
-            .living-connected-pages {
-                padding-bottom: 4.75rem;
+            .living-archive-page .living-ceremonial-intro__media img {
+                max-height: 360px;
+            }
+            .side-content__block-inner,
+            .side-menu__block-inner {
+                width: 100vw;
+                padding: 28px 22px;
+            }
+        }
+
+        /* Three-color premium finish: dark base, gold/copper accents, teal depth. */
+        .living-archive-page,
+        .living-archive-page .living-ceremonial-intro,
+        .living-archive-page .dual-identity-section,
+        .living-archive-page .about-three,
+        .living-archive-page .cta-two,
+        .living-archive-page #carrier-pathway,
+        .living-archive-page .blog-one {
+            background:
+                radial-gradient(circle at 82% 12%, rgba(14, 111, 102, 0.16), transparent 34%),
+                radial-gradient(circle at 10% 30%, rgba(217, 164, 65, 0.12), transparent 28%),
+                linear-gradient(135deg, #070706 0%, #12100d 56%, #07111b 100%);
+            color: var(--la-cream);
+        }
+        .living-archive-page .living-ceremonial-intro__wrap,
+        .living-archive-page .dual-identity-shell,
+        .living-archive-page .about-three .row,
+        .living-archive-page .cta-two__home-two .inner-container,
+        .living-archive-page .living-glass-card,
+        .living-archive-page .cta-two__box,
+        .living-archive-page .blog-one__single {
+            border-color: rgba(217, 164, 65, 0.26);
+            background:
+                linear-gradient(145deg, rgba(255, 247, 232, 0.07), rgba(255, 247, 232, 0.02)),
+                rgba(10, 10, 8, 0.9);
+            color: var(--la-cream);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+        }
+        .living-archive-page .living-ceremonial-intro__title,
+        .living-archive-page .living-section-heading__title,
+        .living-archive-page .dual-identity-title,
+        .living-archive-page .dual-identity-name,
+        .living-archive-page .living-card-title,
+        .living-archive-page .cta-two__content h3,
+        .living-archive-page .blog-one__content h3 a,
+        .living-archive-page .block-title h3 {
+            color: var(--la-cream);
+        }
+        .living-archive-page .living-ceremonial-intro__copy,
+        .living-archive-page .living-section-heading__copy,
+        .living-archive-page .living-section-copy,
+        .living-archive-page .dual-identity-intro,
+        .living-archive-page .dual-identity-text,
+        .living-archive-page .living-card-text,
+        .living-archive-page .about-three .about-three__content,
+        .living-archive-page .about-three .about-three__content > p,
+        .living-archive-page .living-note-list li,
+        .living-archive-page .blog-one__content p,
+        .living-archive-page .cta-two__content p {
+            color: rgba(255, 247, 232, 0.76);
+        }
+        .living-archive-page .living-ceremonial-intro__media {
+            background: rgba(0, 0, 0, 0.88);
+            border-color: rgba(217, 164, 65, 0.24);
+        }
+        .living-archive-page .living-certification-section .living-paper-card {
+            background: var(--la-soft);
+            color: #23170d;
+        }
+        .living-archive-page .living-certification-section .living-paper-title {
+            color: #8a621e;
+        }
+        .living-archive-page .living-certification-section .living-paper-body {
+            color: #2a2118;
+        }
+        .living-archive-page .site-footer__bottom-logo img {
+            max-height: 92px;
+            width: auto;
+            opacity: 0.9;
+        }
+        .living-archive-page .site-footer__bottom .inner-container {
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        }
+        @media (max-width: 767.98px) {
+            .living-archive-page .site-footer__bottom-logo img {
+                max-height: 70px;
+            }
+        }
+
+        /* Contrast and interaction QC for dark three-color finish. */
+        .living-archive-page .thm-btn,
+        .living-archive-page .blog-one__link,
+        .living-archive-page .living-connected-pages__link,
+        .living-archive-page .btn.living-btn {
+            border: 1px solid rgba(217, 164, 65, 0.46);
+            color: var(--la-gold-bright);
+            background: rgba(7, 7, 6, 0.58);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+        }
+        .living-archive-page .thm-btn:hover,
+        .living-archive-page .blog-one__link:hover,
+        .living-archive-page .living-connected-pages__link:hover,
+        .living-archive-page .btn.living-btn:hover {
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            border-color: transparent;
+        }
+        .living-archive-page .cta-two__box .thm-btn {
+            width: max-content;
+            min-height: 40px;
+            padding: 9px 16px;
+            margin-top: 18px;
+            font-size: 0.86rem;
+        }
+        .living-archive-page #carrier-pathway .living-section-heading__title,
+        .living-archive-page #carrier-pathway .living-section-heading__copy,
+        .living-archive-page #carrier-pathway .living-card-title,
+        .living-archive-page #carrier-pathway .living-card-text {
+            color: var(--la-cream);
+        }
+        .living-archive-page #carrier-pathway .living-section-heading__copy,
+        .living-archive-page #carrier-pathway .living-card-text {
+            color: rgba(255, 247, 232, 0.78);
+        }
+        .living-archive-page #carrier-pathway .living-card-badge,
+        .living-archive-page .cta-two__box .living-svg-icon {
+            color: var(--la-copper);
+        }
+        .living-archive-page #carrier-pathway .living-pathway-icon {
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--la-copper);
+            background: rgba(217, 164, 65, 0.1);
+            border: 1px solid rgba(217, 164, 65, 0.22);
+        }
+        .living-archive-page #carrier-pathway .living-glass-card {
+            border-color: rgba(217, 164, 65, 0.28);
+            background:
+                linear-gradient(145deg, rgba(255, 247, 232, 0.08), rgba(14, 111, 102, 0.08)),
+                rgba(10, 10, 8, 0.9);
+        }
+        .living-archive-page #carrier-pathway .living-card-media {
+            overflow: hidden;
+            border-radius: 18px;
+            margin-bottom: 24px;
+        }
+        .living-archive-page .living-section-heading {
+            max-width: 920px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        .living-archive-page .cta-two__box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        @media (max-width: 767.98px) {
+            .living-archive-page .cta-two__box .thm-btn,
+            .living-archive-page .thm-btn,
+            .living-archive-page .blog-one__link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .living-archive-page .living-cta-band {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            min-height: clamp(70px, 7vw, 100px);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            color: var(--la-cream);
+            background:
+                linear-gradient(90deg, rgba(7, 7, 6, 0.96), rgba(43, 26, 16, 0.94), rgba(7, 17, 27, 0.96));
+            border-top: 1px solid rgba(217, 164, 65, 0.22);
+            border-bottom: 1px solid rgba(217, 164, 65, 0.22);
+        }
+        .living-archive-page .living-cta-band::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 50%, rgba(217, 164, 65, 0.18), transparent 28%),
+                radial-gradient(circle at 82% 50%, rgba(14, 111, 102, 0.2), transparent 30%);
+            pointer-events: none;
+        }
+        .living-archive-page .living-cta-band__inner {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 1248px);
+            min-height: clamp(70px, 7vw, 100px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin: 0 auto;
+            padding: 12px clamp(18px, 5vw, 64px);
+        }
+        .living-archive-page .living-cta-band__copy {
+            min-width: 0;
+        }
+        .living-archive-page .living-cta-band__kicker {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--la-gold-bright);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .living-archive-page .living-cta-band__title {
+            margin: 0;
+            color: var(--la-cream);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(1.35rem, 2.4vw, 2rem);
+            line-height: 1.08;
+        }
+        .living-archive-page .living-cta-band__actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            flex: 0 0 auto;
+        }
+        .living-archive-page .living-cta-band__btn {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            border: 1px solid rgba(217, 164, 65, 0.48);
+            border-radius: 999px;
+            color: var(--la-gold-bright);
+            background: rgba(7, 7, 6, 0.62);
+            font-size: 0.82rem;
+            font-weight: 800;
+            line-height: 1;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
+        }
+        .living-archive-page .living-cta-band__btn--primary,
+        .living-archive-page .living-cta-band__btn:hover {
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            border-color: transparent;
+        }
+        .living-archive-page .living-cta-band__btn:hover {
+            transform: translateY(-2px);
+        }
+        .living-archive-page .living-animate {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            will-change: opacity, transform;
+        }
+        .living-archive-page .living-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .living-archive-page .living-float-soft {
+            animation: livingFloatSoft 5.5s ease-in-out infinite;
+        }
+        @keyframes livingFloatSoft {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        @media (max-width: 767.98px) {
+            .living-archive-page .living-cta-band__inner {
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 8px 12px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .living-archive-page .living-cta-band__copy {
+                flex: 1 1 180px;
+            }
+            .living-archive-page .living-cta-band__kicker {
+                font-size: 0.62rem;
+                letter-spacing: 0.12em;
+            }
+            .living-archive-page .living-cta-band__title {
+                font-size: 1.12rem;
+            }
+            .living-archive-page .living-cta-band__actions {
+                flex: 1 1 180px;
+                gap: 8px;
+            }
+            .living-archive-page .living-cta-band__btn {
+                flex: 1 1 0;
+                min-height: 38px;
+                padding: 8px 10px;
+                font-size: 0.68rem;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .living-archive-page .living-animate {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+            .living-archive-page .living-float-soft {
+                animation: none;
             }
         }
     </style>
@@ -1080,6 +1752,11 @@
         ['label' => 'Carrier Pathway', 'url' => '#carrier-pathway'],
         ['label' => 'Contact', 'url' => '#contact-invitations'],
     ];
+
+    $supportUrl = data_get($contactSection, 'general.support_url', route('living-archive.donate'));
+    $supportLabel = data_get($contactSection, 'general.support_label', 'Offer Support');
+    $qrUrl = data_get($qr, 'cta_url', route('living-archive.donate'));
+    $qrLabel = data_get($qr, 'cta_label', 'Open the QR Gateway');
 @endphp
 
 <div class="preloader">
@@ -1089,7 +1766,7 @@
     </div>
 </div>
 
-<div class="page-wrapper">
+<div class="page-wrapper living-archive-page">
     <nav class="main-nav-one stricky main-nav-one__home-three">
         <div class="container">
             <div class="inner-container">
@@ -1145,7 +1822,7 @@
                 <span class="living-section-eyebrow">Step 2 • Homepage Ceremonial Introduction</span>
                 <h2 class="living-ceremonial-intro__title mb-4">Ceremonial Introduction</h2>
                 <div class="living-ceremonial-intro__media mb-4">
-                    <img src="{{ $primaryCrestImage }}" alt="Living Archive Ceremonial Crest" class="img-fluid rounded-4">
+                    <img src="{{ $primaryCrestImage }}" alt="Living Archive Ceremonial Crest" class="img-fluid rounded-4" loading="lazy">
                 </div>
                 <p class="living-ceremonial-intro__copy">
                     {{ $introText }}
@@ -1153,6 +1830,19 @@
                 <p class="living-ceremonial-intro__copy">
                     {{ data_get($lineage, 'intro', data_get($crest, 'body_one', 'The Living Archive is a ceremonial record where memory, symbol, and song return to their rightful lineage.')) }}
                 </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="living-cta-band" aria-label="Support the Living Archive">
+        <div class="living-cta-band__inner">
+            <div class="living-cta-band__copy">
+                <span class="living-cta-band__kicker">Support the Archive</span>
+                <p class="living-cta-band__title">Help carry the Living Archive forward.</p>
+            </div>
+            <div class="living-cta-band__actions">
+                <a class="living-cta-band__btn living-cta-band__btn--primary" href="{{ $supportUrl }}">{{ $supportLabel }}</a>
+                <a class="living-cta-band__btn" href="{{ $qrUrl }}">{{ $qrLabel }}</a>
             </div>
         </div>
     </section>
@@ -1170,12 +1860,12 @@
                     <div class="dual-identity-row dual-identity-row--ceremonial">
                         <div class="dual-identity-media">
                             @if (data_get($dualIdentity, 'ceremonial.image'))
-                                <img class="dual-identity-portrait" src="{{ data_get($dualIdentity, 'ceremonial.image') }}" alt="Ceremonial portrait of Thomas Alexander">
+                                <img class="dual-identity-portrait" src="{{ data_get($dualIdentity, 'ceremonial.image') }}" alt="Ceremonial portrait of Thomas Alexander" loading="lazy">
                             @endif
                         </div>
                         <div class="dual-identity-content">
                             <span class="dual-identity-label">{{ data_get($dualIdentity, 'ceremonial.label', 'Ceremonial Identity') }}</span>
-                            <h3 class="dual-identity-name">{{ data_get($dualIdentity, 'ceremonial.title', 'Chief & Elder - Five Feathers Lineage Society') }}</h3>
+                            <h3 class="dual-identity-name">{{ data_get($dualIdentity, 'ceremonial.title', 'Chief & Elder - The Five Feathers Lineage Society') }}</h3>
                             <p class="dual-identity-subtitle">{{ data_get($dualIdentity, 'ceremonial.subtitle', 'Lineage Stewardship | Cultural Continuity | Living Archive Leadership') }}</p>
                             @foreach ($dualCeremonialText as $paragraph)
                                 <p class="dual-identity-text">{{ $paragraph }}</p>
@@ -1198,7 +1888,7 @@
                         </div>
                         <div class="dual-identity-media">
                             @if (data_get($dualIdentity, 'executive.image'))
-                                <img class="dual-identity-portrait" src="{{ data_get($dualIdentity, 'executive.image') }}" alt="Executive portrait of Thomas Alexander">
+                                <img class="dual-identity-portrait" src="{{ data_get($dualIdentity, 'executive.image') }}" alt="Executive portrait of Thomas Alexander" loading="lazy">
                             @endif
                         </div>
                     </div>
@@ -1224,12 +1914,25 @@
                 </article>
                 <article class="living-connected-pages__card">
                     <span class="living-connected-pages__label">Connected Page</span>
-                    <h2 class="living-connected-pages__title">Five Feathers Lineage Society</h2>
+                    <h2 class="living-connected-pages__title">The Five Feathers Lineage Society</h2>
                     <p class="living-connected-pages__copy">
                         Learn about the lineage-rooted cultural society preserving ancestral memory, stewardship, and continuity.
                     </p>
                     <a class="living-connected-pages__link" href="{{ url('/five-feathers-lineage-society') }}">Open Lineage Society</a>
                 </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="living-cta-band" aria-label="Join the Living Archive circle">
+        <div class="living-cta-band__inner">
+            <div class="living-cta-band__copy">
+                <span class="living-cta-band__kicker">Enter the Circle</span>
+                <p class="living-cta-band__title">Connect with the lineage, the archive, and the work.</p>
+            </div>
+            <div class="living-cta-band__actions">
+                <a class="living-cta-band__btn living-cta-band__btn--primary" href="#contact-invitations">Contact</a>
+                <a class="living-cta-band__btn" href="{{ $supportUrl }}">{{ $supportLabel }}</a>
             </div>
         </div>
     </section>
@@ -1246,7 +1949,7 @@
                     <div class="col-12 col-md-12 col-lg-4" id="{{ $card['id'] }}">
                         <article class="living-glass-card living-crest-card is-interactive h-100 d-flex flex-column p-4 p-lg-5">
                             <div class="living-card-media">
-                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="img-fluid rounded-3">
+                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="img-fluid rounded-3" loading="lazy">
                             </div>
                             <span class="living-card-badge">{{ $card['label'] }}</span>
                             <h3 class="living-card-title">{{ $card['title'] }}</h3>
@@ -1268,7 +1971,7 @@
             <div class="row no-gutters">
                 <div class="col-lg-6">
                     <div class="about-three__image clearfix living-about-image">
-                        <img src="{{ $primaryCrestImage }}" alt="{{ $crestTitle ?: 'Ceremonial Crest' }}">
+                        <img src="{{ $primaryCrestImage }}" alt="{{ $crestTitle ?: 'Ceremonial Crest' }}" loading="lazy">
                     </div>
                 </div>
                 <div class="col-lg-6 d-flex">
@@ -1290,6 +1993,19 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="living-cta-band" aria-label="Explore the lineage">
+        <div class="living-cta-band__inner">
+            <div class="living-cta-band__copy">
+                <span class="living-cta-band__kicker">Lineage Access</span>
+                <p class="living-cta-band__title">Move from story into pathway and stewardship.</p>
+            </div>
+            <div class="living-cta-band__actions">
+                <a class="living-cta-band__btn living-cta-band__btn--primary" href="#carrier-pathway">Carrier Pathway</a>
+                <a class="living-cta-band__btn" href="{{ $qrUrl }}">{{ $qrLabel }}</a>
             </div>
         </div>
     </section>
@@ -1338,7 +2054,7 @@
                                 <span class="living-pathway-icon">{!! $iconSvg($card['icon'], 'living-svg-icon') !!}</span>
                             </div>
                             <div class="living-card-media">
-                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="img-fluid rounded-3">
+                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="img-fluid rounded-3" loading="lazy">
                             </div>
                             <span class="living-card-badge">{{ $card['label'] }}</span>
                             <h3 class="living-card-title">{{ $card['title'] }}</h3>
@@ -1357,6 +2073,19 @@
         </div>
     </section>
 
+    <section class="living-cta-band" aria-label="Support ceremonial artifacts">
+        <div class="living-cta-band__inner">
+            <div class="living-cta-band__copy">
+                <span class="living-cta-band__kicker">Artifacts & Support</span>
+                <p class="living-cta-band__title">Support the archive through ceremony, media, and access.</p>
+            </div>
+            <div class="living-cta-band__actions">
+                <a class="living-cta-band__btn living-cta-band__btn--primary" href="#media-merch">Media & Merch</a>
+                <a class="living-cta-band__btn" href="{{ $supportUrl }}">{{ $supportLabel }}</a>
+            </div>
+        </div>
+    </section>
+
     <section class="living-dark-section" id="media-merch">
         <div class="container living-section-shell">
             <div class="living-section-heading">
@@ -1369,7 +2098,7 @@
                     <div class="col-12 col-lg-4">
                         <article class="living-glass-card h-100 d-flex flex-column p-4 p-lg-5">
                             <div class="living-card-media">
-                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="img-fluid rounded-3">
+                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="img-fluid rounded-3" loading="lazy">
                             </div>
                             <span class="living-card-badge">{{ $card['tag_month'] }}</span>
                             <h3 class="living-card-title">{{ $card['title'] }}</h3>
@@ -1398,7 +2127,7 @@
                     <div class="col-lg-4">
                         <div class="blog-one__single living-contact-card">
                             <div class="blog-one__image">
-                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}">
+                                <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" loading="lazy">
                                 <div class="blog-one__date">{{ $card['label'] }}</div>
                             </div>
                             <div class="blog-one__content">
@@ -1418,6 +2147,19 @@
         </div>
     </section>
 
+    <section class="living-cta-band" aria-label="Complete the ceremonial record">
+        <div class="living-cta-band__inner">
+            <div class="living-cta-band__copy">
+                <span class="living-cta-band__kicker">Ceremonial Record</span>
+                <p class="living-cta-band__title">Complete the journey with certification and support.</p>
+            </div>
+            <div class="living-cta-band__actions">
+                <a class="living-cta-band__btn living-cta-band__btn--primary" href="#certification">Certification</a>
+                <a class="living-cta-band__btn" href="{{ $supportUrl }}">{{ $supportLabel }}</a>
+            </div>
+        </div>
+    </section>
+
     <section class="living-dark-section living-certification-section" id="certification" style="background-image: url('{{ $heroImage }}');">
         <div class="container living-section-shell">
             <div class="living-section-heading">
@@ -1433,11 +2175,11 @@
                     <p class="living-paper-body">{{ $certBody }}</p>
                 </div>
                 <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
-                    <a href="{{ data_get($contactSection, 'general.support_url', route('living-archive.donate')) }}" class="btn living-btn living-btn-primary">
-                        {{ data_get($contactSection, 'general.support_label', 'Offer Support') }}
+                    <a href="{{ $supportUrl }}" class="btn living-btn living-btn-primary">
+                        {{ $supportLabel }}
                     </a>
-                    <a href="{{ data_get($qr, 'cta_url', route('living-archive.donate')) }}" class="btn living-btn living-btn-outline">
-                        {{ data_get($qr, 'cta_label', 'Open the QR Gateway') }}
+                    <a href="{{ $qrUrl }}" class="btn living-btn living-btn-outline">
+                        {{ $qrLabel }}
                     </a>
                 </div>
             </div>
@@ -1577,21 +2319,161 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('muzex/assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/isotope.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/TweenMax.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/waypoints.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/wow.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.lettering.min.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/jquery.circleType.js') }}"></script>
-    <script src="{{ asset('muzex/assets/js/theme.js') }}"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            var page = document.querySelector('.living-archive-page');
+            if (!page) {
+                return;
+            }
+
+            var navLinks = page.querySelectorAll('.main-nav__navigation-box a[href^="#"]');
+            var sections = Array.prototype.slice.call(page.querySelectorAll('section[id]'));
+            var preloader = document.querySelector('.preloader');
+            var sideContent = document.querySelector('.side-content__block');
+            var sideMenu = document.querySelector('.side-menu__block');
+            var mobileNav = document.querySelector('.mobile-nav__container');
+            var scrollTop = document.querySelector('.scroll-to-top');
+
+            function openPanel(panel) {
+                if (!panel) {
+                    return;
+                }
+
+                panel.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closePanels() {
+                if (sideContent) {
+                    sideContent.classList.remove('is-open');
+                }
+
+                if (sideMenu) {
+                    sideMenu.classList.remove('is-open');
+                }
+
+                document.body.style.overflow = '';
+            }
+
+            function setActiveNav() {
+                var current = sections.length ? sections[0].id : '';
+
+                sections.forEach(function (section) {
+                    if (section.getBoundingClientRect().top <= 130) {
+                        current = section.id;
+                    }
+                });
+
+                navLinks.forEach(function (link) {
+                    var target = link.getAttribute('href').replace('#', '');
+                    link.classList.toggle('active', target === current);
+                });
+            }
+
+            if (preloader) {
+                window.addEventListener('load', function () {
+                    preloader.classList.add('is-hidden');
+                });
+
+                setTimeout(function () {
+                    preloader.classList.add('is-hidden');
+                }, 900);
+            }
+
+            if (mobileNav && navLinks.length) {
+                var list = document.createElement('ul');
+
+                navLinks.forEach(function (link) {
+                    var item = document.createElement('li');
+                    var clone = link.cloneNode(true);
+
+                    clone.addEventListener('click', closePanels);
+                    item.appendChild(clone);
+                    list.appendChild(item);
+                });
+
+                mobileNav.innerHTML = '';
+                mobileNav.appendChild(list);
+            }
+
+            page.querySelectorAll('.side-content__toggler').forEach(function (trigger) {
+                trigger.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    openPanel(sideContent);
+                });
+            });
+
+            page.querySelectorAll('.side-menu__toggler').forEach(function (trigger) {
+                trigger.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    openPanel(sideMenu);
+                });
+            });
+
+            document.querySelectorAll('.side-menu__close-btn').forEach(function (trigger) {
+                trigger.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    closePanels();
+                });
+            });
+
+            document.querySelectorAll('.side-content__block-overlay, .side-menu__block-overlay').forEach(function (overlay) {
+                overlay.addEventListener('click', closePanels);
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closePanels();
+                }
+            });
+
+            if (scrollTop) {
+                scrollTop.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            var animatedItems = Array.prototype.slice.call(page.querySelectorAll(
+                'section:not(#crest-home), .living-glass-card, .living-connected-pages__card, .cta-two__box, .blog-one__single, .living-paper-card'
+            ));
+
+            animatedItems.forEach(function (item, index) {
+                item.classList.add('living-animate');
+                item.style.transitionDelay = Math.min(index % 3, 2) * 90 + 'ms';
+            });
+
+            page.querySelectorAll('.living-hero-crest, .living-ceremonial-intro__media').forEach(function (item) {
+                item.classList.add('living-float-soft');
+            });
+
+            if ('IntersectionObserver' in window) {
+                var revealObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    rootMargin: '0px 0px -10% 0px',
+                    threshold: 0.12
+                });
+
+                animatedItems.forEach(function (item) {
+                    revealObserver.observe(item);
+                });
+            } else {
+                animatedItems.forEach(function (item) {
+                    item.classList.add('is-visible');
+                });
+            }
+
+            setActiveNav();
+            window.addEventListener('scroll', setActiveNav, { passive: true });
+        })();
+    </script>
 @endpush
