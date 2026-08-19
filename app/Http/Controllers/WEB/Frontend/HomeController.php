@@ -15,6 +15,7 @@ use App\Models\FlashSaleProduct;
 use App\Models\FooterLink;
 use App\Models\Footer;
 use App\Models\CustomPage;
+use App\Models\LivingArchiveEntry;
 use App\Models\Blog;
 use App\Models\Event;
 use App\Models\eventReview;
@@ -716,7 +717,97 @@ class HomeController extends Controller
                 ?? 'The Yamassee Rising - A Living Archive of Ceremony and Song.',
         ];
 
-        return view('frontend.home.living-archive', compact('page', 'phases', 'handoff'));
+        $archiveGateways = $this->livingArchiveGateways();
+        $completeArchiveUrl = route('front.home.living-archive') . '#explore-living-archive';
+
+        return view('frontend.home.living-archive', compact('page', 'phases', 'handoff', 'archiveGateways', 'completeArchiveUrl'));
+    }
+
+    private function livingArchiveGateways()
+    {
+        $entries = LivingArchiveEntry::published()->ordered()->get();
+
+        if ($entries->isEmpty()) {
+            return collect();
+        }
+
+        $entriesBySlug = $entries->keyBy('slug');
+        $entriesByParent = $entries->groupBy('parent_id');
+        $placeholder = 'Full archive content will be added from the client-provided material.';
+
+        $pathFor = function (LivingArchiveEntry $entry) use ($entries) {
+            $segments = collect([$entry->slug]);
+            $parentId = $entry->parent_id;
+
+            while ($parentId) {
+                $parent = $entries->firstWhere('id', $parentId);
+                if (!$parent) {
+                    break;
+                }
+
+                $segments->prepend($parent->slug);
+                $parentId = $parent->parent_id;
+            }
+
+            return $segments->implode('/');
+        };
+
+        $definitions = [
+            [
+                'slug' => 'memoir',
+                'icon' => 'feather-alt',
+                'children' => ['the-road-north'],
+            ],
+            [
+                'slug' => 'ceremonial-lineage',
+                'icon' => 'shield-alt',
+                'children' => ['the-crossing'],
+            ],
+            [
+                'slug' => 'heritage',
+                'icon' => 'tree',
+                'children' => [
+                    'prairie-migration',
+                    'black-loyalists',
+                    'underground-railroad',
+                    'railway-porters',
+                ],
+            ],
+        ];
+
+        return collect($definitions)->map(function (array $definition) use ($entriesBySlug, $entriesByParent, $pathFor, $placeholder) {
+            $entry = $entriesBySlug->get($definition['slug']);
+            if (!$entry) {
+                return null;
+            }
+
+            $children = collect($definition['children'])
+                ->map(fn (string $slug) => $entriesBySlug->get($slug))
+                ->filter(fn (?LivingArchiveEntry $child) => $child && $child->parent_id === $entry->id)
+                ->values();
+
+            if ($children->isEmpty()) {
+                $children = $entriesByParent->get($entry->id, collect())->values();
+            }
+
+            $teaser = trim((string) $entry->teaser);
+            if ($teaser === '' || $teaser === $placeholder) {
+                $teaser = trim((string) optional($children->first())->teaser) ?: $placeholder;
+            }
+
+            return [
+                'eyebrow' => $entry->section_label ?: 'Living Archive',
+                'title' => $entry->title,
+                'teaser' => $teaser,
+                'icon' => $definition['icon'],
+                'url' => route('front.living-archive.show', ['path' => $pathFor($entry)]),
+                'cta_label' => 'Open ' . $entry->title,
+                'children' => $children->map(fn (LivingArchiveEntry $child) => [
+                    'title' => $child->title,
+                    'url' => route('front.living-archive.show', ['path' => $pathFor($child)]),
+                ])->values(),
+            ];
+        })->filter()->values();
     }
 
     public function about(){

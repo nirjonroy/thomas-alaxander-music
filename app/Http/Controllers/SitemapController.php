@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Event;
+use App\Models\LivingArchiveEntry;
 use App\Models\Product;
 use Illuminate\Http\Response;
 
@@ -84,10 +85,38 @@ class SitemapController extends Controller
                 ];
             })->toArray();
 
-        $urls = array_merge($staticUrls, $blogUrls, $eventUrls, $productUrls);
+        $archiveEntries = LivingArchiveEntry::published()
+            ->ordered()
+            ->get(['id', 'parent_id', 'slug', 'updated_at', 'created_at']);
+        $archiveEntriesById = $archiveEntries->keyBy('id');
+        $archiveUrls = $archiveEntries
+            ->map(function ($entry) use ($archiveEntriesById) {
+                return [
+                    'loc' => route('front.living-archive.show', ['path' => $this->archivePath($entry, $archiveEntriesById)]),
+                    'lastmod' => optional($entry->updated_at ?? $entry->created_at)->toAtomString() ?? now()->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => $entry->parent_id ? '0.6' : '0.7',
+                ];
+            })->toArray();
+
+        $urls = array_merge($staticUrls, $blogUrls, $eventUrls, $productUrls, $archiveUrls);
 
         return response()
             ->view('frontend.sitemap', compact('urls'))
             ->header('Content-Type', 'application/xml');
+    }
+
+    private function archivePath(LivingArchiveEntry $entry, $entriesById): string
+    {
+        $segments = [$entry->slug];
+        $parentId = $entry->parent_id;
+
+        while ($parentId && $entriesById->has($parentId)) {
+            $parent = $entriesById->get($parentId);
+            array_unshift($segments, $parent->slug);
+            $parentId = $parent->parent_id;
+        }
+
+        return implode('/', $segments);
     }
 }

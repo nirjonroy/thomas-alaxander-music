@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\WEB\Seller;
 use App\Providers\PusherConfig;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

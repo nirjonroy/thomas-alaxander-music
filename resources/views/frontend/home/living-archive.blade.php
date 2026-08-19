@@ -523,6 +523,146 @@
                 radial-gradient(circle at 86% 18%, rgba(24, 163, 152, 0.12), transparent 32%),
                 linear-gradient(135deg, #070706 0%, #11100d 52%, #07111b 100%);
         }
+        .living-archive-page .living-archive-gateways {
+            position: relative;
+            overflow: hidden;
+            padding: 96px 0;
+            color: var(--la-cream);
+            background:
+                radial-gradient(circle at 12% 18%, rgba(217, 164, 65, 0.14), transparent 30%),
+                radial-gradient(circle at 88% 72%, rgba(14, 111, 102, 0.14), transparent 34%),
+                linear-gradient(135deg, #070706 0%, #12100d 54%, #07111b 100%);
+        }
+        .living-archive-page .living-archive-gateways__heading {
+            max-width: 860px;
+            margin: 0 auto 38px;
+            text-align: center;
+        }
+        .living-archive-page .living-archive-gateways__grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+        .living-archive-page .living-archive-gateway-card {
+            position: relative;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(24px, 3vw, 34px);
+            border: 1px solid rgba(217, 164, 65, 0.28);
+            border-radius: 26px;
+            background:
+                linear-gradient(145deg, rgba(255, 247, 232, 0.07), rgba(255, 247, 232, 0.02)),
+                rgba(10, 10, 8, 0.9);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
+            transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+        }
+        .living-archive-page .living-archive-gateway-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 26px;
+            right: 26px;
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--la-gold), var(--la-copper));
+        }
+        .living-archive-page .living-archive-gateway-card:hover,
+        .living-archive-page .living-archive-gateway-card:focus-within {
+            transform: translateY(-6px);
+            border-color: rgba(241, 199, 107, 0.52);
+            box-shadow: 0 32px 82px rgba(0, 0, 0, 0.34);
+        }
+        .living-archive-page .living-archive-gateway-card__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+        .living-archive-page .living-archive-gateway-card__eyebrow {
+            color: var(--la-gold-bright);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .living-archive-page .living-archive-gateway-card__motif {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(217, 164, 65, 0.28);
+            border-radius: 50%;
+            color: var(--la-copper);
+            background: rgba(217, 164, 65, 0.08);
+        }
+        .living-archive-page .living-archive-gateway-card__title {
+            margin: 0 0 14px;
+            color: var(--la-cream);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(2.05rem, 3.2vw, 3rem);
+            line-height: 1;
+        }
+        .living-archive-page .living-archive-gateway-card__teaser {
+            margin: 0 0 20px;
+            color: rgba(255, 247, 232, 0.76);
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+        .living-archive-page .living-archive-gateway-card__list {
+            display: grid;
+            gap: 8px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+        .living-archive-page .living-archive-gateway-card__list a {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: rgba(255, 247, 232, 0.86);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .living-archive-page .living-archive-gateway-card__list a::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--la-gold-bright);
+            box-shadow: 0 0 0 4px rgba(217, 164, 65, 0.12);
+        }
+        .living-archive-page .living-archive-gateway-card__cta {
+            width: max-content;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: auto;
+            padding: 10px 18px;
+            border: 1px solid rgba(217, 164, 65, 0.46);
+            border-radius: 999px;
+            color: var(--la-gold-bright);
+            background: rgba(7, 7, 6, 0.58);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
+        }
+        .living-archive-page .living-archive-gateway-card__cta:hover,
+        .living-archive-page .living-archive-gateway-card__cta:focus {
+            color: var(--la-ink);
+            background: linear-gradient(135deg, var(--la-gold-bright), var(--la-copper));
+            outline: 0;
+            transform: translateY(-2px);
+        }
+        .living-archive-page .living-archive-gateways__footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 34px;
+        }
         .living-archive-page .living-connected-pages::before {
             content: "";
             position: absolute;
@@ -902,6 +1042,9 @@
             .living-archive-page .living-connected-pages__grid {
                 grid-template-columns: 1fr;
             }
+            .living-archive-page .living-archive-gateways__grid {
+                grid-template-columns: 1fr;
+            }
         }
         @media (max-width: 767.98px) {
             .living-archive-page .main-nav-one__home-three .inner-container {
@@ -942,6 +1085,7 @@
             .living-archive-page #media-merch,
             .living-archive-page .dual-identity-section,
             .living-archive-page .living-connected-pages,
+            .living-archive-page .living-archive-gateways,
             .living-archive-page .about-three,
             .living-archive-page .cta-two,
             .living-archive-page .blog-one {
@@ -956,6 +1100,25 @@
                 min-height: auto;
             }
             .living-archive-page .living-connected-pages__link {
+                width: 100%;
+            }
+            .living-archive-page .living-archive-gateway-card {
+                padding: 24px 20px;
+            }
+            .living-archive-page .living-archive-gateway-card__top {
+                margin-bottom: 16px;
+            }
+            .living-archive-page .living-archive-gateway-card__title {
+                font-size: 2.1rem;
+            }
+            .living-archive-page .living-archive-gateway-card__teaser {
+                margin-bottom: 16px;
+                line-height: 1.55;
+            }
+            .living-archive-page .living-archive-gateway-card__list {
+                margin-bottom: 18px;
+            }
+            .living-archive-page .living-archive-gateway-card__cta {
                 width: 100%;
             }
             .living-archive-page .site-footer__bottom .inner-container {
@@ -1208,9 +1371,70 @@
             }
         }
         @media (max-width: 575.98px) {
+            html,
+            body,
+            .living-archive-page {
+                width: 100%;
+                max-width: 100vw;
+            }
+            .living-archive-page,
+            .living-archive-page * {
+                box-sizing: border-box;
+            }
+            .living-archive-page {
+                overflow-x: hidden;
+            }
+            .living-archive-page .container,
+            .living-section-shell {
+                width: 100% !important;
+                max-width: 100vw !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
             .living-archive-page .living-hero-section {
                 padding-top: 82px;
                 padding-bottom: 48px;
+            }
+            .living-archive-page .living-hero-panel {
+                width: calc(100vw - 24px) !important;
+                max-width: calc(100vw - 24px) !important;
+                min-width: 0;
+                overflow: hidden;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+            .living-archive-page .living-ceremonial-intro__wrap,
+            .living-archive-page .dual-identity-shell,
+            .living-archive-page .living-glass-card,
+            .living-archive-page .living-connected-pages__card,
+            .living-archive-page .blog-one__single,
+            .living-archive-page .cta-two__box {
+                width: calc(100vw - 24px) !important;
+                max-width: calc(100vw - 24px) !important;
+            }
+            .living-archive-page .living-hero-title {
+                display: block !important;
+                width: 100% !important;
+                max-width: calc(100vw - 64px) !important;
+                font-size: clamp(1.85rem, 9vw, 2.35rem);
+                line-height: 1;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+            .living-archive-page .living-hero-intro {
+                max-width: calc(100vw - 64px) !important;
+                font-size: 0.98rem;
+                overflow-wrap: anywhere;
+            }
+            .living-archive-page .living-section-eyebrow {
+                overflow-wrap: anywhere;
+            }
+            .living-archive-page .btn.living-btn {
+                max-width: calc(100vw - 64px) !important;
+                min-width: 0;
+                white-space: normal;
+                line-height: 1.3;
+                overflow-wrap: anywhere;
             }
             .living-archive-page .living-ceremonial-intro__title,
             .living-archive-page .dual-identity-title,
@@ -1523,6 +1747,70 @@
                 min-height: 38px;
                 padding: 8px 10px;
                 font-size: 0.68rem;
+            }
+        }
+        @media (max-width: 575.98px) {
+            html,
+            body,
+            .living-archive-page {
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+            }
+            .living-archive-page,
+            .living-archive-page * {
+                box-sizing: border-box;
+            }
+            .living-archive-page .container,
+            .living-archive-page .living-section-shell {
+                width: 100% !important;
+                max-width: 100vw !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            .living-archive-page .living-hero-panel,
+            .living-archive-page .living-ceremonial-intro__wrap,
+            .living-archive-page .dual-identity-shell,
+            .living-archive-page .living-glass-card,
+            .living-archive-page .living-connected-pages__card,
+            .living-archive-page .blog-one__single,
+            .living-archive-page .cta-two__box {
+                width: calc(100vw - 24px) !important;
+                max-width: calc(100vw - 24px) !important;
+                min-width: 0 !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                overflow: hidden;
+            }
+            .living-archive-page .living-hero-title,
+            .living-archive-page .living-section-heading__title,
+            .living-archive-page .living-ceremonial-intro__title,
+            .living-archive-page .dual-identity-title {
+                display: block !important;
+                width: 100% !important;
+                max-width: calc(100vw - 64px) !important;
+                font-size: clamp(1.75rem, 8.5vw, 2.25rem) !important;
+                line-height: 1.04 !important;
+                white-space: normal !important;
+                overflow-wrap: anywhere !important;
+            }
+            .living-archive-page .living-hero-intro,
+            .living-archive-page .living-section-heading__copy,
+            .living-archive-page .living-card-text,
+            .living-archive-page .living-ceremonial-intro__copy {
+                max-width: calc(100vw - 64px) !important;
+                overflow-wrap: anywhere !important;
+            }
+            .living-archive-page .btn.living-btn,
+            .living-archive-page .thm-btn,
+            .living-archive-page .blog-one__link,
+            .living-archive-page .living-connected-pages__link,
+            .living-archive-page .living-cta-band__btn {
+                max-width: calc(100vw - 64px) !important;
+                white-space: normal !important;
+                line-height: 1.3 !important;
+                text-align: center !important;
+                overflow-wrap: anywhere !important;
             }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -1923,6 +2211,32 @@
             </div>
         </div>
     </section>
+
+    @if ($archiveGateways->isNotEmpty())
+        <section class="living-archive-gateways" id="explore-living-archive" aria-labelledby="explore-living-archive-title">
+            <div class="container living-section-shell">
+                <div class="living-archive-gateways__heading">
+                    <span class="living-section-eyebrow">Digital Heritage Archive</span>
+                    <h2 class="living-section-heading__title" id="explore-living-archive-title">Explore the Living Archive</h2>
+                    <p class="living-section-heading__copy">
+                        Enter the archive through memoir, ceremonial lineage, and heritage records.
+                    </p>
+                </div>
+
+                <div class="living-archive-gateways__grid">
+                    @foreach ($archiveGateways as $gateway)
+                        @include('frontend.living-archive.partials.gateway-card', ['gateway' => $gateway, 'iconSvg' => $iconSvg])
+                    @endforeach
+                </div>
+
+                <div class="living-archive-gateways__footer">
+                    <a class="btn living-btn living-btn-primary" href="{{ $completeArchiveUrl }}">
+                        View the Complete Archive
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
 
     <section class="living-cta-band" aria-label="Join the Living Archive circle">
         <div class="living-cta-band__inner">

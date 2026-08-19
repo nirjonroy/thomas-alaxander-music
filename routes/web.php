@@ -69,6 +69,7 @@ use App\Http\Controllers\WEB\Admin\LandingPageController;
 use App\Http\Controllers\WEB\Admin\VideoController;
 use App\Http\Controllers\WEB\Admin\IPBlockController;
 use App\Http\Controllers\WEB\Admin\AttributeController;
+use App\Http\Controllers\WEB\Admin\LivingArchiveEntryController as AdminLivingArchiveEntryController;
 use App\Http\Controllers\WEB\Seller\SellerDashboardController;
 use App\Http\Controllers\WEB\Seller\SellerProfileController;
 use App\Http\Controllers\WEB\Seller\SellerProductController;
@@ -101,6 +102,7 @@ use App\Http\Controllers\WEB\Seller\Auth\SellerForgotPasswordController;
 //Frontend
 use App\Http\Controllers\WEB\Frontend\Auth\AuthController as FrontAuthController;
 use App\Http\Controllers\WEB\Frontend\HomeController as FrontHomeController;
+use App\Http\Controllers\WEB\Frontend\LivingArchiveController as FrontLivingArchiveController;
 use App\Http\Controllers\WEB\Frontend\ProductController as FrontProductController;
 use App\Http\Controllers\WEB\Frontend\CartController as FrontCartController;
 use App\Http\Controllers\WEB\Frontend\CheckoutController as FrontCheckoutController;
@@ -446,6 +448,8 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::resource('custom-page', CustomPageController::class);
     Route::get('living-archive-page', [ContentController::class,'livingArchivePage'])->name('living-archive.page');
     Route::put('living-archive-page', [ContentController::class,'updateLivingArchivePage'])->name('living-archive.page.update');
+    Route::resource('living-archive-entry', AdminLivingArchiveEntryController::class);
+    Route::put('living-archive-entry-status/{id}', [AdminLivingArchiveEntryController::class,'changeStatus'])->name('living-archive-entry.status');
 
     Route::put('custom-page-status/{id}', [CustomPageController::class,'changeStatus'])->name('custom-page.status');
 
@@ -808,6 +812,9 @@ Route::group(['as' => 'front.'], function(){
     Route::controller(FrontHomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
         Route::get('/living-archive', 'livingArchive')->name('home.living-archive');
+        Route::get('/living-archive/{path}', [FrontLivingArchiveController::class, 'show'])
+            ->where('path', '^(?!donate(?:/|$))[A-Za-z0-9-]+(?:/[A-Za-z0-9-]+)*$')
+            ->name('living-archive.show');
         Route::get('about-thomas-alexander', 'about')->name('home.about');
         Route::get('/category/{type}/{slug}', 'subCategoriesByCategory')->name('subcategory');
         Route::get('/shop/{slug?}', 'shop')->name('shop');
@@ -883,15 +890,15 @@ Route::group(['as' => 'front.'], function(){
     // Route::post('web-pay-pal', FrontCheckoutController::class, 'pay')->name('web-pay-pal');
 
     Route::resource('checkout', FrontCheckoutController::class);
-    Route::get('checkout-test', 'FrontCheckoutController@test_checkout')->name('test.check.single');
-    Route::get('/checkout/{product_id}', 'FrontCheckoutController@checkoutsing')->name('check.single');
+    Route::get('checkout-test', [FrontCheckoutController::class, 'test_checkout'])->name('test.check.single');
+    Route::get('/checkout/{product_id}', [FrontCheckoutController::class, 'checkoutsing'])->name('check.single');
 
 
     Route::post('/store/landing/data',[FrontCheckoutController::class,'storelandData'])->name('storelandData');
     Route::post('/web-pay-pal-payment',[FrontCheckoutController::class,'webpayment'])->name('web.paypal');
 
-    Route::get('/success', 'FrontCheckoutController@webpaySuccess');
-    Route::get('/error', 'FrontCheckoutController@webpayError');
+    Route::get('/success', [FrontCheckoutController::class, 'webpaySuccess']);
+    Route::get('/error', [FrontCheckoutController::class, 'webpayError']);
 
 
     Route::resource('order', FrontOrderController::class);
@@ -929,4 +936,3 @@ Route::controller(stripePaymentController::class)->group(function(){
 });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-
