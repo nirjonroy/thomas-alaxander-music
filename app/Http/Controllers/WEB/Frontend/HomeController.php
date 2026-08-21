@@ -818,7 +818,31 @@ class HomeController extends Controller
 
     public function livingLegacy()
     {
-        return view('frontend.home.living-legacy');
+        $legacySetting = Setting::select(
+            'living_legacy_meta_title',
+            'living_legacy_meta_description',
+            'living_legacy_og_image',
+            'living_legacy_eyebrow',
+            'living_legacy_title',
+            'living_legacy_subtitle',
+            'living_legacy_hero_image',
+            'living_legacy_intro_heading',
+            'living_legacy_intro_body',
+            'living_legacy_governance_heading',
+            'living_legacy_governance_body',
+            'living_legacy_portrait_image',
+            'living_legacy_portrait_image_alt',
+            'living_legacy_portrait_heading',
+            'living_legacy_portrait_body',
+            'living_legacy_identity_heading',
+            'living_legacy_feather_items',
+            'living_legacy_identity_note',
+            'living_legacy_heritage_heading',
+            'living_legacy_heritage_body',
+            'living_legacy_closing_text'
+        )->first();
+
+        return view('frontend.home.living-legacy', compact('legacySetting'));
     }
 
     public function music()

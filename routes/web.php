@@ -448,6 +448,8 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::resource('contact-us', ContactPageController::class);
 
     Route::resource('custom-page', CustomPageController::class);
+    Route::get('living-legacy-page', [ContentController::class,'livingLegacyPage'])->name('living-legacy.page');
+    Route::put('living-legacy-page', [ContentController::class,'updateLivingLegacyPage'])->name('living-legacy.page.update');
     Route::get('living-archive-page', [ContentController::class,'livingArchivePage'])->name('living-archive.page');
     Route::put('living-archive-page', [ContentController::class,'updateLivingArchivePage'])->name('living-archive.page.update');
     Route::resource('living-archive-entry', AdminLivingArchiveEntryController::class);

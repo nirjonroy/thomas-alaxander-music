@@ -1,12 +1,64 @@
 @extends('frontend.app')
 
+@php
+    $legacyDefaults = [
+        'meta_title' => 'Thomas Alexander — Chief & Elder | Living Legacy',
+        'meta_description' => 'Thomas Alexander carries a unified Black Indigenous lineage rooted in Creek, Cherokee, Yamassee, and Copper-coloured skinned homesteader ancestry.',
+        'eyebrow' => 'Five Feathers Lineage Society',
+        'title' => 'Thomas Alexander — Chief & Elder',
+        'subtitle' => 'Living Archive of the Creek, Cherokee, Yamassee, and Copper-coloured Skinned Homesteader Heritage',
+        'image' => 'uploads/custom-images/slider-2025-10-14-11-55-21-8097.jpg',
+        'intro_heading' => 'Living Legacy Introduction',
+        'intro_body' => "Thomas Alexander carries a unified Black Indigenous lineage rooted in Creek, Cherokee, Yamassee, and Copper-coloured skinned homesteader ancestry. His family's footsteps echo across ancient tribal lands and the prairie soil of Alberta, where Black Indigenous homesteaders built communities that shaped the province's early history.\n\nAs Chief & Elder of the Five Feathers Lineage Society, Thomas preserves and presents this heritage through ceremony, narrative, and cultural stewardship. His lineage was whispered in his ear by his mother, right up to his great-grandmothers - a breathline of resilience carried forward into the present day.",
+        'governance_heading' => 'Clan Mother Governance',
+        'governance_body' => "In Indigenous culture, the Clan Mothers are the true chiefs - the original holders of authority, memory, and connection to the land. Their leadership is rooted in lineage, responsibility, and ancestral continuity. Historically, colonial powers refused to negotiate with women, imposing their own patriarchal systems onto Indigenous nations.\n\nTo protect their sovereignty and ensure their voices were still heard, the Clan Mothers appointed men to stand as chiefs on their behalf. These men were not replacements - they were representatives chosen by the Clan Mothers to carry out leadership duties in a world shaped by colonial restrictions.\n\nThis is why the recognition of an Ancestral Clan Mother carries profound weight. Her acknowledgment is not symbolic; it is authoritative. It reflects the original governance structure, the lineage-based truth, and the cultural legitimacy that predates colonial interference.",
+        'portrait_alt' => 'Thomas Alexander portrait and performance imagery',
+        'portrait_heading' => 'Leather Chair Lineage Narrative',
+        'portrait_body' => "The Ancestral Clan Mother recognized the truth immediately.\n\nIn this portrait, Thomas Alexander sits grounded in a leather chair - a symbol of lineage, authority, and ancestral continuity. The image carries the weight of history: the quiet strength of Creek, Cherokee, Yamassee, and Copper-coloured skinned homesteader heritage. It reflects the presence of a man whose identity is rooted in generations of resilience and cultural memory.\n\nShe saw what the photo reveals: lineage-based connectivity, an authoritative historical presence, and the breathline carried forward through him. Her words affirm the ancestral grounding visible in the image - a visual declaration of heritage, responsibility, and the living archive Thomas embodies.\n\nThis is not simply a portrait - it is a lineage statement.",
+        'identity_heading' => 'Five Feathers Identity',
+        'feather_items' => "Creek\nCherokee\nYamassee\nCopper-coloured skinned homesteader heritage\nOne feather left open for future ancestral confirmation",
+        'identity_note' => 'It is a living crest - a cultural emblem carried forward through ceremony, narrative, and artistic expression.',
+        'heritage_heading' => 'Blue Alberta Blue Heritage Statement',
+        'heritage_body' => 'Blue Alberta Blue is rooted in the Black Indigenous homesteader history of Alberta - a legacy carried forward by Thomas Alexander, Chief & Elder of the Five Feathers Lineage Society, and performed through his artistic identity as The Voice.',
+        'closing_text' => 'Every note Thomas sings, every crest he wears, every chart that memory stirs - is a thread in his ancestral tapestry. This is his offering. This is who he is. This is the Living Archive of The Voice.',
+    ];
+
+    $legacyValue = function (string $key, string $defaultKey = null) use ($legacySetting, $legacyDefaults) {
+        $settingKey = 'living_legacy_' . $key;
+        $value = optional($legacySetting)->{$settingKey};
+        $defaultKey = $defaultKey ?: $key;
+
+        return filled($value) ? $value : ($legacyDefaults[$defaultKey] ?? '');
+    };
+
+    $legacyAsset = function (?string $path) {
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return '';
+        }
+
+        return str_starts_with($path, 'http') ? $path : asset($path);
+    };
+
+    $legacyParagraphs = function (?string $text) {
+        $paragraphs = preg_split('/\r\n\s*\r\n|\n\s*\n|\r\s*\r/', (string) $text);
+        $paragraphs = array_map('trim', $paragraphs);
+
+        return array_values(array_filter($paragraphs, fn ($paragraph) => $paragraph !== ''));
+    };
+
+    $title = $legacyValue('meta_title', 'meta_title');
+    $description = \Illuminate\Support\Str::limit(strip_tags($legacyValue('meta_description', 'meta_description')), 180);
+    $url = url()->current();
+    $heroImage = $legacyAsset($legacyValue('hero_image', 'image'));
+    $portraitImage = $legacyAsset($legacyValue('portrait_image', 'image'));
+    $ogImage = $legacyAsset($legacyValue('og_image')) ?: $heroImage;
+    $featherItems = preg_split('/\r\n|\r|\n/', $legacyValue('feather_items'));
+    $featherItems = array_values(array_filter(array_map('trim', $featherItems), fn ($item) => $item !== ''));
+@endphp
+
 @section('seos')
-    @php
-        $title = 'Thomas Alexander — Chief & Elder | Living Legacy';
-        $description = 'Thomas Alexander carries a unified Black Indigenous lineage rooted in Creek, Cherokee, Yamassee, and Copper-coloured skinned homesteader ancestry.';
-        $url = url()->current();
-        $image = asset('uploads/custom-images/slider-2025-10-14-11-55-21-8097.jpg');
-    @endphp
     @section('title', $title)
     <meta name="title" content="{{ $title }}">
     <meta name="description" content="{{ $description }}">
@@ -15,11 +67,11 @@
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ $url }}">
-    <meta property="og:image" content="{{ $image }}">
+    <meta property="og:image" content="{{ $ogImage }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title }}">
     <meta name="twitter:description" content="{{ $description }}">
-    <meta name="twitter:image" content="{{ $image }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 @endsection
 
 @push('css')
@@ -56,7 +108,7 @@
             margin-bottom: 24px;
             background:
                 linear-gradient(120deg, rgba(7, 7, 6, 0.96), rgba(43, 26, 16, 0.84)),
-                url('{{ asset('uploads/custom-images/slider-2025-10-14-11-55-21-8097.jpg') }}') center / cover;
+                url('{{ $heroImage }}') center / cover;
         }
         .legacy-eyebrow,
         .legacy-section h2,
@@ -182,58 +234,58 @@
     <main class="ms_index_wrapper common_pages_space legacy-page">
         <div class="legacy-wrap">
             <header class="legacy-hero">
-                <span class="legacy-eyebrow">Five Feathers Lineage Society</span>
-                <h1>Thomas Alexander — Chief &amp; Elder</h1>
-                <p class="legacy-subtitle">Living Archive of the Creek, Cherokee, Yamassee, and Copper-coloured Skinned Homesteader Heritage</p>
+                <span class="legacy-eyebrow">{{ $legacyValue('eyebrow') }}</span>
+                <h1>{{ $legacyValue('title') }}</h1>
+                <p class="legacy-subtitle">{{ $legacyValue('subtitle') }}</p>
             </header>
 
             <section class="legacy-section" aria-labelledby="legacy-introduction">
-                <h2 id="legacy-introduction">Living Legacy Introduction</h2>
-                <p>Thomas Alexander carries a unified Black Indigenous lineage rooted in Creek, Cherokee, Yamassee, and Copper-coloured skinned homesteader ancestry. His family’s footsteps echo across ancient tribal lands and the prairie soil of Alberta, where Black Indigenous homesteaders built communities that shaped the province’s early history.</p>
-                <p>As Chief &amp; Elder of the Five Feathers Lineage Society, Thomas preserves and presents this heritage through ceremony, narrative, and cultural stewardship. His lineage was whispered in his ear by his mother, right up to his great-grandmothers — a breathline of resilience carried forward into the present day.</p>
+                <h2 id="legacy-introduction">{{ $legacyValue('intro_heading') }}</h2>
+                @foreach ($legacyParagraphs($legacyValue('intro_body')) as $paragraph)
+                    <p>{{ $paragraph }}</p>
+                @endforeach
             </section>
 
             <section class="legacy-section" aria-labelledby="clan-mother-governance">
-                <h2 id="clan-mother-governance">Clan Mother Governance</h2>
-                <p>In Indigenous culture, the Clan Mothers are the true chiefs — the original holders of authority, memory, and connection to the land. Their leadership is rooted in lineage, responsibility, and ancestral continuity. Historically, colonial powers refused to negotiate with women, imposing their own patriarchal systems onto Indigenous nations.</p>
-                <p>To protect their sovereignty and ensure their voices were still heard, the Clan Mothers appointed men to stand as chiefs on their behalf. These men were not replacements — they were representatives chosen by the Clan Mothers to carry out leadership duties in a world shaped by colonial restrictions.</p>
-                <p>This is why the recognition of an Ancestral Clan Mother carries profound weight. Her acknowledgment is not symbolic; it is authoritative. It reflects the original governance structure, the lineage-based truth, and the cultural legitimacy that predates colonial interference.</p>
+                <h2 id="clan-mother-governance">{{ $legacyValue('governance_heading') }}</h2>
+                @foreach ($legacyParagraphs($legacyValue('governance_body')) as $paragraph)
+                    <p>{{ $paragraph }}</p>
+                @endforeach
             </section>
 
             <section class="legacy-section" aria-labelledby="leather-chair-lineage">
                 <div class="legacy-portrait-grid">
                     <figure class="legacy-portrait">
-                        <img src="{{ asset('uploads/custom-images/slider-2025-10-14-11-55-21-8097.jpg') }}" alt="Thomas Alexander portrait and performance imagery" loading="lazy">
+                        <img src="{{ $portraitImage }}" alt="{{ $legacyValue('portrait_image_alt', 'portrait_alt') }}" loading="lazy">
                     </figure>
                     <div>
-                        <h2 id="leather-chair-lineage">Leather Chair Lineage Narrative</h2>
-                        <p>The Ancestral Clan Mother recognized the truth immediately.</p>
-                        <p>In this portrait, Thomas Alexander sits grounded in a leather chair — a symbol of lineage, authority, and ancestral continuity. The image carries the weight of history: the quiet strength of Creek, Cherokee, Yamassee, and Copper-coloured skinned homesteader heritage. It reflects the presence of a man whose identity is rooted in generations of resilience and cultural memory.</p>
-                        <p>She saw what the photo reveals: lineage-based connectivity, an authoritative historical presence, and the breathline carried forward through him. Her words affirm the ancestral grounding visible in the image — a visual declaration of heritage, responsibility, and the living archive Thomas embodies.</p>
-                        <p>This is not simply a portrait — it is a lineage statement.</p>
+                        <h2 id="leather-chair-lineage">{{ $legacyValue('portrait_heading') }}</h2>
+                        @foreach ($legacyParagraphs($legacyValue('portrait_body')) as $paragraph)
+                            <p>{{ $paragraph }}</p>
+                        @endforeach
                     </div>
                 </div>
             </section>
 
             <section class="legacy-section legacy-identity" aria-labelledby="five-feathers-identity">
-                <h2 id="five-feathers-identity">Five Feathers Identity</h2>
+                <h2 id="five-feathers-identity">{{ $legacyValue('identity_heading') }}</h2>
                 <ul class="legacy-feathers">
-                    <li class="legacy-feather">Creek</li>
-                    <li class="legacy-feather">Cherokee</li>
-                    <li class="legacy-feather">Yamassee</li>
-                    <li class="legacy-feather">Copper-coloured skinned homesteader heritage</li>
-                    <li class="legacy-feather">One feather left open for future ancestral confirmation</li>
+                    @foreach ($featherItems as $item)
+                        <li class="legacy-feather">{{ $item }}</li>
+                    @endforeach
                 </ul>
-                <p class="legacy-identity-note">It is a living crest — a cultural emblem carried forward through ceremony, narrative, and artistic expression.</p>
+                <p class="legacy-identity-note">{{ $legacyValue('identity_note') }}</p>
             </section>
 
             <section class="legacy-section" aria-labelledby="blue-alberta-blue">
-                <h2 id="blue-alberta-blue">Blue Alberta Blue Heritage Statement</h2>
-                <p>Blue Alberta Blue is rooted in the Black Indigenous homesteader history of Alberta — a legacy carried forward by Thomas Alexander, Chief &amp; Elder of the Five Feathers Lineage Society, and performed through his artistic identity as The Voice.</p>
+                <h2 id="blue-alberta-blue">{{ $legacyValue('heritage_heading') }}</h2>
+                @foreach ($legacyParagraphs($legacyValue('heritage_body')) as $paragraph)
+                    <p>{{ $paragraph }}</p>
+                @endforeach
             </section>
 
             <section class="legacy-closing" aria-label="Living Archive Closing Statement">
-                <p>Every note Thomas sings, every crest he wears, every chart that memory stirs — is a thread in his ancestral tapestry. This is his offering. This is who he is. This is the Living Archive of The Voice.</p>
+                <p>{{ $legacyValue('closing_text') }}</p>
             </section>
         </div>
     </main>

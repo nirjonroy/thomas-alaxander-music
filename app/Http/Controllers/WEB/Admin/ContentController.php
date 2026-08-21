@@ -984,6 +984,101 @@ class ContentController extends Controller
         return redirect()->back()->with($notification);
     }
 
+    public function livingLegacyPage()
+    {
+        $setting = Setting::select(
+            'id',
+            'living_legacy_meta_title',
+            'living_legacy_meta_description',
+            'living_legacy_og_image',
+            'living_legacy_eyebrow',
+            'living_legacy_title',
+            'living_legacy_subtitle',
+            'living_legacy_hero_image',
+            'living_legacy_intro_heading',
+            'living_legacy_intro_body',
+            'living_legacy_governance_heading',
+            'living_legacy_governance_body',
+            'living_legacy_portrait_image',
+            'living_legacy_portrait_image_alt',
+            'living_legacy_portrait_heading',
+            'living_legacy_portrait_body',
+            'living_legacy_identity_heading',
+            'living_legacy_feather_items',
+            'living_legacy_identity_note',
+            'living_legacy_heritage_heading',
+            'living_legacy_heritage_body',
+            'living_legacy_closing_text'
+        )->first();
+
+        return view('admin.living_legacy_settings', compact('setting'));
+    }
+
+    public function updateLivingLegacyPage(Request $request)
+    {
+        $rules = [
+            'living_legacy_meta_title' => 'nullable|string|max:255',
+            'living_legacy_meta_description' => 'nullable|string|max:255',
+            'living_legacy_og_image' => 'nullable|string|max:255',
+            'living_legacy_eyebrow' => 'nullable|string|max:255',
+            'living_legacy_title' => 'nullable|string|max:255',
+            'living_legacy_subtitle' => 'nullable|string|max:255',
+            'living_legacy_hero_image' => 'nullable|string|max:255',
+            'living_legacy_intro_heading' => 'nullable|string|max:255',
+            'living_legacy_intro_body' => 'nullable|string',
+            'living_legacy_governance_heading' => 'nullable|string|max:255',
+            'living_legacy_governance_body' => 'nullable|string',
+            'living_legacy_portrait_image' => 'nullable|string|max:255',
+            'living_legacy_portrait_image_alt' => 'nullable|string|max:255',
+            'living_legacy_portrait_heading' => 'nullable|string|max:255',
+            'living_legacy_portrait_body' => 'nullable|string',
+            'living_legacy_identity_heading' => 'nullable|string|max:255',
+            'living_legacy_feather_items' => 'nullable|string',
+            'living_legacy_identity_note' => 'nullable|string',
+            'living_legacy_heritage_heading' => 'nullable|string|max:255',
+            'living_legacy_heritage_body' => 'nullable|string',
+            'living_legacy_closing_text' => 'nullable|string',
+            'living_legacy_hero_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:6144',
+            'living_legacy_portrait_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:6144',
+            'living_legacy_og_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+        ];
+
+        $this->validate($request, $rules);
+
+        $setting = Setting::first();
+        if (!$setting) {
+            $setting = new Setting();
+        }
+
+        foreach (array_keys($rules) as $field) {
+            if (str_ends_with($field, '_file')) {
+                continue;
+            }
+
+            if ($request->exists($field)) {
+                $setting->{$field} = $request->input($field, $setting->{$field});
+            }
+        }
+
+        $uploadMap = [
+            'living_legacy_hero_image_file' => 'living_legacy_hero_image',
+            'living_legacy_portrait_image_file' => 'living_legacy_portrait_image',
+            'living_legacy_og_image_file' => 'living_legacy_og_image',
+        ];
+
+        foreach ($uploadMap as $fileKey => $targetField) {
+            if ($request->hasFile($fileKey)) {
+                $setting->{$targetField} = $this->handleLivingUpload($request->file($fileKey), $targetField, $setting->{$targetField} ?? null);
+            }
+        }
+
+        $setting->save();
+
+        $notification = trans("admin_validation.Update Successfully");
+        $notification = ["messege" => $notification, "alert-type" => "success"];
+        return redirect()->back()->with($notification);
+    }
+
     protected function handleLivingUpload($file, string $label, ?string $oldPath = null): string
     {
         $slug = Str::slug($label, '-');
