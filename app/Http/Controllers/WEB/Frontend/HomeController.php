@@ -816,6 +816,16 @@ class HomeController extends Controller
         return view('frontend.home.about', compact('about'));
     }
 
+    public function livingLegacy()
+    {
+        return view('frontend.home.living-legacy');
+    }
+
+    public function music()
+    {
+        return view('frontend.home.music');
+    }
+
     public function subCategoriesByCategory(Request $request)
     {
         if($request->type == 'subcategory')

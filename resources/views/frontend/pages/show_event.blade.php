@@ -298,6 +298,8 @@
             <p class="event-side-title">More Events</p>
             <a class="event-action-btn" href="{{ route('front.events') }}">Back to Events</a>
           </div>
+
+          @include('frontend.partials.artist_representation', ['variant' => 'short'])
         </aside>
       </div>
     </div>

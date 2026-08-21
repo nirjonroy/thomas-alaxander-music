@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\EpkPage;
 use App\Models\Event;
 use App\Models\LivingArchiveEntry;
 use App\Models\Product;
@@ -36,6 +37,12 @@ class SitemapController extends Controller
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'weekly',
                 'priority' => '0.7',
+            ],
+            [
+                'loc' => route('front.contact_us'),
+                'lastmod' => now()->toAtomString(),
+                'changefreq' => 'monthly',
+                'priority' => '0.6',
             ],
             [
                 'loc' => route('front.home.living-archive'),
@@ -99,7 +106,19 @@ class SitemapController extends Controller
                 ];
             })->toArray();
 
-        $urls = array_merge($staticUrls, $blogUrls, $eventUrls, $productUrls, $archiveUrls);
+        $epkUrls = EpkPage::published()
+            ->ordered()
+            ->get(['slug', 'updated_at', 'created_at'])
+            ->map(function ($page) {
+                return [
+                    'loc' => $page->publicUrl(),
+                    'lastmod' => optional($page->updated_at ?? $page->created_at)->toAtomString() ?? now()->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.7',
+                ];
+            })->toArray();
+
+        $urls = array_merge($staticUrls, $blogUrls, $eventUrls, $productUrls, $archiveUrls, $epkUrls);
 
         return response()
             ->view('frontend.sitemap', compact('urls'))

@@ -163,7 +163,7 @@ class ProductController extends Controller
     }
 
     public function all_product(Request $request){
-        return redirect()->route('front.shop');
+        return redirect()->route('front.music');
     }
 
     public function single_product(Request $request, $slug) {

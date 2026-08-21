@@ -69,6 +69,7 @@ use App\Http\Controllers\WEB\Admin\LandingPageController;
 use App\Http\Controllers\WEB\Admin\VideoController;
 use App\Http\Controllers\WEB\Admin\IPBlockController;
 use App\Http\Controllers\WEB\Admin\AttributeController;
+use App\Http\Controllers\WEB\Admin\EpkPageController;
 use App\Http\Controllers\WEB\Admin\LivingArchiveEntryController as AdminLivingArchiveEntryController;
 use App\Http\Controllers\WEB\Seller\SellerDashboardController;
 use App\Http\Controllers\WEB\Seller\SellerProfileController;
@@ -101,6 +102,7 @@ use App\Http\Controllers\WEB\Seller\Auth\SellerForgotPasswordController;
 
 //Frontend
 use App\Http\Controllers\WEB\Frontend\Auth\AuthController as FrontAuthController;
+use App\Http\Controllers\WEB\Frontend\EpkController as FrontEpkController;
 use App\Http\Controllers\WEB\Frontend\HomeController as FrontHomeController;
 use App\Http\Controllers\WEB\Frontend\LivingArchiveController as FrontLivingArchiveController;
 use App\Http\Controllers\WEB\Frontend\ProductController as FrontProductController;
@@ -450,6 +452,8 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin'],function (){
     Route::put('living-archive-page', [ContentController::class,'updateLivingArchivePage'])->name('living-archive.page.update');
     Route::resource('living-archive-entry', AdminLivingArchiveEntryController::class);
     Route::put('living-archive-entry-status/{id}', [AdminLivingArchiveEntryController::class,'changeStatus'])->name('living-archive-entry.status');
+    Route::resource('epk-page', EpkPageController::class);
+    Route::put('epk-page-status/{id}', [EpkPageController::class,'changeStatus'])->name('epk-page.status');
 
     Route::put('custom-page-status/{id}', [CustomPageController::class,'changeStatus'])->name('custom-page.status');
 
@@ -812,9 +816,20 @@ Route::group(['as' => 'front.'], function(){
     Route::controller(FrontHomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
         Route::get('/living-archive', 'livingArchive')->name('home.living-archive');
+        Route::get('/living-legacy', 'livingLegacy')->name('living-legacy');
+        Route::get('/music', 'music')->name('music');
         Route::get('/living-archive/{path}', [FrontLivingArchiveController::class, 'show'])
             ->where('path', '^(?!donate(?:/|$))[A-Za-z0-9-]+(?:/[A-Za-z0-9-]+)*$')
             ->name('living-archive.show');
+        Route::get('/epk/full-artist', [FrontEpkController::class, 'show'])
+            ->defaults('slug', 'full-artist')
+            ->name('epk.full-artist');
+        Route::get('/epk/crooners', [FrontEpkController::class, 'show'])
+            ->defaults('slug', 'crooners')
+            ->name('epk.crooners');
+        Route::get('/epk/{slug}', [FrontEpkController::class, 'show'])
+            ->where('slug', 'full-artist|crooners')
+            ->name('epk.show');
         Route::get('about-thomas-alexander', 'about')->name('home.about');
         Route::get('/category/{type}/{slug}', 'subCategoriesByCategory')->name('subcategory');
         Route::get('/shop/{slug?}', 'shop')->name('shop');

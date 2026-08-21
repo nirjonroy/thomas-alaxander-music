@@ -34,6 +34,28 @@
                         </span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ route('front.music') }}" title="Music">
+                        <span class="nav_icon">
+                            <span class="icon icon_music"></span>
+                        </span>
+                        <span class="nav_text">
+                            Music
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('front.living-legacy') }}" title="Living Legacy">
+                        <span class="nav_icon">
+                            <span class="icon icon_music"></span>
+                        </span>
+                        <span class="nav_text">
+                            Living Legacy
+                        </span>
+                    </a>
+                </li>
               
                  <li>
                     <a href="{{ route('front.shop') }}" title="Albums">
@@ -55,6 +77,29 @@
                             Event
                         </span>
                     </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('front.epk.full-artist') }}" title="EPK">
+                        <span class="nav_icon">
+                            <span class="fas fa-microphone-lines"></span>
+                        </span>
+                        <span class="nav_text">
+                            EPK
+                        </span>
+                    </a>
+                    <ul class="epk-sidebar-subnav" aria-label="EPK pages">
+                        <li>
+                            <a href="{{ route('front.epk.full-artist') }}" title="Full Artist EPK">
+                                <span class="nav_text">Full Artist</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('front.epk.crooners') }}" title="Crooners EPK">
+                                <span class="nav_text">Crooners</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 
                 <li>
@@ -146,3 +191,39 @@
         </div>
     </div>
 </div>
+
+@once
+    <style>
+        .epk-sidebar-subnav {
+            list-style: none;
+            margin: 0 0 8px 44px;
+            padding: 0;
+        }
+        .epk-sidebar-subnav a {
+            display: block;
+            min-height: 34px;
+            padding: 6px 0;
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 13px;
+            line-height: 1.35;
+            text-decoration: none;
+            white-space: normal;
+        }
+        .epk-sidebar-subnav a:hover,
+        .epk-sidebar-subnav a:focus {
+            color: #f1c76b;
+            outline: none;
+        }
+        @media (max-width: 767.98px) {
+            .epk-sidebar-subnav {
+                margin-left: 40px;
+                margin-right: 12px;
+            }
+            .epk-sidebar-subnav a {
+                min-height: 40px;
+                padding: 9px 0;
+                overflow-wrap: anywhere;
+            }
+        }
+    </style>
+@endonce

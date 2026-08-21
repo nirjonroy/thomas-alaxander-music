@@ -24,6 +24,21 @@
 
         <!-- Right Section: Cart & User Actions -->
         <div class="ms_header_actions">
+            <div class="ms_epk_dropdown d-none d-md-block">
+                <button class="epk-menu-toggle" type="button" aria-haspopup="true">
+                    EPK
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </button>
+                <ul class="epk-dropdown-menu" aria-label="EPK menu">
+                    <li>
+                        <a href="{{ route('front.epk.full-artist') }}">Full Artist</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('front.epk.crooners') }}">Crooners</a>
+                    </li>
+                </ul>
+            </div>
+
             <!-- Cart -->
             <div class="ms_cart_wrap">
                 <a href="{{route('front.cart.index')}}" class="cart-link">
@@ -164,6 +179,75 @@
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
+}
+
+.ms_epk_dropdown {
+    position: relative;
+}
+
+.epk-menu-toggle {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid rgba(241, 199, 107, 0.34);
+    border-radius: 999px;
+    color: #f1c76b;
+    background: rgba(7, 7, 6, 0.28);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.epk-menu-toggle:hover,
+.epk-menu-toggle:focus {
+    color: #070706;
+    background: linear-gradient(135deg, #f1c76b, #b96f37);
+    outline: none;
+}
+
+.epk-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 1002;
+    min-width: 180px;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    border: 1px solid rgba(241, 199, 107, 0.28);
+    border-radius: 14px;
+    background: #11100d;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.ms_epk_dropdown:hover .epk-dropdown-menu,
+.ms_epk_dropdown:focus-within .epk-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.epk-dropdown-menu a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: rgba(255, 247, 232, 0.88);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.epk-dropdown-menu a:hover,
+.epk-dropdown-menu a:focus {
+    color: #070706;
+    background: linear-gradient(135deg, #f1c76b, #b96f37);
+    outline: none;
 }
 
 /* Cart Styles */

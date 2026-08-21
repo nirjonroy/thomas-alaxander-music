@@ -297,6 +297,7 @@ i
                 <li class="{{ Route::is('admin.custom-page.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.custom-page.index') }}">{{__('admin.Custom Page')}}</a></li>
                 <li class="{{ Route::is('admin.living-archive.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.living-archive.page') }}">Living Archive</a></li>
                 <li class="{{ Route::is('admin.living-archive-entry.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.living-archive-entry.index') }}">Living Archive Pages</a></li>
+                <li class="{{ Route::is('admin.epk-page.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.epk-page.index') }}">EPK Pages</a></li>
                 <li class="{{ Route::is('admin.event.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.event.index') }}">Events</a></li>
                 <li class="{{ Route::is('admin.event.*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.video.index') }}">Videos</a></li>
 

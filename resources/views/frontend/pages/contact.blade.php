@@ -1,75 +1,281 @@
 @extends('frontend.app')
-@section('title', 'Home')
-@push('css')
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+@php
+    $isEpkInquiry = request('inquiry') === 'epk';
+    $bookingEmail = config('artist_representation.email', 'info@thomasalexanderthevoice.com');
+    $subject = $isEpkInquiry
+        ? 'EPK Request — Thomas Alexander (The Voice)'
+        : config('artist_representation.booking_subject', 'Booking Inquiry - Thomas Alexander (The Voice)');
+    $siteName = siteInfo()->site_name ?? siteInfo()->website_name ?? config('app.name', 'Thomas Alexander');
+    $pageTitle = $isEpkInquiry ? 'Request EPK | Thomas Alexander - The Voice' : 'Contact Thomas Alexander - The Voice';
+    $pageDescription = $isEpkInquiry
+        ? 'Request the Thomas Alexander - The Voice EPK through Five Feathers Music Agency for artist booking, performance inquiries, and professional representation.'
+        : 'Contact Thomas Alexander - The Voice for booking, inquiries, and general messages.';
+    $canonical = $isEpkInquiry ? url()->full() : route('front.contact_us');
+    $fallbackLogo = siteInfo()->logo ?? null;
+    $metaImage = $fallbackLogo ? asset($fallbackLogo) : asset('images/og-default.jpg');
+    $contactSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'ContactPage',
+        'name' => $pageTitle,
+        'description' => $pageDescription,
+        'url' => $canonical,
+        'mainEntity' => [
+            '@type' => 'Organization',
+            'name' => 'Five Feathers Music Agency',
+            'email' => $bookingEmail,
+            'contactPoint' => [
+                '@type' => 'ContactPoint',
+                'email' => $bookingEmail,
+                'contactType' => 'booking and EPK inquiries',
+            ],
+        ],
+    ];
+@endphp
+
+@section('title', request('inquiry') === 'epk' ? 'EPK Booking Inquiry' : 'Contact Us')
+
+@section('seos')
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ $canonical }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:image:secure_url" content="{{ $metaImage }}">
+    <meta property="og:image:alt" content="{{ $siteName }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:url" content="{{ $canonical }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
+    <script type="application/ld+json">{!! json_encode($contactSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+@endsection
+
+@push('css')
+    <style>
+        .contact-page.common_pages_space {
+            padding-top: 42px;
+        }
+        .contact-shell {
+            --contact-ink: #070706;
+            --contact-panel: rgba(11, 10, 8, 0.92);
+            --contact-gold: #f1c76b;
+            --contact-copper: #b96f37;
+            --contact-cream: #fff7e8;
+            --contact-muted: rgba(255, 247, 232, 0.78);
+            width: min(100%, 1160px);
+            margin: 0 auto;
+            padding: 20px;
+            color: var(--contact-cream);
+        }
+        .contact-hero,
+        .contact-card {
+            border: 1px solid rgba(241, 199, 107, 0.28);
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 82% 16%, rgba(217, 164, 65, 0.13), transparent 34%),
+                linear-gradient(145deg, rgba(255, 247, 232, 0.07), rgba(255, 247, 232, 0.02)),
+                var(--contact-panel);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+        }
+        .contact-hero {
+            padding: clamp(32px, 5vw, 64px);
+            margin-bottom: 24px;
+        }
+        .contact-eyebrow {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--contact-gold);
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .contact-hero h1,
+        .contact-card h2 {
+            margin: 0 0 14px;
+            color: var(--contact-cream);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(42px, 5vw, 72px);
+            line-height: 1.02;
+            letter-spacing: 0;
+        }
+        .contact-hero p,
+        .contact-card p,
+        .contact-card label {
+            color: var(--contact-muted);
+            font-size: clamp(17px, 1.2vw, 20px);
+            line-height: 1.75;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+            gap: 24px;
+            align-items: start;
+        }
+        .contact-card {
+            padding: clamp(26px, 4vw, 42px);
+        }
+        .contact-booking {
+            margin-top: 22px;
+        }
+        .contact-social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .contact-social a,
+        .contact-mail-link,
+        .contact-submit {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            border: 1px solid rgba(241, 199, 107, 0.38);
+            border-radius: 999px;
+            color: var(--contact-gold);
+            background: rgba(7, 7, 6, 0.58);
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .contact-social a:hover,
+        .contact-mail-link:hover,
+        .contact-submit:hover {
+            color: var(--contact-ink);
+            background: linear-gradient(135deg, var(--contact-gold), var(--contact-copper));
+        }
+        .contact-field {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .contact-field input,
+        .contact-field textarea {
+            width: 100%;
+            border: 1px solid rgba(241, 199, 107, 0.24);
+            border-radius: 14px;
+            background: rgba(255, 247, 232, 0.96);
+            color: #17100a;
+            font-size: 18px;
+            line-height: 1.5;
+            padding: 12px 14px;
+            outline: none;
+        }
+        .contact-field input:focus,
+        .contact-field textarea:focus,
+        .contact-submit:focus-visible,
+        .contact-social a:focus-visible,
+        .contact-mail-link:focus-visible {
+            outline: 3px solid rgba(241, 199, 107, 0.74);
+            outline-offset: 3px;
+        }
+        .contact-field textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .contact-submit {
+            cursor: pointer;
+            color: var(--contact-ink);
+            background: linear-gradient(135deg, var(--contact-gold), var(--contact-copper));
+        }
+        @media (max-width: 991px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 575px) {
+            .contact-page.common_pages_space {
+                padding-top: 18px;
+            }
+            .contact-shell {
+                padding: 12px;
+            }
+            .contact-hero,
+            .contact-card {
+                border-radius: 18px;
+            }
+            .contact-social a,
+            .contact-mail-link,
+            .contact-submit {
+                width: 100%;
+            }
+        }
+        .contact-page--epk span,
+        .contact-page--epk h1,
+        .contact-page--epk h2,
+        .contact-page--epk h3,
+        .contact-page--epk h4,
+        .contact-page--epk h5,
+        .contact-page--epk h6 {
+            font-size: 14px;
+        }
+    </style>
 @endpush
+
 @section('content')
 
-<section class="text-whitebody-font pt-32 lg:pt-48 py-12 px-4">
-    <div class=" max-w-7xl mx-auto border rounded border-orange-500  flex flex-col gap-20  md:flex-row lg:max-w-5xl w-full px-5 py-12 md:py-24 mx-auto section"
-        id="contact-form">
-        <div class="md:w-1/3 w-full">
-            <h1 class="text-4xl  sm:text-4xl font-bold title-font mb-4">Contact Us</h1>
-            <p class="leading-relaxed text-xl ">
-                We're here to assist you! If you have any questions or need assistance, please feel free to reach out to
-                us.
+    <main class="ms_index_wrapper common_pages_space contact-page {{ $isEpkInquiry ? 'contact-page--epk' : '' }}">
+        <div class="contact-shell">
+            <header class="contact-hero">
+                <span class="contact-eyebrow">{{ $isEpkInquiry ? 'EPK Inquiry' : 'Contact' }}</span>
+                <h1>{{ $isEpkInquiry ? 'Request EPK' : 'Contact Us' }}</h1>
+                <p>
+                    {{ $isEpkInquiry
+                        ? 'For EPK requests, artist bookings, and professional performance inquiries, contact Five Feathers Music Agency.'
+                        : 'We’re here to assist you. If you have any questions or need assistance, please reach out.' }}
+                </p>
+            </header>
 
-            </p>
-            <p class="leading-relaxed text-xl  mt-8">
-                Connect with us on social media:
-            </p>
-            <span class="inline-flex mt-6 justify-center sm:justify-start">
-                <a class="text-gray-500 hover:text-white" target="_blank" href="https://twitter.com/example">
-                    <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        class="w-6 h-6" viewBox="0 0 24 24">
-                        <path
-                            d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z">
-                        </path>
-                    </svg>
-                </a>
-                <a class="ml-3 text-gray-500 hover:text-white" href="https://www.instagram.com/example/"
-                    target="_blank">
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
-                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-                    </svg>
-                </a>
-            </span>
+            <div class="contact-grid">
+                <section class="contact-card" aria-labelledby="contact-booking">
+                    <h2 id="contact-booking">Booking &amp; Inquiries</h2>
+                    <p>Five Feathers Music Agency</p>
+                    <p>The Artist Thomas Alexander — The Voice is booked and exclusively presented and represented by Five Feathers Music Agency.</p>
+                    <p>
+                        <a class="contact-mail-link" href="mailto:{{ $bookingEmail }}?subject={{ rawurlencode($subject) }}">
+                            {{ $bookingEmail }}
+                        </a>
+                    </p>
+
+                    <div class="contact-booking">
+                        @include('frontend.partials.artist_representation', [
+                            'variant' => 'short',
+                            'subject' => $subject,
+                        ])
+                    </div>
+
+                    <div class="contact-social" aria-label="Social links">
+                        <a href="https://twitter.com/example" target="_blank" rel="noopener">Twitter/X</a>
+                        <a href="https://www.instagram.com/example/" target="_blank" rel="noopener">Instagram</a>
+                    </div>
+                </section>
+
+                <section class="contact-card" aria-labelledby="contact-form-title">
+                    <h2 id="contact-form-title">Contact Form</h2>
+                    <form action="https://fabform.io/f/{form-id}" method="post">
+                        <input type="hidden" name="subject" value="{{ $subject }}">
+                        <div class="contact-field">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="contact-field">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="contact-field">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" required>{{ $isEpkInquiry ? 'I would like to request the Thomas Alexander EPK.' : '' }}</textarea>
+                        </div>
+                        <button type="submit" class="contact-submit">Send Message</button>
+                    </form>
+                </section>
+            </div>
         </div>
-        <div class="md:w-2/3 w-full  mt-10 md:mt-0 ml-0 ">
-            <h2 class="text-4xl  sm:text-4xl font-bold title-font mb-4">Contact Form</h2>
-          <form action="https://fabform.io/f/{form-id}" method="post">
-                <div class="p-2 w-full">
-                    <div class="relative">
-                        <label for="name" class="leading-7 py-4 text-lg ">Your Name</label>
-                        <input type="text" id="name" name="name" required=""
-                            class="w-full bg-white rounded border border-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-white py-1 px-1 leading-8 transition-colors duration-200 ease-in-out ">
-                    </div>
-                </div>
-                <div class="p-2 w-full">
-                    <div class="relative">
-                        <label for="email" class="leading-7 py-4 text-lg ">Your Email</label>
-                        <input type="email" id="email" name="email" required=""
-                            class="w-full bg-white rounded border border-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-white py-1 px-1 leading-8 transition-colors duration-200 ease-in-out ">
-                    </div>
-                </div>
-                <div class="p-2 w-full">
-                    <div class="relative">
-                        <label for="message" class="leading-7 py-4 text-lg ">Your Message</label>
-                        <textarea id="message" name="message" required=""
-                            class="w-full bg-white rounded border border-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 h-32 text-base outline-none text-white py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out "></textarea>
-                    </div>
-                </div>
-                <div class="p-2 w-full">
-                    <button type="submit"
-                        class="flex text-white bg-orange-500 border-0 py-4 px-6 focus:outline-none hover:bg-blue-900 rounded text-xl font-bold shadow-lg mx-0 flex-col text-center g-recaptcha">
-                        Send Message
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
+    </main>
 @endsection
