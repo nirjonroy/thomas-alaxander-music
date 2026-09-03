@@ -70,6 +70,7 @@ class HomeController extends Controller
         $events = $this->rememberHomeData($eventsKey, function () use ($now) {
             return Event::whereMonth('date', $now->month)
                 ->whereYear('date', $now->year)
+                ->where('status', 1)
                 ->orderBy('date', 'asc')
                 ->get();
         });
@@ -1012,7 +1013,7 @@ public function shop(Request $request, $slug = null)
     }
     
     public function event(){
-    	$events = Event::latest()->orderBy('date', 'desc')->get();
+    	$events = Event::where('status', 1)->latest()->orderBy('date', 'desc')->get();
       	// dd($blog);
       	return view('frontend.pages.events', compact('events'));
       	//dd($contact);
@@ -1076,10 +1077,12 @@ public function shop(Request $request, $slug = null)
 
     private function findEventForUrl(string $eventSlug): Event
     {
-        $query = Event::where('slug', $eventSlug);
+        $query = Event::where('status', 1)->where('slug', $eventSlug);
 
         if (ctype_digit($eventSlug)) {
-            $query->orWhere('id', $eventSlug);
+            $query->orWhere(function ($query) use ($eventSlug) {
+                $query->where('status', 1)->where('id', $eventSlug);
+            });
         }
 
         return $query->firstOrFail();
@@ -1087,7 +1090,7 @@ public function shop(Request $request, $slug = null)
 
     
   	public function blog_details($slug){
-    	$blog = Blog::where('slug', $slug)->first();
+    	$blog = Blog::where('slug', $slug)->where('status', 1)->firstOrFail();
       	//dd($blog);
       	return view('frontend.pages.blog_details', compact('blog'));
     }

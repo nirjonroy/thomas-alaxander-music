@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\Publishing\BlogPublishingController;
+use App\Http\Controllers\Api\V1\Publishing\EventPublishingController;
+use App\Http\Controllers\Api\V1\Publishing\MediaPublishingController;
+use App\Http\Controllers\Api\V1\Publishing\PublishingHealthController;
 
 use App\Http\Controllers\Seller\SellerDashboardController;
 use App\Http\Controllers\Seller\SellerProfileController;
@@ -14,6 +18,62 @@ use App\Http\Controllers\Seller\WithdrawController;
 use App\Http\Controllers\Seller\SellerProductReportControler;
 use App\Http\Controllers\Seller\SellerOrderController;
 use App\Http\Controllers\Seller\SellerMessageContoller;
+
+Route::prefix('v1/publishing')
+    ->as('api.v1.publishing.')
+    ->middleware(['publishing.request_id', 'auth:sanctum', 'throttle:publishing-api'])
+    ->group(function () {
+        Route::get('health', [PublishingHealthController::class, 'health'])->name('health');
+        Route::get('me', [PublishingHealthController::class, 'me'])->name('me');
+
+        Route::post('media', [MediaPublishingController::class, 'store'])
+            ->middleware('abilities:publishing:media.upload')
+            ->name('media.store');
+        Route::get('media/{media:uuid}', [MediaPublishingController::class, 'show'])
+            ->middleware('abilities:publishing:media.upload')
+            ->name('media.show');
+        Route::delete('media/{media:uuid}', [MediaPublishingController::class, 'destroy'])
+            ->middleware('abilities:publishing:media.upload')
+            ->name('media.destroy');
+
+        Route::get('blogs/{blog}', [BlogPublishingController::class, 'show'])
+            ->middleware('abilities:publishing:blogs.read')
+            ->name('blogs.show');
+        Route::post('blogs', [BlogPublishingController::class, 'store'])
+            ->middleware('abilities:publishing:blogs.write')
+            ->name('blogs.store');
+        Route::patch('blogs/{blog}', [BlogPublishingController::class, 'update'])
+            ->middleware('abilities:publishing:blogs.write')
+            ->name('blogs.update');
+        Route::post('blogs/{blog}/publish', [BlogPublishingController::class, 'publish'])
+            ->middleware('abilities:publishing:blogs.publish')
+            ->name('blogs.publish');
+        Route::post('blogs/{blog}/unpublish', [BlogPublishingController::class, 'unpublish'])
+            ->middleware('abilities:publishing:blogs.publish')
+            ->name('blogs.unpublish');
+        Route::post('preview/blog', [BlogPublishingController::class, 'preview'])
+            ->middleware('abilities:publishing:blogs.write')
+            ->name('blogs.preview');
+
+        Route::get('events/{event:id}', [EventPublishingController::class, 'show'])
+            ->middleware('abilities:publishing:events.read')
+            ->name('events.show');
+        Route::post('events', [EventPublishingController::class, 'store'])
+            ->middleware('abilities:publishing:events.write')
+            ->name('events.store');
+        Route::patch('events/{event:id}', [EventPublishingController::class, 'update'])
+            ->middleware('abilities:publishing:events.write')
+            ->name('events.update');
+        Route::post('events/{event:id}/publish', [EventPublishingController::class, 'publish'])
+            ->middleware('abilities:publishing:events.publish')
+            ->name('events.publish');
+        Route::post('events/{event:id}/unpublish', [EventPublishingController::class, 'unpublish'])
+            ->middleware('abilities:publishing:events.publish')
+            ->name('events.unpublish');
+        Route::post('preview/event', [EventPublishingController::class, 'preview'])
+            ->middleware('abilities:publishing:events.write')
+            ->name('events.preview');
+    });
 
 
 

@@ -72,5 +72,8 @@ class Kernel extends HttpKernel
         'demo' => \App\Http\Middleware\DemoHandler::class,
         'XSS' => \App\Http\Middleware\XSSProtection::class,
         'HtmlSpecialchars' => \App\Http\Middleware\HtmlSpecialchars::class,
+        'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
+        'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+        'publishing.request_id' => \App\Http\Middleware\PublishingRequestId::class,
     ];
 }

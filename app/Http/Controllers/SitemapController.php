@@ -53,8 +53,11 @@ class SitemapController extends Controller
         ];
 
         $blogUrls = Blog::query()
+            ->where('status', 1)
+            ->whereNotNull('slug')
+            ->where('slug', '!=', '')
             ->latest('updated_at')
-            ->get(['slug','updated_at'])
+            ->get(['slug','updated_at','created_at'])
             ->map(function ($blog) {
                 return [
                     'loc' => route('front.blog_details', $blog->slug),
