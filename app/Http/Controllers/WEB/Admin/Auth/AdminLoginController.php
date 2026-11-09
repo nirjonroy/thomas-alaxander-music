@@ -73,6 +73,7 @@ class AdminLoginController extends Controller
 
     public function adminLogout(){
         Auth::guard('admin')->logout();
+        Auth::guard('web')->logout();
         $notification= trans('admin_validation.Logout Successfully');
         $notification=array('messege'=>$notification,'alert-type'=>'success');
         return redirect()->route('admin.login')->with($notification);

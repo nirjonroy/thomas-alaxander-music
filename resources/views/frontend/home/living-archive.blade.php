@@ -510,8 +510,117 @@
         }
         .living-archive-page .living-connected-pages__grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 28px;
+        }
+        .living-archive-page .living-connected-pages__card:nth-child(3)::before {
+            background: linear-gradient(90deg, var(--la-gold-bright), var(--la-copper));
+        }
+
+        /* Companions Along the Journey Feature Showcase */
+        .living-archive-page .living-companions-showcase {
+            position: relative;
+            overflow: hidden;
+            padding: 108px 0;
+            color: var(--la-cream);
+            background:
+                radial-gradient(circle at 18% 25%, rgba(217, 164, 65, 0.16), transparent 35%),
+                radial-gradient(circle at 82% 70%, rgba(185, 111, 55, 0.14), transparent 38%),
+                linear-gradient(145deg, #06080b 0%, #0d1017 50%, #080a0f 100%);
+            border-top: 1px solid rgba(217, 164, 65, 0.22);
+            border-bottom: 1px solid rgba(217, 164, 65, 0.22);
+        }
+        .living-archive-page .living-companions-showcase__inner {
+            position: relative;
+            z-index: 1;
+        }
+        .living-archive-page .living-companions-showcase__media {
+            position: relative;
+            text-align: center;
+        }
+        .living-archive-page .living-companions-showcase__art-stack {
+            position: relative;
+            display: inline-block;
+            max-width: 440px;
+            width: 100%;
+        }
+        .living-archive-page .living-companions-showcase .showcase-art--primary {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            border: 1px solid rgba(217, 164, 65, 0.35);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(217, 164, 65, 0.12);
+        }
+        .living-archive-page .living-companions-showcase .showcase-crest-badge {
+            position: absolute;
+            bottom: -24px;
+            right: -16px;
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1a1610 0%, #080a0d 100%);
+            border: 2px solid var(--la-gold-bright);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+        .living-archive-page .living-companions-showcase .showcase-crest-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .living-archive-page .living-companions-showcase__title {
+            color: var(--la-cream);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(2.3rem, 4.2vw, 3.8rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: 0.02em;
+            margin: 12px 0 8px;
+        }
+        .living-archive-page .living-companions-showcase__tagline {
+            color: var(--la-gold-bright);
+            font-family: "Cinzel", "Cormorant Garamond", serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .living-archive-page .living-companions-showcase__quote {
+            border-left: 3px solid var(--la-gold);
+            padding: 8px 0 8px 20px;
+            margin: 20px 0 22px;
+            color: rgba(255, 247, 232, 0.95);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        .living-archive-page .living-companions-showcase__copy {
+            color: rgba(255, 247, 232, 0.8);
+            font-size: 1.05rem;
+            line-height: 1.75;
+            margin-bottom: 22px;
+        }
+        .living-archive-page .living-companions-showcase__chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+        .living-archive-page .living-companions-showcase .showcase-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            color: var(--la-sand);
+            border: 1px solid rgba(217, 164, 65, 0.28);
+            border-radius: 999px;
+            background: rgba(10, 12, 16, 0.7);
+            backdrop-filter: blur(6px);
         }
         .living-archive-page .living-connected-pages {
             position: relative;
@@ -1041,6 +1150,12 @@
             }
             .living-archive-page .living-connected-pages__grid {
                 grid-template-columns: 1fr;
+            }
+            .living-archive-page .living-companions-showcase {
+                padding: 64px 0;
+            }
+            .living-archive-page .living-companions-showcase__media {
+                margin-bottom: 32px;
             }
             .living-archive-page .living-archive-gateways__grid {
                 grid-template-columns: 1fr;
@@ -2033,13 +2148,27 @@
     $phoneText = data_get($contact, 'phone', '(to be added)');
     $phoneHref = preg_replace('/[^0-9+]/', '', $phoneText);
 
+    $isCompanionsPublished = false;
+    try {
+        if (\Illuminate\Support\Facades\Schema::hasTable('companion_page_settings') && \Illuminate\Support\Facades\Schema::hasTable('journey_companions')) {
+            $isCompanionsPublished = app(\App\Services\CompanionPublicationReadinessService::class)->isReadyForPublication();
+        }
+    } catch (\Throwable $e) {
+        $isCompanionsPublished = false;
+    }
+
     $quickLinks = [
         ['label' => 'Home', 'url' => '#crest-home'],
         ['label' => 'Lineage Story', 'url' => '#lineage-story'],
         ['label' => 'Three Crests', 'url' => '#three-crests'],
-        ['label' => 'Carrier Pathway', 'url' => '#carrier-pathway'],
-        ['label' => 'Contact', 'url' => '#contact-invitations'],
     ];
+
+    if ($isCompanionsPublished) {
+        $quickLinks[] = ['label' => 'Companions Along the Journey', 'url' => route('front.living-archive.companions')];
+    }
+
+    $quickLinks[] = ['label' => 'Carrier Pathway', 'url' => '#carrier-pathway'];
+    $quickLinks[] = ['label' => 'Contact', 'url' => '#contact-invitations'];
 
     $supportUrl = data_get($contactSection, 'general.support_url', route('living-archive.donate'));
     $supportLabel = data_get($contactSection, 'general.support_label', 'Offer Support');
@@ -2069,6 +2198,9 @@
                         <li><a href="#crest-home">Home</a></li>
                         <li><a href="#lineage-story">Lineage Story</a></li>
                         <li><a href="#three-crests">Three Crests</a></li>
+                        @if ($isCompanionsPublished)
+                            <li><a href="#companions-overview">Companions</a></li>
+                        @endif
                         <li><a href="#carrier-pathway">Carrier Pathway</a></li>
                         <li><a href="#media-merch">Media &amp; Merch</a></li>
                         <li><a href="#contact-invitations">Contact</a></li>
@@ -2208,9 +2340,72 @@
                     </p>
                     <a class="living-connected-pages__link" href="{{ url('/five-feathers-lineage-society') }}">Open Lineage Society</a>
                 </article>
+                @if ($isCompanionsPublished)
+                    <article class="living-connected-pages__card">
+                        <span class="living-connected-pages__label">Living Archive Chapter</span>
+                        <h2 class="living-connected-pages__title">Companions Along the Journey</h2>
+                        <p class="living-connected-pages__copy">
+                            Chief &amp; Elder wisdom chronicling the 11 sacred animal companions, ceremonial paintings, teachings, The Witnesses, and the Living Crest.
+                        </p>
+                        <a class="living-connected-pages__link" href="{{ route('front.living-archive.companions') }}">Explore Companions</a>
+                    </article>
+                @endif
             </div>
         </div>
     </section>
+
+    @if ($isCompanionsPublished)
+        <!-- Companions Along the Journey Feature Overview Showcase -->
+        <section class="living-companions-showcase" id="companions-overview" aria-labelledby="companions-overview-title">
+            <div class="container living-section-shell">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-12 col-lg-5">
+                        <div class="living-companions-showcase__media">
+                            <div class="living-companions-showcase__art-stack">
+                                <img src="{{ asset('uploads/companions/companion-wolf-20261028225306-O50zxJNX.png') }}" alt="Wolf — Leadership &amp; Protection" class="showcase-art showcase-art--primary" loading="lazy">
+                                <div class="showcase-crest-badge">
+                                    <img src="{{ asset('uploads/companions/living-archive-entrance-crest.png') }}" alt="Living Crest" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-7">
+                        <div class="living-companions-showcase__content">
+                            <span class="living-section-eyebrow">Living Archive • Chief &amp; Elder Wisdom</span>
+                            <h2 class="living-companions-showcase__title" id="companions-overview-title">Companions Along the Journey</h2>
+                            <p class="living-companions-showcase__tagline">
+                                11 Canonical Animal Companions • Ceremonial Paintings • Sacred Teachings
+                            </p>
+                            <blockquote class="living-companions-showcase__quote">
+                                &ldquo;The animals do not tell me who I am. My life has done that. But sometimes an image gives us another visual language through which to understand what the journey has already taught us.&rdquo;
+                            </blockquote>
+                            <p class="living-companions-showcase__copy">
+                                An enduring ceremonial heritage publication chronicling Wolf, Hawk, Raven, Owl, Eagle, Panther, Bear, Lynx, Deer, Fox, and Otter. Each companion is paired with original high-resolution artwork, ancestral reflections, The Six Stations of The Witnesses, and the sacred Five Feathers covenant.
+                            </p>
+                            <div class="living-companions-showcase__chips">
+                                <span class="showcase-chip">Wolf &bull; Leadership</span>
+                                <span class="showcase-chip">Hawk &bull; Vision</span>
+                                <span class="showcase-chip">Raven &bull; Memory</span>
+                                <span class="showcase-chip">Owl &bull; Truth</span>
+                                <span class="showcase-chip">Eagle &bull; Reverence</span>
+                                <span class="showcase-chip">Panther &bull; Patience</span>
+                                <span class="showcase-chip">Bear &bull; Strength</span>
+                                <span class="showcase-chip">Lynx &bull; Inner Knowing</span>
+                                <span class="showcase-chip">Deer &bull; Continuity</span>
+                                <span class="showcase-chip">Fox &bull; Adaptability</span>
+                                <span class="showcase-chip">Otter &bull; Renewal</span>
+                            </div>
+                            <div class="living-companions-showcase__cta mt-4">
+                                <a class="btn living-btn living-btn-primary" href="{{ route('front.living-archive.companions') }}">
+                                    Enter Companions Along the Journey &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 
     @if ($archiveGateways->isNotEmpty())
         <section class="living-archive-gateways" id="explore-living-archive" aria-labelledby="explore-living-archive-title">

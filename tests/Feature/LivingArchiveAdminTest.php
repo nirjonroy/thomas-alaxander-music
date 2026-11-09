@@ -30,11 +30,11 @@ class LivingArchiveAdminTest extends TestCase
             'meta_title' => 'Admin Archive Page Meta',
             'meta_description' => 'Meta description.',
             'published_at' => now()->format('Y-m-d H:i'),
-            'featured_image' => UploadedFile::fake()->image('featured.jpg', 40, 40),
+            'featured_image' => UploadedFile::fake()->create('featured.jpg', 10, 'image/jpeg'),
             'featured_image_alt' => 'Featured archive alt text.',
-            'document_image' => UploadedFile::fake()->image('document.jpg', 40, 40),
+            'document_image' => UploadedFile::fake()->create('document.jpg', 10, 'image/jpeg'),
             'document_image_alt' => 'Document archive alt text.',
-            'og_image' => UploadedFile::fake()->image('og.jpg', 40, 40),
+            'og_image' => UploadedFile::fake()->create('og.jpg', 10, 'image/jpeg'),
             'og_image_alt' => 'OG archive alt text.',
         ])->assertRedirect(route('admin.living-archive-entry.index'));
 

@@ -75,5 +75,6 @@ class Kernel extends HttpKernel
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
         'publishing.request_id' => \App\Http\Middleware\PublishingRequestId::class,
+        'admin.auth' => \App\Http\Middleware\EnsureAdminAuthenticated::class,
     ];
 }
