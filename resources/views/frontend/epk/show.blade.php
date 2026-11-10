@@ -311,12 +311,32 @@
         .epk-card--performance-lanes,
         .epk-card--engagements,
         .epk-card--tags,
+        .epk-card--signature-interpretations,
         .epk-card--testimonials,
         .epk-card--medley,
         .epk-card--video,
         .epk-card--booking,
         .epk-card--cross-link {
             margin-top: 24px;
+        }
+        .epk-card--signature-interpretations h4 {
+            margin: 1.4rem 0 0.4rem;
+            color: var(--epk-gold-bright, #f1c76b);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: 1.55rem;
+            letter-spacing: 0.02em;
+        }
+        .epk-card--signature-interpretations .signature-song-block,
+        .epk-card--signature-interpretations .epk-copy > div {
+            margin-bottom: 1.25rem;
+            padding-left: 14px;
+            border-left: 2px solid rgba(217, 164, 65, 0.35);
+        }
+        .epk-card--signature-interpretations .signature-closing-quote,
+        .epk-card--signature-interpretations .epk-copy > p:last-child {
+            margin-top: 1.5rem;
+            font-style: italic;
+            color: var(--epk-cream, #fff7e8);
         }
         .epk-card--cross-link .epk-kicker {
             margin-bottom: 8px;

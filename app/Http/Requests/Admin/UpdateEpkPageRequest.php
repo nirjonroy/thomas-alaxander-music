@@ -45,6 +45,7 @@ class UpdateEpkPageRequest extends FormRequest
             'section_bodies' => ['nullable', 'array'],
             'section_bodies.*' => ['nullable', 'string'],
             'audio_url' => ['nullable', 'url', 'max:255'],
+            'pdf_file' => ['nullable', 'file', 'mimes:pdf', 'max:25600'],
             'audio_file' => ['nullable', 'file', 'mimes:mp3,wav,ogg,m4a,aac,webm', 'max:20480'],
             'audio_title' => ['nullable', 'string', 'max:255'],
             'video_url' => ['nullable', 'url', 'max:255', 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/)[A-Za-z0-9_-]+/'],
@@ -65,6 +66,7 @@ class UpdateEpkPageRequest extends FormRequest
             'remove_gold_feather_image' => ['nullable', 'boolean'],
             'remove_og_image' => ['nullable', 'boolean'],
             'remove_audio_file' => ['nullable', 'boolean'],
+            'remove_pdf_file' => ['nullable', 'boolean'],
         ];
     }
 }

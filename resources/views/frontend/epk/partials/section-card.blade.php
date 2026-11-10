@@ -101,7 +101,11 @@
             @endphp
             <div class="epk-copy">{!! clean($sectionBody) !!}</div>
             <div class="epk-card__actions">
-                <a class="epk-button epk-button--primary" href="mailto:{{ $bookingEmail }}?subject={{ $mailSubject }}">Request EPK</a>
+                @if($epkPage->pdf_file)
+                    <a class="epk-button epk-button--primary" href="{{ route('front.epk.pdf.view', $epkPage->slug) }}" target="_blank" rel="noopener">View EPK PDF</a>
+                    <a class="epk-button" href="{{ route('front.epk.pdf.download', $epkPage->slug) }}">Download EPK PDF</a>
+                @endif
+                <a class="epk-button @if(!$epkPage->pdf_file) epk-button--primary @endif" href="mailto:{{ $bookingEmail }}?subject={{ $mailSubject }}">Request EPK</a>
                 <a class="epk-button" href="{{ route('front.contact_us', ['inquiry' => 'epk']) }}">Contact Page</a>
             </div>
         @elseif($sectionBody !== '')

@@ -240,6 +240,37 @@
             <textarea name="booking_body" cols="30" rows="8" class="summernote">{{ $bookingBody }}</textarea>
         </div>
     </div>
+
+    <div class="card border mb-4">
+        <div class="card-header"><h4>Complete EPK PDF Document (View &amp; Download)</h4></div>
+        <div class="card-body">
+            @if($isEdit && $epkPage->pdf_file)
+                <div class="alert alert-light border d-flex align-items-center justify-content-between p-3 mb-3">
+                    <div>
+                        <i class="fas fa-file-pdf fa-2x text-danger mr-2"></i>
+                        <strong>Current PDF:</strong> {{ basename($epkPage->pdf_file) }}
+                        @if(file_exists(public_path($epkPage->pdf_file)))
+                            <span class="badge badge-secondary ml-2">{{ number_format(filesize(public_path($epkPage->pdf_file)) / 1024 / 1024, 2) }} MB</span>
+                        @endif
+                    </div>
+                    <div>
+                        <a href="{{ asset($epkPage->pdf_file) }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary mr-2">
+                            <i class="fas fa-external-link-alt"></i> Preview PDF
+                        </a>
+                    </div>
+                </div>
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" id="remove_pdf_file" name="remove_pdf_file" value="1">
+                    <label class="custom-control-label text-danger font-weight-bold" for="remove_pdf_file">Remove current PDF document</label>
+                </div>
+            @endif
+            <div class="form-group mb-0">
+                <label>{{ ($isEdit && $epkPage->pdf_file) ? 'Replace PDF Document' : 'Upload PDF Document' }}</label>
+                <input type="file" class="form-control" name="pdf_file" accept=".pdf,application/pdf">
+                <small class="text-muted d-block mt-1">Accepts PDF format only, maximum 25MB. Uploaded files are securely stored under <code>public/uploads/epk/</code> and preserved byte-for-byte.</small>
+            </div>
+        </div>
+    </div>
 @else
     <div class="form-group col-12">
         <label>Sections</label>

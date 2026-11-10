@@ -845,6 +845,12 @@ Route::group(['as' => 'front.'], function(){
         Route::get('/epk/{slug}', [FrontEpkController::class, 'show'])
             ->where('slug', 'full-artist|crooners')
             ->name('epk.show');
+        Route::get('/epk/{slug}/pdf', [FrontEpkController::class, 'viewPdf'])
+            ->where('slug', 'full-artist|crooners')
+            ->name('epk.pdf.view');
+        Route::get('/epk/{slug}/download', [FrontEpkController::class, 'downloadPdf'])
+            ->where('slug', 'full-artist|crooners')
+            ->name('epk.pdf.download');
         Route::get('about-thomas-alexander', 'about')->name('home.about');
         Route::get('/category/{type}/{slug}', 'subCategoriesByCategory')->name('subcategory');
         Route::get('/shop/{slug?}', 'shop')->name('shop');

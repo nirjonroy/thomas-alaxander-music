@@ -69,7 +69,7 @@ class EpkPageController extends Controller
 
     public function destroy(EpkPage $epk_page)
     {
-        foreach (['hero_image', 'gold_feather_image', 'og_image', 'audio_url'] as $field) {
+        foreach (['hero_image', 'gold_feather_image', 'og_image', 'audio_url', 'pdf_file'] as $field) {
             $this->deleteUpload($epk_page->{$field});
         }
 
@@ -324,6 +324,11 @@ class EpkPageController extends Controller
             $epkPage->audio_url = $this->storeUpload($request->file('audio_file'), 'audio');
             $this->deleteUpload($oldFile);
         }
+
+        if ($request->hasFile('pdf_file')) {
+            // Store new file under public/uploads/epk/. Never delete existing PDF on replacement unless explicitly requested.
+            $epkPage->pdf_file = $this->storeUpload($request->file('pdf_file'), 'epk-pdf');
+        }
     }
 
     private function applyRemovals(EpkPage $epkPage, Request $request): void
@@ -333,6 +338,7 @@ class EpkPageController extends Controller
             'remove_gold_feather_image' => ['field' => 'gold_feather_image', 'file_input' => 'gold_feather_image'],
             'remove_og_image' => ['field' => 'og_image', 'file_input' => 'og_image'],
             'remove_audio_file' => ['field' => 'audio_url', 'file_input' => 'audio_file'],
+            'remove_pdf_file' => ['field' => 'pdf_file', 'file_input' => 'pdf_file'],
         ];
 
         foreach ($removals as $input => $config) {

@@ -92,7 +92,10 @@ class CompanionNavigationReadinessTest extends TestCase
     public function test_demo_content_or_inactive_companion_state_remains_blocked(): void
     {
         $setting = CompanionPageSetting::firstOrFail();
-        $setting->update(['is_active' => true]);
+        $setting->update([
+            'is_active' => true,
+            'entrance_crest_image' => 'uploads/companions/living-archive-closing-crest.png',
+        ]);
 
         // Mark one companion inactive
         $otter = JourneyCompanion::where('slug', 'otter')->firstOrFail();
@@ -123,7 +126,10 @@ class CompanionNavigationReadinessTest extends TestCase
     public function test_fully_approved_and_active_state_exposes_companion_navigation_and_allows_public_access(): void
     {
         $setting = CompanionPageSetting::firstOrFail();
-        $setting->update(['is_active' => true]);
+        $setting->update([
+            'is_active' => true,
+            'entrance_crest_image' => 'uploads/companions/living-archive-closing-crest.png',
+        ]);
 
         // Ensure all 11 companions are active and complete
         JourneyCompanion::query()->update(['is_active' => true]);

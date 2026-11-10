@@ -112,6 +112,63 @@
             .ceremonial-page-card video {
                 max-width: 100%;
             }
+            .identity-lead-block, .society-lead-block {
+                margin-bottom: 2rem;
+                padding-bottom: 1.5rem;
+                border-bottom: 1px solid rgba(201, 162, 39, 0.22);
+            }
+            .identity-lead-block h3, .society-lead-block h3 {
+                color: #c9a227;
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            .identity-subtitle-bar, .society-subtitle {
+                font-size: 1.15rem;
+                color: #f6edd0;
+                line-height: 1.6;
+            }
+            .identity-credentials-bar {
+                color: rgba(246, 237, 208, 0.65);
+                font-size: 0.9rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-top: 0.5rem;
+            }
+            .identity-section-block, .society-section-block {
+                margin-top: 1.8rem;
+            }
+            .identity-section-block h4, .society-section-block h4 {
+                color: #c9a227;
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+            .dual-identity-callout {
+                padding: 1.25rem 1.5rem;
+                border: 1px solid rgba(201, 162, 39, 0.35);
+                border-radius: 12px;
+                background: rgba(201, 162, 39, 0.05);
+            }
+            .identity-contact-box {
+                padding: 1.25rem 1.5rem;
+                border-top: 1px solid rgba(201, 162, 39, 0.22);
+                margin-top: 2rem;
+            }
+            .society-commitment-block {
+                margin-top: 2.2rem;
+                padding-top: 1.5rem;
+                border-top: 1px solid rgba(201, 162, 39, 0.22);
+            }
+            .society-closing-statement {
+                font-size: 1.25rem;
+                color: #c9a227;
+                margin-top: 1.5rem;
+                line-height: 1.6;
+            }
+            .society-closing-tagline {
+                font-size: 1.05rem;
+                color: #f6edd0;
+                margin-top: 0.5rem;
+            }
             .ceremonial-page-back {
                 padding: 4px 20px 24px;
                 text-align: center;

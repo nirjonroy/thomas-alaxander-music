@@ -21,6 +21,7 @@ class EpkPage extends Model
         'gold_feather_image_alt',
         'overview_content',
         'sections',
+        'pdf_file',
         'audio_url',
         'audio_title',
         'video_url',
