@@ -11,10 +11,9 @@ class ThomasCompanionContentSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::transaction(function () {
-            $this->importPageContent();
-            $this->importCompanionContent();
-        });
+        // This legacy entry point now applies only the final approved Companion
+        // content. It intentionally leaves existing page narratives untouched.
+        app(ApprovedCompanionContentSeeder::class)->run();
     }
 
     private function importPageContent(): void

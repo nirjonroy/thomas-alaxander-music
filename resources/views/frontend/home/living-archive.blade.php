@@ -2380,14 +2380,14 @@
                                 &ldquo;The animals do not tell me who I am. My life has done that. But sometimes an image gives us another visual language through which to understand what the journey has already taught us.&rdquo;
                             </blockquote>
                             <p class="living-companions-showcase__copy">
-                                An enduring ceremonial heritage publication chronicling Wolf, Hawk, Raven, Owl, Eagle, Panther, Bear, Lynx, Deer, Fox, and Otter. Each companion is paired with original high-resolution artwork, ancestral reflections, The Six Stations of The Witnesses, and the sacred Five Feathers covenant.
+                                An enduring ceremonial heritage publication chronicling Wolf, Hawk, Bear, Raven, Owl, Panther, Deer, Eagle, Fox, Lynx, and Otter. Each companion is paired with original high-resolution artwork, ancestral reflections, The Six Stations of The Witnesses, and the sacred Five Feathers covenant.
                             </p>
                             <div class="living-companions-showcase__chips">
                                 <span class="showcase-chip">Wolf &bull; Leadership</span>
                                 <span class="showcase-chip">Hawk &bull; Vision</span>
+                                <span class="showcase-chip">Bear &bull; Stewardship</span>
                                 <span class="showcase-chip">Raven &bull; Memory</span>
                                 <span class="showcase-chip">Owl &bull; Truth</span>
-                                <span class="showcase-chip">Eagle &bull; Reverence</span>
                                 <span class="showcase-chip">Panther &bull; Patience</span>
                                 <span class="showcase-chip">Bear &bull; Strength</span>
                                 <span class="showcase-chip">Lynx &bull; Inner Knowing</span>

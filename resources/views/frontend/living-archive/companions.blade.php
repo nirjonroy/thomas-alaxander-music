@@ -755,6 +755,21 @@
             margin-bottom: 0;
             text-shadow: 0 2px 12px rgba(207, 168, 81, 0.35);
         }
+        .companion-material-copyright,
+        .companion-closing-copyright {
+            color: var(--archive-muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            line-height: 1.7;
+        }
+        .companion-material-copyright {
+            margin: -34px 0 clamp(58px, 8vw, 100px);
+            text-align: center;
+        }
+        .companion-closing-copyright {
+            margin: 26px auto 0;
+            max-width: 560px;
+        }
         .ceremonial-conclusion-space {
             height: clamp(80px, 11vw, 140px);
         }
@@ -1260,6 +1275,8 @@
             @endforeach
         </main>
 
+        <p class="companion-material-copyright">{{ \App\Models\JourneyCompanion::COMPANION_COPYRIGHT }}</p>
+
         <hr class="editorial-divider" aria-hidden="true">
 
         <!-- 3. Regeneration and The Witnesses -->
@@ -1446,14 +1463,12 @@
                 </div>
             @endif
 
-            <!-- Generous Spacing Before Navigation (Quiet Conclusion without promotional distractions) -->
-            <div class="ceremonial-conclusion-space"></div>
-
-            <div class="archive-actions">
-                <a class="archive-action" href="{{ route('front.home.living-archive') }}">
-                    &larr; Back to Living Archive
-                </a>
+            <div class="companion-closing-copyright">
+                {!! $renderText(\App\Models\JourneyCompanion::CLOSING_COPYRIGHT) !!}
             </div>
+
+            <!-- Generous spacing preserves the quiet ceremonial conclusion. -->
+            <div class="ceremonial-conclusion-space"></div>
         </footer>
 
     </div>

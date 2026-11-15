@@ -48,14 +48,14 @@ class CompanionPhase3BTest extends TestCase
         $expected = [
             1 => ['Wolf', 'wolf'],
             2 => ['Hawk', 'hawk'],
-            3 => ['Raven', 'raven'],
-            4 => ['Owl', 'owl'],
-            5 => ['Eagle', 'eagle'],
+            3 => ['Bear', 'bear'],
+            4 => ['Raven', 'raven'],
+            5 => ['Owl', 'owl'],
             6 => ['Panther', 'panther'],
-            7 => ['Bear', 'bear'],
-            8 => ['Lynx', 'lynx'],
-            9 => ['Deer', 'deer'],
-            10 => ['Fox', 'fox'],
+            7 => ['Deer', 'deer'],
+            8 => ['Eagle', 'eagle'],
+            9 => ['Fox', 'fox'],
+            10 => ['Lynx', 'lynx'],
             11 => ['Otter', 'otter'],
         ];
 
@@ -74,17 +74,17 @@ class CompanionPhase3BTest extends TestCase
     public function test_03_companion_themes_match_thomas_source(): void
     {
         $expectedThemes = [
-            1 => 'Leadership • Service • Protection • Responsibility',
-            2 => 'Vision • Discernment • Foresight • Perspective',
-            3 => 'Memory • Voice • Intelligence • Problem Solving • Carrying Forward',
-            4 => 'Listening • Reflection • Discernment • Truth',
-            5 => 'Majesty • Reverence • Perspective • Sacred Responsibility',
+            1 => 'Leadership • Foresight • Protection • Responsibility',
+            2 => 'Vision • Discernment • Foresight',
+            3 => 'Strength • Protection • Stewardship',
+            4 => 'Memory • Voice • Continuity • Carrying Forward',
+            5 => 'Listening • Reflection • Discernment • Truth',
             6 => 'Patience • Discernment • Presence • Right Action',
-            7 => 'Strength • Protection • Stewardship • Presence',
-            8 => 'Observation • Solitude • Inner Knowing • Recognition',
-            9 => 'Generations • Stewardship • Continuity • Legacy',
-            10 => 'Awareness • Adaptability • Another Way • Respectful Witnessing',
-            11 => 'Family • Resilience • Protection • Renewal • Joy',
+            7 => 'Generations • Stewardship • Continuity • Legacy',
+            8 => 'Majesty • Sacred Responsibility • Perspective • Reverence',
+            9 => 'Awareness • Cunning • Adaptability • Another Way',
+            10 => 'Observation • Solitude • Inner Knowing • Recognition',
+            11 => 'Movement • Renewal • Adaptability • Life',
         ];
 
         foreach ($expectedThemes as $seq => $theme) {
@@ -93,19 +93,15 @@ class CompanionPhase3BTest extends TestCase
         }
     }
 
-    public function test_04_missing_expanded_teachings_and_remembrance_remain_null(): void
+    public function test_04_final_approved_teachings_and_remembrance_are_present(): void
     {
         $companions = JourneyCompanion::all();
 
         foreach ($companions as $companion) {
-            $this->assertNull(
-                $companion->expanded_teaching,
-                "Expanded teaching for {$companion->name} must remain null until complete approved text is provided."
-            );
-            $this->assertNull(
-                $companion->remember_teaching,
-                "Remember teaching for {$companion->name} must remain null until complete approved text is provided."
-            );
+            $this->assertNotEmpty($companion->expanded_teaching);
+            $this->assertNotEmpty($companion->remember_teaching);
+            $this->assertStringNotContainsString('[DEMO CONTENT', $companion->expanded_teaching);
+            $this->assertStringNotContainsString('[DEMO CONTENT', $companion->remember_teaching);
         }
     }
 

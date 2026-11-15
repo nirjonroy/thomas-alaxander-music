@@ -76,14 +76,14 @@ class CompanionPhase2Test extends TestCase
         $expected = [
             1 => ['name' => 'Wolf', 'slug' => 'wolf'],
             2 => ['name' => 'Hawk', 'slug' => 'hawk'],
-            3 => ['name' => 'Raven', 'slug' => 'raven'],
-            4 => ['name' => 'Owl', 'slug' => 'owl'],
-            5 => ['name' => 'Eagle', 'slug' => 'eagle'],
+            3 => ['name' => 'Bear', 'slug' => 'bear'],
+            4 => ['name' => 'Raven', 'slug' => 'raven'],
+            5 => ['name' => 'Owl', 'slug' => 'owl'],
             6 => ['name' => 'Panther', 'slug' => 'panther'],
-            7 => ['name' => 'Bear', 'slug' => 'bear'],
-            8 => ['name' => 'Lynx', 'slug' => 'lynx'],
-            9 => ['name' => 'Deer', 'slug' => 'deer'],
-            10 => ['name' => 'Fox', 'slug' => 'fox'],
+            7 => ['name' => 'Deer', 'slug' => 'deer'],
+            8 => ['name' => 'Eagle', 'slug' => 'eagle'],
+            9 => ['name' => 'Fox', 'slug' => 'fox'],
+            10 => ['name' => 'Lynx', 'slug' => 'lynx'],
             11 => ['name' => 'Otter', 'slug' => 'otter'],
         ];
 

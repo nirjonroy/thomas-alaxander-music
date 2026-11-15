@@ -5,12 +5,19 @@ namespace Tests\Feature;
 use App\Models\Admin;
 use App\Models\CompanionPageSetting;
 use App\Models\JourneyCompanion;
+use Database\Seeders\ApprovedCompanionContentSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class CompanionPhase4ATest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        app(ApprovedCompanionContentSeeder::class)->run();
+    }
 
     protected function tearDown(): void
     {
@@ -218,14 +225,14 @@ class CompanionPhase4ATest extends TestCase
         $canonicalCompanions = [
             'Wolf',
             'Hawk',
+            'Bear',
             'Raven',
             'Owl',
-            'Eagle',
             'Panther',
-            'Bear',
-            'Lynx',
             'Deer',
+            'Eagle',
             'Fox',
+            'Lynx',
             'Otter',
         ];
 
@@ -246,8 +253,8 @@ class CompanionPhase4ATest extends TestCase
         $content = $response->getContent();
 
         $canonicalCompanions = [
-            'Wolf', 'Hawk', 'Raven', 'Owl', 'Eagle', 'Panther',
-            'Bear', 'Lynx', 'Deer', 'Fox', 'Otter',
+            'Wolf', 'Hawk', 'Bear', 'Raven', 'Owl', 'Panther',
+            'Deer', 'Eagle', 'Fox', 'Lynx', 'Otter',
         ];
 
         foreach ($canonicalCompanions as $companionName) {

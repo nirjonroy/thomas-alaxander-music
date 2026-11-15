@@ -153,14 +153,14 @@ class CompanionFoundationTest extends TestCase
         $expected = [
             1 => 'Wolf',
             2 => 'Hawk',
-            3 => 'Raven',
-            4 => 'Owl',
-            5 => 'Eagle',
+            3 => 'Bear',
+            4 => 'Raven',
+            5 => 'Owl',
             6 => 'Panther',
-            7 => 'Bear',
-            8 => 'Lynx',
-            9 => 'Deer',
-            10 => 'Fox',
+            7 => 'Deer',
+            8 => 'Eagle',
+            9 => 'Fox',
+            10 => 'Lynx',
             11 => 'Otter',
         ];
 
