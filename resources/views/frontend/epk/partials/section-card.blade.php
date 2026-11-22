@@ -3,10 +3,11 @@
     $sectionBody = trim((string) data_get($section, 'body'));
     $sectionType = trim((string) data_get($section, 'type', 'content'));
     $items = collect(data_get($section, 'items', []))->filter(fn ($item) => $item !== null && $item !== '');
+    $groups = collect(data_get($section, 'groups', []))->filter(fn ($group) => filled(data_get($group, 'title')) || filled(data_get($group, 'items')));
     $isCrooners = $epkPage->slug === 'crooners';
 @endphp
 
-@if($sectionTitle !== '' || $sectionBody !== '' || $items->isNotEmpty())
+@if($sectionTitle !== '' || $sectionBody !== '' || $items->isNotEmpty() || $groups->isNotEmpty() || filled(data_get($section, 'quote')))
     <section class="epk-card epk-card--{{ \Illuminate\Support\Str::slug($sectionType) }}">
         @if($sectionTitle !== '')
             <h3>{{ $sectionTitle }}</h3>
@@ -15,33 +16,107 @@
         @if($sectionType === 'performance_lanes' && $items->isNotEmpty())
             <div class="epk-lane-grid">
                 @foreach($items as $item)
+                    @php
+                        $laneTitle = trim((string) data_get($item, 'title'));
+                        $laneTitle = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€', '&bull;'], ['•', '’', '—', '–', '“', '”', '•'], $laneTitle);
+                        $laneTitle = trim(preg_replace('/^[\s•\-\–\—\x{0080}-\x{009F}]+/u', '', $laneTitle));
+                        $laneBody = trim((string) data_get($item, 'body'));
+                        $laneBody = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€', '&bull;'], ['•', '’', '—', '–', '“', '”', '•'], $laneBody);
+                    @endphp
                     <div class="epk-lane">
-                        <strong>{{ data_get($item, 'title') }}</strong>
-                        <span>{{ data_get($item, 'body') }}</span>
+                        <strong>{{ $laneTitle }}</strong>
+                        <span>{{ $laneBody }}</span>
                     </div>
                 @endforeach
             </div>
         @elseif($sectionType === 'engagements' && $items->isNotEmpty())
             <ul class="epk-engagement-list">
                 @foreach($items as $item)
-                    <li>{{ $item }}</li>
+                    @php
+                        $cleanItem = trim((string) $item);
+                        $cleanItem = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€', '&bull;'], ['•', '’', '—', '–', '“', '”', '•'], $cleanItem);
+                        $cleanItem = trim(preg_replace('/^[\s•\-\–\—\x{0080}-\x{009F}]+/u', '', $cleanItem));
+                    @endphp
+                    @if($cleanItem !== '')
+                        <li>{{ $cleanItem }}</li>
+                    @endif
                 @endforeach
             </ul>
         @elseif($sectionType === 'tags' && $items->isNotEmpty())
             <div class="epk-tag-list" aria-label="{{ $sectionTitle }}">
                 @foreach($items as $item)
-                    <span>{{ $item }}</span>
+                    @php
+                        $cleanItem = trim((string) $item);
+                        $cleanItem = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€', '&bull;'], ['•', '’', '—', '–', '“', '”', '•'], $cleanItem);
+                        $cleanItem = trim(preg_replace('/^[\s•\-\–\—\x{0080}-\x{009F}]+|[\s•\-\–\—\x{0080}-\x{009F}]+$/u', '', $cleanItem));
+                    @endphp
+                    @if($cleanItem !== '')
+                        <span>{{ $cleanItem }}</span>
+                    @endif
                 @endforeach
             </div>
+        @elseif($sectionType === 'song_groups' && $groups->isNotEmpty())
+            <div class="epk-song-groups">
+                @foreach($groups as $group)
+                    <section class="epk-song-group" aria-label="{{ data_get($group, 'title') }}">
+                        <h4>{{ data_get($group, 'title') }}</h4>
+                        <div class="epk-tag-list">
+                            @foreach(data_get($group, 'items', []) as $item)
+                                @php
+                                    $cleanItem = trim((string) $item);
+                                    $cleanItem = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€', '&bull;'], ['•', '’', '—', '–', '“', '”', '•'], $cleanItem);
+                                    $cleanItem = trim(preg_replace('/^[\s•\-\–\—\x{0080}-\x{009F}]+|[\s•\-\–\—\x{0080}-\x{009F}]+$/u', '', $cleanItem));
+                                @endphp
+                                @if($cleanItem !== '')
+                                    <span>{{ $cleanItem }}</span>
+                                @endif
+                            @endforeach
+                        </div>
+                    </section>
+                @endforeach
+            </div>
+        @elseif($sectionType === 'list' && $items->isNotEmpty())
+            <ul class="epk-engagement-list">
+                @foreach($items as $item)
+                    @php
+                        $cleanItem = trim((string) $item);
+                        $cleanItem = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€', '&bull;'], ['•', '’', '—', '–', '“', '”', '•'], $cleanItem);
+                        $cleanItem = trim(preg_replace('/^[\s•\-\–\—\x{0080}-\x{009F}]+/u', '', $cleanItem));
+                    @endphp
+                    @if($cleanItem !== '')
+                        <li>{{ $cleanItem }}</li>
+                    @endif
+                @endforeach
+            </ul>
+        @elseif($sectionType === 'quote' && filled(data_get($section, 'quote')))
+            @php
+                $cleanQuote = trim((string) data_get($section, 'quote'));
+                $cleanQuote = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€'], ['•', '’', '—', '–', '“', '”'], $cleanQuote);
+            @endphp
+            <figure class="epk-quote epk-quote--artist-statement">
+                <blockquote>{{ $cleanQuote }}</blockquote>
+            </figure>
         @elseif($sectionType === 'testimonials' && $items->isNotEmpty())
             <div class="epk-quote-grid">
                 @foreach($items as $item)
+                    @php
+                        $quote = trim((string) data_get($item, 'quote'));
+                        $quote = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€'], ['•', '’', '—', '–', '“', '”'], $quote);
+                        $quote = preg_replace('/^[\s"\'“‘«•–—\x{0080}-\x{009F}\x{F10D}\x{F10E}]+/u', '', $quote);
+                        $source = trim((string) data_get($item, 'source'));
+                        $source = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€'], ['•', '’', '—', '–', '“', '”'], $source);
+                        $source = preg_replace('/^[–—\-]\s*/u', '', $source);
+                        $credential = trim((string) data_get($item, 'credential'));
+                        $credential = str_replace(['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€'], ['•', '’', '—', '–', '“', '”'], $credential);
+                    @endphp
                     <figure class="epk-quote">
-                        <blockquote>{{ data_get($item, 'quote') }}</blockquote>
+                        <blockquote>{{ $quote }}</blockquote>
                         <figcaption>
-                            <strong>{{ data_get($item, 'source') }}</strong>
-                            @if(data_get($item, 'credential'))
-                                <span>{{ data_get($item, 'credential') }}</span>
+                            @if($source !== '')
+                                <strong>{{ $source }}</strong>
+                            @endif
+                            @if($credential !== '')
+                                <span>{{ $credential }}</span>
                             @endif
                         </figcaption>
                     </figure>
@@ -109,7 +184,14 @@
                 <a class="epk-button" href="{{ route('front.contact_us', ['inquiry' => 'epk']) }}">Contact Page</a>
             </div>
         @elseif($sectionBody !== '')
-            <div class="epk-copy">{!! clean($sectionBody) !!}</div>
+            @php
+                $cleanBody = str_replace(
+                    ['â€¢', 'â€™', 'â€”', 'â€“', 'â€œ', 'â€'],
+                    ['•', '’', '—', '–', '“', '”'],
+                    $sectionBody
+                );
+            @endphp
+            <div class="epk-copy">{!! clean($cleanBody) !!}</div>
         @endif
     </section>
 @endif

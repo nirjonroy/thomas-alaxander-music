@@ -8,7 +8,9 @@
     $bookingEmail = $epkPage->booking_email ?: config('artist_representation.email');
     $isCrooners = $epkPage->slug === 'crooners';
     $mailSubject = rawurlencode($isCrooners ? config('artist_representation.crooners_subject') : config('artist_representation.epk_subject'));
-    $heroKicker = $isCrooners ? config('artist_representation.short_line') : 'Full Artist EPK';
+    $booking = config('artist_representation.epk_booking');
+    $heroKicker = $isCrooners ? $booking['company'] : 'Full Artist EPK';
+    $heroDetail = collect($epkPage->sections ?? [])->firstWhere('type', 'hero_detail');
 @endphp
 
 <header class="epk-hero" @if($heroImage) style="--epk-hero-image: url('{{ $heroImage }}');" @endif>
@@ -24,11 +26,14 @@
         @if($epkPage->subtitle)
             <p class="epk-subtitle">{{ $epkPage->subtitle }}</p>
         @endif
+        @if(data_get($heroDetail, 'body'))
+            <div class="epk-hero__detail">{!! clean(data_get($heroDetail, 'body')) !!}</div>
+        @endif
         @if($isCrooners)
-            <p class="epk-agency-line">{{ config('artist_representation.short_line') }}</p>
+            <p class="epk-agency-line">{{ $booking['company'] }} | {{ $booking['division'] }}</p>
         @endif
         <p class="epk-hero__booking">
-            <span>Booking &amp; Inquiries:</span>
+            <span>{{ $booking['division'] }}</span>
             <a href="mailto:{{ $bookingEmail }}?subject={{ $mailSubject }}">{{ $bookingEmail }}</a>
         </p>
         <div class="epk-card__actions">

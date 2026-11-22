@@ -3,7 +3,9 @@
         <p>&copy; Copyright {{ now()->year }} Thomas Alexander. All Rights Reserved</p>
         <div class="archive-footer__links">
             <a href="{{ route('front.home.living-archive') }}">Living Archive</a>
-            <a href="{{ route('living-archive.donate') }}">Offer Support</a>
+            @if ($showSupport ?? true)
+                <a href="{{ route('living-archive.donate') }}">Offer Support</a>
+            @endif
         </div>
     </div>
 </footer>

@@ -226,6 +226,12 @@
             color: var(--epk-gold-bright);
             font-weight: 900;
         }
+        .epk-hero__detail {
+            margin: 0 0 14px;
+            color: var(--epk-cream);
+            font-weight: 700;
+            line-height: 1.65;
+        }
         .epk-subtitle,
         .epk-hero__booking,
         .epk-copy,
@@ -326,6 +332,15 @@
             font-size: 1.55rem;
             letter-spacing: 0.02em;
         }
+        .epk-song-group + .epk-song-group {
+            margin-top: 22px;
+        }
+        .epk-song-group h4 {
+            margin: 0 0 10px;
+            color: var(--epk-gold-bright);
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: 1.55rem;
+        }
         .epk-card--signature-interpretations .signature-song-block,
         .epk-card--signature-interpretations .epk-copy > div {
             margin-bottom: 1.25rem;
@@ -414,18 +429,46 @@
             border-left: 3px solid var(--epk-gold-bright);
             border-radius: 14px;
             background: rgba(255, 247, 232, 0.045);
+            overflow: visible;
         }
         .epk-quote blockquote {
-            margin: 0 0 14px;
-            color: var(--epk-cream);
+            float: none !important;
+            width: auto !important;
+            margin: 0 0 14px !important;
+            padding: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            color: var(--epk-cream) !important;
             font-family: "Cormorant Garamond", Georgia, serif;
-            font-size: 1.45rem;
-            line-height: 1.28;
+            font-size: 1.45rem !important;
+            font-style: italic;
+            line-height: 1.35;
+            position: static !important;
+        }
+        .epk-quote blockquote::before,
+        .epk-quote blockquote::after {
+            content: none !important;
+            display: none !important;
         }
         .epk-quote figcaption {
-            color: rgba(255, 247, 232, 0.68);
-            font-size: 0.9rem;
+            display: block;
+            margin-top: 10px;
+            color: rgba(255, 247, 232, 0.78);
+            font-size: 0.95rem;
             line-height: 1.5;
+            overflow: visible;
+        }
+        .epk-quote figcaption strong {
+            display: block;
+            color: var(--epk-cream, #fff7e8) !important;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+        .epk-quote figcaption span {
+            display: block;
+            color: rgba(255, 247, 232, 0.68) !important;
+            font-size: 0.88rem;
         }
         .epk-medley {
             position: relative;
@@ -599,7 +642,6 @@
             }
         }
         .epk-page .epk-breadcrumb ol,
-        .epk-page .epk-quote blockquote,
         .epk-page span,
         .epk-page h1,
         .epk-page h2,
@@ -644,7 +686,9 @@
                     </div>
 
                     @foreach(($epkPage->sections ?? []) as $section)
-                        @include('frontend.epk.partials.section-card', ['section' => $section, 'epkPage' => $epkPage])
+                        @if(data_get($section, 'type') !== 'hero_detail')
+                            @include('frontend.epk.partials.section-card', ['section' => $section, 'epkPage' => $epkPage])
+                        @endif
                     @endforeach
                 </article>
 

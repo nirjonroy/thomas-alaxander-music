@@ -14,6 +14,7 @@
     $isCrooners = $epkPage->slug === 'crooners';
     $mailSubject = rawurlencode($isCrooners ? config('artist_representation.crooners_subject') : config('artist_representation.epk_subject'));
     $bookingEmail = $epkPage->booking_email ?: config('artist_representation.email');
+    $booking = config('artist_representation.epk_booking');
 @endphp
 
 <section class="epk-card epk-media">
@@ -22,7 +23,17 @@
     @endif
 
     <h3>Booking &amp; Inquiries</h3>
-    <p>{{ config('artist_representation.line') }}</p>
+    <p>
+        <strong>{{ $booking['company'] }}</strong><br>
+        {{ $booking['division'] }}<br>
+        {{ $booking['representative_label'] }}<br>
+        {{ $booking['artist'] }}
+    </p>
+    <p>
+        {{ $booking['location'] }}<br>
+        <a href="mailto:{{ $bookingEmail }}?subject={{ $mailSubject }}">{{ $bookingEmail }}</a><br>
+        {{ $booking['phone'] }}
+    </p>
     <div class="epk-card__actions">
         @if($epkPage->pdf_file)
             <a class="epk-button epk-button--primary" href="{{ route('front.epk.pdf.view', $epkPage->slug) }}" target="_blank" rel="noopener">View EPK PDF</a>

@@ -40,6 +40,7 @@ class ApprovedCompanionContentSeederTest extends TestCase
             $this->assertSame($before[$companion->slug]['id'], $companion->id);
             $this->assertSame($before[$companion->slug]['artwork_image'], $companion->artwork_image);
             $this->assertSame($before[$companion->slug]['artwork_hash'], $this->artworkHash($companion->artwork_image));
+            $this->assertStringContainsString("\n\n", $companion->expanded_teaching);
             $this->assertStringNotContainsString('[DEMO CONTENT', $companion->expanded_teaching);
             $this->assertStringNotContainsString('[DEMO CONTENT', $companion->remember_teaching);
         }
@@ -65,8 +66,10 @@ class ApprovedCompanionContentSeederTest extends TestCase
         $response->assertOk()
             ->assertSee(JourneyCompanion::COMPANION_COPYRIGHT)
             ->assertSee('No reproduction or republication without permission.')
-            ->assertDontSee('Back to Living Archive');
+            ->assertDontSee('Back to Living Archive')
+            ->assertDontSee('Offer Support');
         $this->assertSame(1, substr_count($response->getContent(), '>The Witnesses<'));
+        $this->assertSame(11, substr_count($response->getContent(), '<p class="companion-copyright">'));
     }
 
     private function artworkHash(?string $path): ?string

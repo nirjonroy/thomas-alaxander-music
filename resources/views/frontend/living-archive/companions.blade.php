@@ -488,6 +488,7 @@
         .companion-artwork-col {
             position: sticky;
             top: 70px;
+            align-self: start;
         }
         .companion-figure {
             margin: 0;
@@ -511,6 +512,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            align-self: start;
         }
 
         .companion-sequence-label {
@@ -755,16 +757,17 @@
             margin-bottom: 0;
             text-shadow: 0 2px 12px rgba(207, 168, 81, 0.35);
         }
-        .companion-material-copyright,
+        .companion-copyright,
         .companion-closing-copyright {
             color: var(--archive-muted);
             font-size: 0.72rem;
             letter-spacing: 0.04em;
             line-height: 1.7;
         }
-        .companion-material-copyright {
-            margin: -34px 0 clamp(58px, 8vw, 100px);
-            text-align: center;
+        .companion-copyright {
+            margin: 2px 0 0;
+            font-size: 0.68rem;
+            opacity: 0.78;
         }
         .companion-closing-copyright {
             margin: 26px auto 0;
@@ -1268,14 +1271,14 @@
                                     <div class="companion-branding__text">{!! $renderText($companion->branding_info) !!}</div>
                                 </div>
                             @endif
+
+                            <p class="companion-copyright">{{ \App\Models\JourneyCompanion::COMPANION_COPYRIGHT }}</p>
                         </div>
 
                     </div>
                 </article>
             @endforeach
         </main>
-
-        <p class="companion-material-copyright">{{ \App\Models\JourneyCompanion::COMPANION_COPYRIGHT }}</p>
 
         <hr class="editorial-divider" aria-hidden="true">
 
@@ -1474,6 +1477,6 @@
     </div>
 
     <!-- Living Archive Quiet Footer Variant -->
-    @include('frontend.living-archive.partials.footer')
+    @include('frontend.living-archive.partials.footer', ['showSupport' => false])
 </div>
 @endsection

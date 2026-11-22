@@ -10,4 +10,13 @@ return [
     'epk_subject' => 'EPK Request — Thomas Alexander (The Voice)',
     'crooners_subject' => 'Crooners EPK Request — Thomas Alexander (The Voice)',
     'booking_subject' => 'Booking Inquiry — Thomas Alexander (The Voice)',
+    'epk_booking' => [
+        'company' => 'Five Feathers Publishing Company',
+        'division' => 'Artist & Booking Division',
+        'representative_label' => 'Official Representative of:',
+        'artist' => 'Thomas Alexander - The Voice',
+        'location' => 'Edmonton & Calgary, Alberta, Canada',
+        'email' => 'info@thomasalexanderthevoice.com',
+        'phone' => '1 (825) 440-0149',
+    ],
 ];

@@ -99,7 +99,10 @@ class EpkPageController extends Controller
         $data['sort_order'] = $data['sort_order'] ?? 0;
         $data['status'] = (bool) $data['status'];
         $data['published_at'] = $data['published_at'] ?? null;
-        $data['sections'] = $this->sectionData($request);
+        $data['sections'] = $this->mergeProtectedSections(
+            $this->sectionData($request),
+            $epkPage?->sections ?? []
+        );
         $data['overview_content'] = $this->stripScripts((string) ($data['overview_content'] ?? ''));
 
         unset(
@@ -287,6 +290,19 @@ class EpkPageController extends Controller
         }
 
         return $items;
+    }
+
+    private function mergeProtectedSections(array $submitted, array $existing): array
+    {
+        $protected = collect($existing)
+            ->filter(function (array $section) {
+                return in_array($section['type'] ?? null, ['hero_detail', 'quote', 'song_groups', 'content'], true)
+                    || ($section['title'] ?? null) === 'Technical Performance Format';
+            })
+            ->values()
+            ->all();
+
+        return array_merge($submitted, $protected);
     }
 
     private function uniqueSlug(string $slug, ?int $ignoreId = null): string
