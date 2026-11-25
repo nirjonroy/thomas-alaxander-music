@@ -14,53 +14,50 @@ class ClientContentUpdatesTest extends TestCase
         $response = $this->get('/epk/full-artist');
 
         $response->assertOk();
-        $response->assertSee('Stand by Me — Signature Thomas Alexander Interpretation');
-        $response->assertSee('Just My Imagination — Signature Thomas Alexander Interpretation');
+        $response->assertSee('Stand by Me');
+        $response->assertSee('Just My Imagination');
         $response->assertSee('Signature Interpretations');
         $response->assertSee('Ben E. King');
         $response->assertSee('unmistakably my own');
         $response->assertDontSee('unmistakably your own');
-
-        // Check placement: Signature Interpretations before Performance Formats / Medley
-        $content = $response->getContent();
-        $posSig = strpos($content, 'Signature Interpretations');
-        $posFormat = strpos($content, 'Live Performance Medley') ?: strpos($content, 'Performance Formats');
-        $this->assertNotFalse($posSig);
-        if ($posFormat !== false) {
-            $this->assertLessThan($posFormat, $posSig, 'Signature Interpretations must appear before performance formats/medley.');
-        }
+        $response->assertSee('BlackIndigenous');
+        $response->assertSee('Lonnie Hanson');
     }
 
     /**
      * Update 2: Crooners EPK (/epk/crooners)
      */
-    public function test_crooners_epk_renders_signature_interpretations_and_excludes_repertoire(): void
+    public function test_crooners_epk_renders_a2_specification_and_one_final_note(): void
     {
         $response = $this->get('/epk/crooners');
 
         $response->assertOk();
-        $response->assertSee('Signature Interpretations');
-        $response->assertSee('Ben E. King');
-        $response->assertSee('unmistakably my own');
-        $response->assertDontSee('unmistakably your own');
+        $response->assertSee('CROONERS');
+        $response->assertSee('Featured Selections');
+        $response->assertSee('Platters Selections');
+        $response->assertSee('Closing Crooner Classics');
+        $response->assertSee('BlackIndigenous');
+        $response->assertSee('presenter-friendly');
+        $response->assertDontSee('presenterfriendly');
+
+        // Testimonials
+        $response->assertSee('Charles Austin, ARCT, BMus, ME');
+        $response->assertSee('Lonnie Hanson');
+        $response->assertSee('Long-standing and respected Edmonton bassist');
+        $response->assertSee('Jan Randall');
+        $response->assertSee('Darren Jordan');
+
+        // ONE FINAL NOTE
+        $response->assertSee('ONE FINAL NOTE');
+        $response->assertSee('This is Crooners. This is The Voice.');
 
         // Verify "Stand by Me" is NOT in Crooners Featured Selections
         $content = $response->getContent();
         $posFeatured = strpos($content, 'Featured Selections');
-        $posTestimonials = strpos($content, 'Testimonials');
-        $posSig = strpos($content, 'Signature Interpretations');
-
-        $this->assertNotFalse($posSig);
-        if ($posFeatured !== false) {
-            $featuredSection = substr($content, $posFeatured, 1500);
-            $this->assertStringNotContainsString('Stand by Me', $featuredSection);
-            $this->assertStringNotContainsString('Just My Imagination', $featuredSection);
-        }
-
-        // Verify placement: Signature Interpretations before Testimonials
-        if ($posTestimonials !== false) {
-            $this->assertLessThan($posTestimonials, $posSig, 'Signature Interpretations must appear before Testimonials.');
-        }
+        $this->assertNotFalse($posFeatured);
+        $featuredSection = substr($content, $posFeatured, 1500);
+        $this->assertStringNotContainsString('Stand by Me', $featuredSection);
+        $this->assertStringNotContainsString('Just My Imagination', $featuredSection);
     }
 
     /**

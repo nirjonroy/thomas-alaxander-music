@@ -110,7 +110,7 @@
         .epk-breadcrumb {
             margin-bottom: 16px;
             color: rgba(255, 247, 232, 0.68);
-            font-size: 0.85rem;
+            font-size: 13px;
         }
         .epk-breadcrumb ol {
             display: flex;
@@ -211,8 +211,8 @@
         }
         .epk-title {
             margin: 0 0 14px;
-            font-size: clamp(4rem, 8vw, 7.2rem);
-            line-height: 0.95;
+            font-size: clamp(48px, 6vw, 80px);
+            line-height: 0.98;
         }
         .epk-title__sub {
             margin: -4px 0 14px;
@@ -269,7 +269,7 @@
         }
         .epk-section h2 {
             margin: 0 0 16px;
-            font-size: clamp(2.8rem, 4.8vw, 4.4rem);
+            font-size: clamp(32px, 4.5vw, 46px);
         }
         .epk-copy h1,
         .epk-copy h2,
@@ -281,25 +281,25 @@
             color: var(--epk-cream);
             font-family: "Cormorant Garamond", Georgia, serif;
             font-weight: 700;
-            line-height: 1.05;
+            line-height: 1.1;
         }
         .epk-copy h1 {
-            font-size: clamp(3.6rem, 7vw, 6.2rem);
+            font-size: clamp(36px, 5.5vw, 54px);
         }
         .epk-copy h2 {
-            font-size: clamp(2.8rem, 5.2vw, 4.8rem);
+            font-size: clamp(28px, 4.2vw, 42px);
         }
         .epk-copy h3 {
-            font-size: clamp(2.35rem, 4.3vw, 3.7rem);
+            font-size: clamp(24px, 3.4vw, 34px);
         }
         .epk-copy h4 {
-            font-size: clamp(2rem, 3.4vw, 3rem);
+            font-size: clamp(20px, 2.6vw, 26px);
         }
         .epk-copy h5 {
-            font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+            font-size: clamp(17px, 2.2vw, 21px);
         }
         .epk-copy h6 {
-            font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+            font-size: clamp(15px, 1.8vw, 18px);
         }
         .epk-copy > *:last-child {
             margin-bottom: 0;
@@ -311,8 +311,8 @@
             margin-top: 18px;
         }
         .epk-card h3 {
-            margin: 0 0 10px;
-            font-size: clamp(2.35rem, 4vw, 3.5rem);
+            margin: 0 0 14px;
+            font-size: clamp(26px, 3.2vw, 36px);
         }
         .epk-card--performance-lanes,
         .epk-card--engagements,
@@ -326,10 +326,10 @@
             margin-top: 24px;
         }
         .epk-card--signature-interpretations h4 {
-            margin: 1.4rem 0 0.4rem;
+            margin: 22px 0 8px;
             color: var(--epk-gold-bright, #f1c76b);
             font-family: "Cormorant Garamond", Georgia, serif;
-            font-size: 1.55rem;
+            font-size: 24px;
             letter-spacing: 0.02em;
         }
         .epk-song-group + .epk-song-group {
@@ -339,17 +339,17 @@
             margin: 0 0 10px;
             color: var(--epk-gold-bright);
             font-family: "Cormorant Garamond", Georgia, serif;
-            font-size: 1.55rem;
+            font-size: 22px;
         }
         .epk-card--signature-interpretations .signature-song-block,
         .epk-card--signature-interpretations .epk-copy > div {
-            margin-bottom: 1.25rem;
+            margin-bottom: 20px;
             padding-left: 14px;
             border-left: 2px solid rgba(217, 164, 65, 0.35);
         }
         .epk-card--signature-interpretations .signature-closing-quote,
         .epk-card--signature-interpretations .epk-copy > p:last-child {
-            margin-top: 1.5rem;
+            margin-top: 24px;
             font-style: italic;
             color: var(--epk-cream, #fff7e8);
         }
@@ -425,24 +425,27 @@
         }
         .epk-quote {
             margin: 0;
-            padding: 20px;
+            padding: 24px;
             border-left: 3px solid var(--epk-gold-bright);
             border-radius: 14px;
             background: rgba(255, 247, 232, 0.045);
             overflow: visible;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .epk-quote blockquote {
             float: none !important;
             width: auto !important;
-            margin: 0 0 14px !important;
+            margin: 0 0 16px !important;
             padding: 0 !important;
             border: none !important;
             background: transparent !important;
             color: var(--epk-cream) !important;
             font-family: "Cormorant Garamond", Georgia, serif;
-            font-size: 1.45rem !important;
+            font-size: 20px !important;
             font-style: italic;
-            line-height: 1.35;
+            line-height: 1.5 !important;
             position: static !important;
         }
         .epk-quote blockquote::before,
@@ -452,23 +455,26 @@
         }
         .epk-quote figcaption {
             display: block;
-            margin-top: 10px;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid rgba(217, 164, 65, 0.18);
             color: rgba(255, 247, 232, 0.78);
-            font-size: 0.95rem;
+            font-size: 14px !important;
             line-height: 1.5;
             overflow: visible;
         }
         .epk-quote figcaption strong {
             display: block;
-            color: var(--epk-cream, #fff7e8) !important;
+            color: var(--epk-gold-bright, #f1c76b) !important;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 16px !important;
             letter-spacing: 0.02em;
+            margin-bottom: 2px;
         }
         .epk-quote figcaption span {
             display: block;
-            color: rgba(255, 247, 232, 0.68) !important;
-            font-size: 0.88rem;
+            color: rgba(255, 247, 232, 0.72) !important;
+            font-size: 13px !important;
         }
         .epk-medley {
             position: relative;
@@ -576,36 +582,39 @@
                 border-radius: 18px;
             }
             .epk-title {
-                font-size: clamp(2.75rem, 13vw, 4rem);
-                line-height: 1;
+                font-size: clamp(34px, 10vw, 48px);
+                line-height: 1.05;
                 overflow-wrap: anywhere;
             }
             .epk-title__sub {
                 font-size: 13px;
             }
             .epk-section h2 {
-                font-size: 2.65rem;
+                font-size: 30px;
             }
             .epk-card h3 {
-                font-size: 2.35rem;
+                font-size: 24px;
             }
             .epk-copy h1 {
-                font-size: 3rem;
+                font-size: 34px;
             }
             .epk-copy h2 {
-                font-size: 2.65rem;
+                font-size: 28px;
             }
             .epk-copy h3 {
-                font-size: 2.25rem;
+                font-size: 24px;
             }
             .epk-copy h4 {
-                font-size: 1.95rem;
+                font-size: 20px;
             }
             .epk-copy h5 {
-                font-size: 1.65rem;
+                font-size: 18px;
             }
             .epk-copy h6 {
-                font-size: 1.35rem;
+                font-size: 16px;
+            }
+            .epk-quote blockquote {
+                font-size: 18px !important;
             }
             .epk-lane-grid,
             .epk-quote-grid,
@@ -640,16 +649,6 @@
             .epk-card__actions {
                 display: grid;
             }
-        }
-        .epk-page .epk-breadcrumb ol,
-        .epk-page span,
-        .epk-page h1,
-        .epk-page h2,
-        .epk-page h3,
-        .epk-page h4,
-        .epk-page h5,
-        .epk-page h6 {
-            font-size: 14px;
         }
         @media (prefers-reduced-motion: reduce) {
             .epk-page *,
