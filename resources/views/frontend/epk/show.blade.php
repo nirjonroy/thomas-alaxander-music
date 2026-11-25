@@ -39,10 +39,41 @@
 @section('title', $pageTitle)
 
 @section('seos')
+    @php
+        $keywords = $epkPage->slug === 'crooners'
+            ? 'Thomas Alexander, Crooners, The Voice, Canadian Crooner, Jazz Standards, The Platters, Classic Soul, Five Feathers Publishing Company, Crooners EPK'
+            : 'Thomas Alexander, The Voice, Canadian Vocalist, Theatre-Level Artist, Jazz Standards, Golden Age Soul, Motown, Blues, Five Feathers Lineage Society, Full Artist EPK';
+        $publishedTime = optional($epkPage->created_at)->toIso8601String() ?: date('c');
+        $modifiedTime = optional($epkPage->updated_at)->toIso8601String() ?: date('c');
+        $webPageSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'ProfilePage',
+            'headline' => $pageTitle,
+            'description' => $pageDesc,
+            'url' => $canonical,
+            'image' => $metaImage,
+            'datePublished' => $publishedTime,
+            'dateModified' => $modifiedTime,
+            'mainEntity' => [
+                '@type' => 'Person',
+                'name' => 'Thomas Alexander',
+                'alternateName' => 'The Voice',
+                'jobTitle' => 'Canadian Multi-Styled Vocalist & Storyteller',
+                'url' => url('/'),
+            ],
+        ];
+    @endphp
     <meta name="title" content="{{ $pageTitle }}">
     <meta name="description" content="{{ $pageDesc }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="author" content="Thomas Alexander — The Voice">
+    <meta name="publisher" content="Five Feathers Publishing Company">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="{{ $canonical }}">
-    <meta property="og:type" content="website">
+    <meta property="article:published_time" content="{{ $publishedTime }}">
+    <meta property="article:modified_time" content="{{ $modifiedTime }}">
+    <meta property="og:type" content="profile">
     <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDesc }}">
@@ -56,6 +87,7 @@
     <meta name="twitter:url" content="{{ $canonical }}">
     <meta name="twitter:image" content="{{ $metaImage }}">
     <script type="application/ld+json">{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode($webPageSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @push('css')
