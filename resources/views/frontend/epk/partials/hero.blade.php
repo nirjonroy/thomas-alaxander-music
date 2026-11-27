@@ -13,7 +13,12 @@
     $heroDetail = collect($epkPage->sections ?? [])->firstWhere('type', 'hero_detail');
 @endphp
 
-<header class="epk-hero" @if($heroImage) style="--epk-hero-image: url('{{ $heroImage }}');" @endif>
+<header class="epk-hero @if($isCrooners && $heroImage) epk-hero--crooners @endif" @if($heroImage && !$isCrooners) style="--epk-hero-image: url('{{ $heroImage }}');" @endif>
+    @if($isCrooners && $heroImage)
+        <div class="epk-hero__portrait">
+            <img class="epk-hero__portrait-img" src="{{ $heroImage }}" alt="{{ $epkPage->hero_image_alt ?: 'Thomas Alexander in signature beige suit — Crooners EPK' }}">
+        </div>
+    @endif
     @if($logoImage)
         <img class="epk-hero__logo" src="{{ $logoImage }}" alt="{{ $epkPage->gold_feather_image_alt ?: 'Thomas Alexander The Voice logo' }}">
     @endif

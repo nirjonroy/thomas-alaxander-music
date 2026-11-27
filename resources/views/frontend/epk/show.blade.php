@@ -205,6 +205,29 @@
             background-size: cover;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
         }
+        .epk-hero--crooners {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: clamp(24px, 4vw, 48px);
+            align-items: center;
+            background: linear-gradient(135deg, rgba(20, 16, 12, 0.96), rgba(29, 20, 14, 0.94));
+        }
+        .epk-hero__portrait {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .epk-hero__portrait-img {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 836 / 940;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 2px solid rgba(217, 164, 65, 0.45);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 164, 65, 0.15);
+        }
         .epk-hero__logo {
             position: absolute;
             right: clamp(18px, 4vw, 42px);
@@ -595,6 +618,17 @@
             .living-float-group {
                 display: none;
             }
+            .epk-hero--crooners {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .epk-hero--crooners .epk-hero__portrait {
+                order: -1;
+                margin-bottom: 8px;
+            }
+            .epk-hero--crooners .epk-hero__portrait-img {
+                max-width: 260px;
+            }
             .epk-hero__logo {
                 top: 20px;
                 right: 20px;
@@ -612,6 +646,12 @@
             .epk-section,
             .epk-card {
                 border-radius: 18px;
+            }
+            .epk-hero--crooners {
+                padding-top: 24px !important;
+            }
+            .epk-hero--crooners .epk-hero__portrait-img {
+                max-width: 220px;
             }
             .epk-title {
                 font-size: clamp(34px, 10vw, 48px);
